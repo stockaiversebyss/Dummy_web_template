@@ -1,0 +1,163 @@
+
+# ✅ MASTER PROMPT – Responsive Vertical Sidebar Menu (Image-Based)
+
+We are creating a **responsive vertical sidebar menu** for a dummy web structure.
+
+The design reference is provided via image.
+
+Your task is to recreate the same layout, structure, hierarchy, and responsiveness exactly as shown in the image.
+
+---
+
+## 🎯 Objective
+
+Create a vertical sidebar navigation system that:
+
+* Matches the visual hierarchy shown in the image
+* Keeps all menu items responsive
+* Maintains grouped sections
+* Preserves spacing and structure
+* Uses clean and modern UI layout
+* Focuses on structure and responsiveness (not heavy styling)
+
+---
+
+## 🧱 Layout Requirements
+
+### 1️⃣ Sidebar Structure
+
+The sidebar must be:
+
+* Vertical
+* Fixed on the left side
+* Full height (100vh)
+* Scrollable if content overflows
+* Responsive for different screen sizes
+
+---
+
+### 2️⃣ Top Branding Section
+
+At the top:
+
+
+* Brand name: **StockAiVerse**
+* Logo aligned left of brand name
+* Clean header separation from menu items
+
+---
+
+### 3️⃣ Section: AI ENGINES
+
+Display section label:
+
+* “AI ENGINES”
+* Small uppercase styling
+* Slightly muted compared to main items
+
+Under this section, include the following menu items exactly:
+
+1. Dashboard (HEADER)
+2.Stock Tech
+3.OI Tech
+4. Oracle Lens
+5. DeepSightAI
+6. TechEngine
+6. ApexAI
+7. NiftyOITech
+
+Requirements:
+
+* Each item must include an icon
+* Active item (Dashboard) must have highlighted background
+* Non-active items must have subtle hover effect
+* Small circular status indicator on right side for each item
+
+---
+
+### 4️⃣ Section: EXPLORE
+
+Display section label:
+
+* “EXPLORE”
+
+Under this section include:
+
+1. Market (expandable dropdown)
+2. Analytics (expandable dropdown)
+3. My AiVerse (expandable dropdown)
+
+Requirements:
+
+* Each must have arrow indicator (expand/collapse icon)
+* Dropdown state should be interactive
+* Smooth transition when expanded
+
+---
+
+### 5️⃣ Bottom Section
+
+At bottom of sidebar:
+
+* Settings (with gear icon)
+* User profile section:
+
+  * Circular avatar with initial
+  * Username: Harman
+  * Email (truncated display)
+* Version label: v0.1.0 – Pre-alpha
+
+This bottom section must stay anchored to bottom of sidebar.
+
+---
+
+## 📱 Responsiveness Requirements
+
+The sidebar must:
+
+* Collapse into compact mode on smaller screens
+* Hide text and show icons only in collapsed state
+* Expand on hover or toggle button
+* Maintain smooth animation
+* Preserve structure in tablet view
+* Be touch-friendly on mobile
+
+---
+
+## 🎨 UI Behavior Requirements
+
+* Clean modern dark theme
+* Clear section separation
+* Consistent spacing between items
+* Hover state for all clickable elements
+* Active state clearly visible
+* Smooth transitions
+* Minimalistic and structured
+
+---
+
+## ⚠ Important Rules
+
+* Do NOT redesign layout.
+* Follow image hierarchy strictly.
+* Maintain exact menu item naming.
+* Focus on structure and responsiveness.
+* Use modular and scalable layout.
+* Keep it expandable for future menu additions.
+
+---
+
+## 🧠 AI Processing Instruction
+
+First analyze the image and identify:
+
+* Layout hierarchy
+* Section grouping
+* Active item styling
+* Icon placement
+* Spacing pattern
+* Footer positioning
+
+Then recreate the structure faithfully while keeping responsiveness and modular design.
+
+

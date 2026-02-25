@@ -1,0 +1,338 @@
+MASTER PROMPT – Dummy Website Skeleton Generator
+
+We are creating a dummy skeleton website project for demonstrating user journey, web flow, and business process visualization.
+
+Objective:
+
+Generate a simple HTML + CSS-based website skeleton that demonstrates:
+
+Master landing page
+
+Navigation between pages
+
+Button-based navigation (each button opens a new dummy page)
+
+Clear representation of user journey and workflow
+
+Requirements:
+
+Use only:
+
+HTML
+
+CSS
+
+Basic JavaScript (only for page navigation if required)
+
+Structure:
+
+One Master Page (index.html)
+
+Multiple Dummy Pages
+
+Each button must open a new dummy page
+
+Show logical user flow
+
+UI Style:
+
+Minimal
+
+Clean
+
+Wireframe-style
+
+No complex design
+
+Use box sections to represent modules
+
+Include:
+
+Header
+
+Navigation section
+
+Content section
+
+Footer
+
+Flow representation (like step 1 → step 2 → step 3)
+
+Also generate:
+
+A README.md file explaining:
+
+Project structure
+
+How to add new pages
+
+How to add new buttons
+
+How to extend user flow
+
+A template format for adding new HTML page instructions
+
+Code quality:
+
+Clean indentation
+
+Commented sections
+
+Modular CSS
+
+Easy to expand
+
+Do NOT use frameworks.
+Do NOT use backend.
+This is only a structural demonstration project.
+
+This prompt is now AI-friendly and structured.
+
+✅ 2️⃣ Technical Scope Definition (For Your Team)
+Project Type:
+
+Dummy Flow Simulation Website
+
+Purpose:
+
+To demonstrate:
+
+User journey
+
+Feature flow
+
+Business workflow
+
+Page transition structure
+
+Not Included:
+
+Database
+
+API
+
+Authentication
+
+Real backend
+
+✅ 3️⃣ README.md TEMPLATE (For Your Dummy Project)
+
+You can create a file:
+
+README.md
+
+Here is content:
+
+# Dummy Website Skeleton Project
+
+## 📌 Objective
+This project demonstrates:
+- User Journey
+- Web Flow
+- Business Process Skeleton
+- Feature Navigation Structure
+
+---
+
+## 📁 Project Structure
+
+
+/dummy-project
+│── index.html
+│── page1.html
+│── page2.html
+│── css/
+│ └── style.css
+│── js/
+│ └── navigation.js
+│── README.md
+
+MASTER PROMPT – Dummy Website Skeleton Generator (Dual Mode)
+
+We are building a dummy website skeleton project to demonstrate user journey, web flow, and business process.
+
+The AI must support two input modes:
+
+🔹 MODE 1: DOCUMENT INPUT MODE
+
+If structured instructions are provided in text format, the AI must:
+
+Read the structured page instructions.
+
+Identify:
+
+Page name
+
+Purpose
+
+Sections
+
+Buttons
+
+Navigation targets
+
+Generate:
+
+Clean HTML file
+
+External CSS styling
+
+Proper comments
+
+Navigation links
+
+Maintain:
+
+Minimal wireframe UI
+
+Clear content boxes
+
+Easy expandability
+
+🔹 MODE 2: IMAGE INPUT MODE
+
+If an image is provided containing a page design:
+
+The AI must:
+
+Step 1: Analyze the Image
+
+Identify layout structure
+
+Detect header / footer
+
+Detect navigation elements
+
+Identify buttons
+
+Identify cards / forms / sections
+
+Identify alignment (left panel, top bar, grid, etc.)
+
+Identify approximate spacing
+
+Step 2: Convert Design to Structure
+
+Recreate layout using:
+
+HTML
+
+CSS (Flexbox or Grid)
+
+Keep it simple (no heavy styling)
+
+Focus on structure, not pixel-perfect accuracy
+
+Step 3: Generate:
+
+Clean HTML file
+
+Clean CSS file
+
+Comments explaining:
+
+Header section
+
+Main layout container
+
+Sidebar (if any)
+
+Buttons and navigation
+
+📁 Project Output Rules (For Both Modes)
+
+The AI must generate:
+
+index.html (if master page)
+
+Individual page files
+
+css/style.css
+
+README.md
+
+Page Instruction Template file
+
+🎯 IMPORTANT RULES FOR IMAGE MODE
+
+When image is provided:
+
+Do NOT guess functionality.
+
+If something is unclear:
+
+Add comment: <!-- Assumed Section -->
+
+Convert visual hierarchy into semantic structure.
+
+If button text is visible, replicate it.
+
+If text is not readable:
+
+Use placeholder text.
+
+If flow arrows are visible:
+
+Convert them into navigation links.
+
+📄 UPDATED HTML PAGE INSTRUCTION FORMAT
+
+Now we improve your format to support both modes.
+
+🔹 DOCUMENT MODE TEMPLATE
+Mode: DOCUMENT
+
+Page Name:
+Page Purpose:
+User Type:
+Entry From:
+Next Pages:
+
+Layout Type:
+  - Single Column / Two Column / Sidebar / Grid
+
+Sections:
+1.
+2.
+3.
+
+Buttons:
+Button 1:
+  Text:
+  Target Page:
+
+Button 2:
+  Text:
+  Target Page:
+
+Styling Preference:
+(Simple / Card Based / Dashboard Style)
+
+Special Notes:
+🔹 IMAGE MODE TEMPLATE
+Mode: IMAGE
+
+Image Description:
+(Brief explanation if needed)
+
+Image Contains:
+- Header? (Yes/No)
+- Sidebar? (Yes/No)
+- Cards? (Yes/No)
+- Forms? (Yes/No)
+- Buttons? (Yes/No)
+- Footer? (Yes/No)
+
+Flow Visible in Image?
+(Yes/No)
+
+Special Instruction:
+(Example: Ignore colors, focus on structure only)
+🧠 INTERNAL AI PROCESSING LOGIC (Add This in Prompt)
+
+Add this instruction to GenAI:
+
+Always first identify which mode is active.
+If both document and image are provided, prioritize image structure and use document for logic mapping.
+Generate modular and expandable code.
+Use comments for clarity.
