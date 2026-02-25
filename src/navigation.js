@@ -12,6 +12,8 @@ const PAGES = [
   'index.html',
   'signup.html',
   'dashboard.html',
+  'stock-tech.html',
+  'stock-tech-app.html',
   
   // 'market-home.html',
   // 'indices.html',
