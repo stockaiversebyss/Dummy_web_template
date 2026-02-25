@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Account – StockAiVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── SIGNUP PAGE SPECIFIC STYLES ── */
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      /* Subtle radial glow matching master page */
+      background: radial-gradient(ellipse at 50% 0%, rgba(59,126,248,0.1) 0%, transparent 60%), var(--bg-primary);
+    }
+
+    /* Card container */
+    .auth-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* Title */
+    .auth-card h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 800;
+      text-align: center;
+      color: var(--accent-cyan);
+      margin-bottom: 8px;
+    }
+    .auth-card .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    /* Form field group */
+    .field { margin-bottom: 20px; }
+    .field label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    /* Input wrapper (icon + input) */
+    .input-wrap {
+      display: flex;
+      align-items: center;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0 14px;
+      gap: 10px;
+      transition: border-color 0.2s;
+    }
+    .input-wrap:focus-within { border-color: var(--accent-blue); }
+    .input-wrap .icon { font-size: 16px; color: var(--text-muted); flex-shrink: 0; }
+    .input-wrap input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      padding: 14px 0;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+    .input-wrap input::placeholder { color: var(--text-muted); }
+
+    /* Password toggle eye */
+    .eye-toggle {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 0;
+      flex-shrink: 0;
+      transition: color 0.2s;
+    }
+    .eye-toggle:hover { color: var(--text-secondary); }
+
+    /* Checkbox row */
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      font-size: 0.87rem;
+      color: var(--text-secondary);
+    }
+    .checkbox-row input[type="checkbox"] {
+      width: 17px; height: 17px;
+      accent-color: var(--accent-blue);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .checkbox-row a { color: var(--accent-cyan); cursor: pointer; }
+    .checkbox-row a:hover { text-decoration: underline; }
+
+    /* Full-width CTA */
+    .btn-full {
+      width: 100%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+      color: #fff;
+      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      font-family: 'Sora', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: opacity 0.2s, transform 0.15s;
+      margin-bottom: 20px;
+    }
+    .btn-full:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* Sign in link */
+    .signin-link {
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+    .signin-link a { color: var(--accent-cyan); cursor: pointer; font-weight: 600; }
+    .signin-link a:hover { text-decoration: underline; }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      margin-bottom: 20px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Social buttons row */
+    .social-row { display: flex; gap: 12px; }
+    .btn-social {
+      flex: 1;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px;
+      color: var(--text-secondary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-social:hover { border-color: var(--accent-blue); color: var(--text-primary); }
+
+    /* Back to home */
+    .back-home {
+      text-align: center;
+      margin-top: 24px;
+    }
+    .back-home a {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .back-home a:hover { color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+
+  <!-- ── CREATE ACCOUNT CARD ── -->
+  <div class="auth-card">
+
+    <h1>Create Account</h1>
+    <p class="subtitle">Step into smarter stock analysis with AI</p>
+
+    <!-- Full Name -->
+    <div class="field">
+      <label>Full Name</label>
+      <div class="input-wrap">
+        <span class="icon">👤</span>
+        <input type="text" placeholder="Enter your full name" />
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="field">
+      <label>Email Address</label>
+      <div class="input-wrap">
+        <span class="icon">✉️</span>
+        <input type="email" placeholder="Enter your email" />
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div class="field">
+      <label>Password</label>
+      <div class="input-wrap">
+        <span class="icon">🔒</span>
+        <input type="password" id="pwd" placeholder="Create a password" />
+        <button class="eye-toggle" onclick="togglePwd('pwd', this)">👁</button>
+      </div>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="field">
+      <label>Confirm Password</label>
+      <div class="input-wrap">
+        <span class="icon">🔒</span>
+        <input type="password" id="cpwd" placeholder="Confirm your password" />
+        <button class="eye-toggle" onclick="togglePwd('cpwd', this)">👁</button>
+      </div>
+    </div>
+
+    <!-- Terms checkbox -->
+    <div class="checkbox-row">
+      <input type="checkbox" id="terms" />
+      <label for="terms">
+        I agree to the <a onclick="goTo('terms.html')">Terms of Service</a> and <a onclick="goTo('privacy.html')">Privacy Policy</a>
+      </label>
+    </div>
+
+    <!-- CTA -->
+    <button class="btn-full" onclick="goTo('dashboard.html')">Create Account &nbsp;→</button>
+
+    <!-- Sign in link -->
+    <div class="signin-link">
+      Already have an account? <a onclick="goTo('signup.html')">Sign In</a>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider">or sign up with</div>
+
+    <!-- Social (dummy) -->
+    <div class="social-row">
+      <button class="btn-social" onclick="showToast('🚧 Google sign-up coming soon')">🌐 Google</button>
+      <button class="btn-social" onclick="showToast('🚧 Apple sign-up coming soon')">🍎 Apple</button>
+    </div>
+
+  </div>
+
+  <!-- Back to home -->
+  <div class="back-home" style="position:fixed; bottom:20px;">
+    <a onclick="goTo('index.html')">← Back to Home</a>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="navigation.js"></script>
+
+  <script>
+    /* Toggle password visibility */
+    function togglePwd(id, btn) {
+      const inp = document.getElementById(id);
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+    }
+  </script>
+
+</body>
+</html>
