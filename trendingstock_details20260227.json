@@ -1,0 +1,127 @@
+{
+  "tsdate": "20260227",
+  "top_gainers": [
+    {
+      "symbol": "ADANIENT",
+      "perc_change": 8.45,
+      "close_price": 2890.50,
+      "volume": 4520000
+    },
+    {
+      "symbol": "TATAMOTORS",
+      "perc_change": 7.23,
+      "close_price": 785.25,
+      "volume": 8950000
+    },
+    {
+      "symbol": "ZOMATO",
+      "perc_change": 6.89,
+      "close_price": 245.80,
+      "volume": 12500000
+    },
+    {
+      "symbol": "IRFC",
+      "perc_change": 5.67,
+      "close_price": 178.40,
+      "volume": 9800000
+    },
+    {
+      "symbol": "BHEL",
+      "perc_change": 5.12,
+      "close_price": 265.90,
+      "volume": 6700000
+    },
+    {
+      "symbol": "SUZLON",
+      "perc_change": 4.85,
+      "close_price": 58.75,
+      "volume": 25000000
+    },
+    {
+      "symbol": "TATAPOWER",
+      "perc_change": 4.32,
+      "close_price": 425.60,
+      "volume": 5600000
+    },
+    {
+      "symbol": "JINDALSTEL",
+      "perc_change": 3.98,
+      "close_price": 892.30,
+      "volume": 3200000
+    },
+    {
+      "symbol": "PNB",
+      "perc_change": 3.56,
+      "close_price": 108.45,
+      "volume": 18500000
+    },
+    {
+      "symbol": "NHPC",
+      "perc_change": 3.21,
+      "close_price": 92.80,
+      "volume": 14200000
+    }
+  ],
+  "top_losers": [
+    {
+      "symbol": "PAYTM",
+      "perc_change": -7.82,
+      "close_price": 485.20,
+      "volume": 7800000
+    },
+    {
+      "symbol": "NYKAA",
+      "perc_change": -6.45,
+      "close_price": 165.30,
+      "volume": 4500000
+    },
+    {
+      "symbol": "POLICYBZR",
+      "perc_change": -5.98,
+      "close_price": 1245.60,
+      "volume": 1200000
+    },
+    {
+      "symbol": "DELHIVERY",
+      "perc_change": -5.34,
+      "close_price": 385.70,
+      "volume": 2800000
+    },
+    {
+      "symbol": "INDUSINDBK",
+      "perc_change": -4.87,
+      "close_price": 1425.80,
+      "volume": 3500000
+    },
+    {
+      "symbol": "BANDHANBNK",
+      "perc_change": -4.52,
+      "close_price": 198.45,
+      "volume": 8900000
+    },
+    {
+      "symbol": "IDEA",
+      "perc_change": -4.18,
+      "close_price": 14.25,
+      "volume": 45000000
+    },
+    {
+      "symbol": "YESBANK",
+      "perc_change": -3.76,
+      "close_price": 22.80,
+      "volume": 38000000
+    },
+    {
+      "symbol": "FEDERALBNK",
+      "perc_change": -3.45,
+      "close_price": 165.90,
+      "volume": 6200000
+    },
+    {
+      "symbol": "GMRINFRA",
+      "perc_change": -3.12,
+      "close_price": 78.50,
+      "volume": 9500000
+    }
+  ]
+}
