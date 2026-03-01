@@ -1,0 +1,3631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OI Tech – Data 26 Feb 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.0/dist/chartjs-plugin-annotation.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0f1a; --surface: #0d1220; --surface2: #141c2e;
+            --border: #1a2540; --text: #e2e4ed; --text2: #8b90a5;
+            --green: #22c55e; --green-bg: rgba(34,197,94,0.12);
+            --red: #ef4444; --red-bg: rgba(239,68,68,0.12);
+            --blue: #8b5cf6; --blue-bg: rgba(139,92,246,0.12);
+            --orange: #f59e0b; --orange-bg: rgba(245,158,11,0.12);
+            --purple: #a855f7; --purple-bg: rgba(168,85,247,0.12);
+            --cyan: #06b6d4; --cyan-bg: rgba(6,182,212,0.12);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
+
+        .header { text-align: center; padding: 24px 0 16px; }
+        .header h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header .sub { color: var(--text2); font-size: 0.88rem; margin-top: 6px; }
+        .data-badge { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+            background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.3);
+            border-radius: 20px; padding: 4px 14px; font-size: 0.78rem; font-weight: 600; color: #a78bfa; }
+        .data-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e;
+            animation: pulse 1.8s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+
+        .nav { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 4px; margin: 18px 0; width: fit-content; }
+        .nav-btn { padding: 9px 22px; border: none; background: transparent; color: var(--text2);
+            font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+            border-radius: 8px; transition: all 0.2s; }
+        .nav-btn.active { background: var(--blue); color: white; }
+        .nav-btn:hover:not(.active) { background: var(--surface2); color: var(--text); }
+
+        .tab { display: none; }
+        .tab.active { display: block; }
+
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+            padding: 22px; margin-bottom: 18px; }
+        .card h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: 14px; color: var(--text);
+            display: flex; align-items: center; gap: 8px; }
+        .card h2 .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+        .chart-wrap { position: relative; height: 350px; }
+        .chart-wrap canvas { width: 100% !important; height: 100% !important; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+        th { background: var(--surface2); color: var(--text2); font-weight: 600; text-transform: uppercase;
+            font-size: 0.68rem; letter-spacing: 1px; padding: 10px 12px; text-align: center; }
+        td { padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: center; }
+        tr:hover td { background: var(--surface2); }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+
+        .pill { padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+        .pill-green { background: var(--green-bg); color: var(--green); }
+        .pill-red { background: var(--red-bg); color: var(--red); }
+        .pill-blue { background: var(--blue-bg); color: var(--blue); }
+        .pill-orange { background: var(--orange-bg); color: var(--orange); }
+        .pill-purple { background: var(--purple-bg); color: var(--purple); }
+        .pill-cyan { background: var(--cyan-bg); color: var(--cyan); }
+        .pill-slate { background: rgba(148,163,184,0.15); color: #94a3b8; }
+
+        .stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+        .stat { background: var(--surface2); border-radius: 8px; padding: 12px 16px; flex: 1; min-width: 140px; }
+        .stat .label { font-size: 0.68rem; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; }
+        .stat .value { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 600; margin-top: 4px; }
+        .stat .delta { font-size: 0.75rem; margin-top: 2px; }
+
+        .scenario-badge { padding: 16px 24px; border-radius: 12px; text-align: center; margin: 16px 0;
+            font-weight: 700; font-size: 1.1rem; letter-spacing: 0.5px; }
+
+        .peff-bar { display: flex; align-items: center; gap: 12px; margin: 8px 0; }
+        .peff-bar .bar-track { flex: 1; height: 8px; background: var(--surface2); border-radius: 4px; overflow: hidden; }
+        .peff-bar .bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+        .peff-bar .bar-label { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; min-width: 60px; }
+
+        @media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>NIFTY OI + Premium Analyzer</h1>
+        <div class="sub">26 Feb 2026 · Snapshot 15:17:01 vs 15:19:01 · PRM Close data hardcoded</div>
+        <div><span class="data-badge"><span class="dot"></span>Data Pre-loaded — 26022026</span></div>
+    </div>
+
+    <div class="nav" id="mainNav">
+        <button class="nav-btn active" onclick="showTab('oi')">OI Analysis</button>
+        <button class="nav-btn" onclick="showTab('premium')">Premium Analysis</button>
+        <button class="nav-btn" onclick="showTab('combined')">Combined Verdict</button>
+        <button class="nav-btn" onclick="showTab('oiprm')">OI_Prm_Diversion</button>
+        <button class="nav-btn" onclick="showTab('gamazone')">GamaZone</button>
+    </div>
+
+    <div id="oi" class="tab active"><div id="oi-content"></div></div>
+    <div id="premium" class="tab"><div id="premium-content"></div></div>
+    <div id="combined" class="tab"><div id="combined-content"></div></div>
+    <div id="oiprm" class="tab"><div id="oiprm-content"></div></div>
+    <div id="gamazone" class="tab"><div id="gamazone-content"></div></div>
+</div>
+
+<script src="oi_calculations.js"></script>
+<script src="premium_analysis.js"></script>
+<script src="oi_prm_analytics.js"></script>
+<script src="gamazone.js"></script>
+<script src="reportExporter.js"></script>
+
+<script>
+// ═══════ HARDCODED DATA — 26022026 ═══════
+const json1Data = {
+  "meta": {
+    "date_pulled": "26022026",
+    "timestamp": "15:17:01",
+    "symbol": "NIFTY",
+    "expiry": "02-Mar-2026",
+    "nifty_close": 25497.3,
+    "source": "DhanHQ_API",
+    "source_db": "D:\\databank\\optiondata\\option_chain_data.db",
+    "scalex_rule": "constant OI_NzScalex=2000",
+    "snapshot_pcr": 0.5
+  },
+  "per_strike": {
+    "25100": {
+      "CEdata": {
+        "strike_price": 25100,
+        "total_oi": 144235,
+        "total_oi_normalized": 72.12,
+        "change_in_oi": 9555,
+        "change_in_oi_normalized": 4.78,
+        "ltp": 437,
+        "premium": 39.7
+      },
+      "PEdata": {
+        "strike_price": 25100,
+        "total_oi": 2713685,
+        "total_oi_normalized": 1356.84,
+        "change_in_oi": 478725,
+        "change_in_oi_normalized": 239.36,
+        "ltp": 23.2,
+        "premium": 23.2
+      },
+      "combined": {
+        "net_oi_sum": 1428.96,
+        "net_coi_sum": 244.14,
+        "diff_toi": 1284.72,
+        "diff_coi": 234.58,
+        "pcr": 18.81
+      }
+    },
+    "25150": {
+      "CEdata": {
+        "strike_price": 25150,
+        "total_oi": 59865,
+        "total_oi_normalized": 29.93,
+        "change_in_oi": 3835,
+        "change_in_oi_normalized": 1.92,
+        "ltp": 387.2,
+        "premium": 39.9
+      },
+      "PEdata": {
+        "strike_price": 25150,
+        "total_oi": 1184235,
+        "total_oi_normalized": 592.12,
+        "change_in_oi": 106795,
+        "change_in_oi_normalized": 53.4,
+        "ltp": 27.7,
+        "premium": 27.7
+      },
+      "combined": {
+        "net_oi_sum": 622.05,
+        "net_coi_sum": 55.32,
+        "diff_toi": 562.19,
+        "diff_coi": 51.48,
+        "pcr": 19.78
+      }
+    },
+    "25200": {
+      "CEdata": {
+        "strike_price": 25200,
+        "total_oi": 350220,
+        "total_oi_normalized": 175.11,
+        "change_in_oi": 89895,
+        "change_in_oi_normalized": 44.95,
+        "ltp": 346.5,
+        "premium": 49.2
+      },
+      "PEdata": {
+        "strike_price": 25200,
+        "total_oi": 4785560,
+        "total_oi_normalized": 2392.78,
+        "change_in_oi": 1487785,
+        "change_in_oi_normalized": 743.89,
+        "ltp": 33.3,
+        "premium": 33.3
+      },
+      "combined": {
+        "net_oi_sum": 2567.89,
+        "net_coi_sum": 788.84,
+        "diff_toi": 2217.67,
+        "diff_coi": 698.94,
+        "pcr": 13.66
+      }
+    },
+    "25250": {
+      "CEdata": {
+        "strike_price": 25250,
+        "total_oi": 133445,
+        "total_oi_normalized": 66.72,
+        "change_in_oi": 51350,
+        "change_in_oi_normalized": 25.68,
+        "ltp": 303.9,
+        "premium": 56.6
+      },
+      "PEdata": {
+        "strike_price": 25250,
+        "total_oi": 2108210,
+        "total_oi_normalized": 1054.11,
+        "change_in_oi": 442195,
+        "change_in_oi_normalized": 221.1,
+        "ltp": 40.7,
+        "premium": 40.7
+      },
+      "combined": {
+        "net_oi_sum": 1120.83,
+        "net_coi_sum": 246.78,
+        "diff_toi": 987.39,
+        "diff_coi": 195.42,
+        "pcr": 15.8
+      }
+    },
+    "25300": {
+      "CEdata": {
+        "strike_price": 25300,
+        "total_oi": 901355,
+        "total_oi_normalized": 450.68,
+        "change_in_oi": 249535,
+        "change_in_oi_normalized": 124.77,
+        "ltp": 263,
+        "premium": 65.7
+      },
+      "PEdata": {
+        "strike_price": 25300,
+        "total_oi": 4584060,
+        "total_oi_normalized": 2292.03,
+        "change_in_oi": 939315,
+        "change_in_oi_normalized": 469.66,
+        "ltp": 49.95,
+        "premium": 49.95
+      },
+      "combined": {
+        "net_oi_sum": 2742.71,
+        "net_coi_sum": 594.43,
+        "diff_toi": 1841.35,
+        "diff_coi": 344.89,
+        "pcr": 5.09
+      }
+    },
+    "25350": {
+      "CEdata": {
+        "strike_price": 25350,
+        "total_oi": 451620,
+        "total_oi_normalized": 225.81,
+        "change_in_oi": 167570,
+        "change_in_oi_normalized": 83.78,
+        "ltp": 224.8,
+        "premium": 77.5
+      },
+      "PEdata": {
+        "strike_price": 25350,
+        "total_oi": 2639065,
+        "total_oi_normalized": 1319.53,
+        "change_in_oi": 955825,
+        "change_in_oi_normalized": 477.91,
+        "ltp": 61.25,
+        "premium": 61.25
+      },
+      "combined": {
+        "net_oi_sum": 1545.34,
+        "net_coi_sum": 561.69,
+        "diff_toi": 1093.72,
+        "diff_coi": 394.13,
+        "pcr": 5.84
+      }
+    },
+    "25400": {
+      "CEdata": {
+        "strike_price": 25400,
+        "total_oi": 3131115,
+        "total_oi_normalized": 1565.56,
+        "change_in_oi": 1146210,
+        "change_in_oi_normalized": 573.11,
+        "ltp": 188.7,
+        "premium": 91.4
+      },
+      "PEdata": {
+        "strike_price": 25400,
+        "total_oi": 7824635,
+        "total_oi_normalized": 3912.32,
+        "change_in_oi": 2938975,
+        "change_in_oi_normalized": 1469.49,
+        "ltp": 75.5,
+        "premium": 75.5
+      },
+      "combined": {
+        "net_oi_sum": 5477.88,
+        "net_coi_sum": 2042.6,
+        "diff_toi": 2346.76,
+        "diff_coi": 896.38,
+        "pcr": 2.5
+      }
+    },
+    "25450": {
+      "CEdata": {
+        "strike_price": 25450,
+        "total_oi": 3377335,
+        "total_oi_normalized": 1688.67,
+        "change_in_oi": 1476280,
+        "change_in_oi_normalized": 738.14,
+        "ltp": 156,
+        "premium": 108.7
+      },
+      "PEdata": {
+        "strike_price": 25450,
+        "total_oi": 4609150,
+        "total_oi_normalized": 2304.57,
+        "change_in_oi": 1954680,
+        "change_in_oi_normalized": 977.34,
+        "ltp": 92.6,
+        "premium": 92.6
+      },
+      "combined": {
+        "net_oi_sum": 3993.24,
+        "net_coi_sum": 1715.48,
+        "diff_toi": 615.9,
+        "diff_coi": 239.2,
+        "pcr": 1.36
+      }
+    },
+    "25500": {
+      "CEdata": {
+        "strike_price": 25500,
+        "total_oi": 11822980,
+        "total_oi_normalized": 5911.49,
+        "change_in_oi": 4478825,
+        "change_in_oi_normalized": 2239.41,
+        "ltp": 126.85,
+        "premium": 126.85
+      },
+      "PEdata": {
+        "strike_price": 25500,
+        "total_oi": 7858370,
+        "total_oi_normalized": 3929.18,
+        "change_in_oi": 1823835,
+        "change_in_oi_normalized": 911.92,
+        "ltp": 113.35,
+        "premium": 110.65
+      },
+      "combined": {
+        "net_oi_sum": 9840.67,
+        "net_coi_sum": 3151.33,
+        "diff_toi": -1982.31,
+        "diff_coi": -1327.49,
+        "pcr": 0.66
+      }
+    },
+    "25550": {
+      "CEdata": {
+        "strike_price": 25550,
+        "total_oi": 6125730,
+        "total_oi_normalized": 3062.86,
+        "change_in_oi": 2999035,
+        "change_in_oi_normalized": 1499.52,
+        "ltp": 102.25,
+        "premium": 102.25
+      },
+      "PEdata": {
+        "strike_price": 25550,
+        "total_oi": 2316600,
+        "total_oi_normalized": 1158.3,
+        "change_in_oi": 1177085,
+        "change_in_oi_normalized": 588.54,
+        "ltp": 138.25,
+        "premium": 85.55
+      },
+      "combined": {
+        "net_oi_sum": 4221.16,
+        "net_coi_sum": 2088.06,
+        "diff_toi": -1904.56,
+        "diff_coi": -910.98,
+        "pcr": 0.38
+      }
+    },
+    "25600": {
+      "CEdata": {
+        "strike_price": 25600,
+        "total_oi": 11394890,
+        "total_oi_normalized": 5697.44,
+        "change_in_oi": 2983760,
+        "change_in_oi_normalized": 1491.88,
+        "ltp": 80.85,
+        "premium": 80.85
+      },
+      "PEdata": {
+        "strike_price": 25600,
+        "total_oi": 2562040,
+        "total_oi_normalized": 1281.02,
+        "change_in_oi": -248300,
+        "change_in_oi_normalized": -124.15,
+        "ltp": 166.65,
+        "premium": 63.95
+      },
+      "combined": {
+        "net_oi_sum": 6978.46,
+        "net_coi_sum": 1367.73,
+        "diff_toi": -4416.42,
+        "diff_coi": -1616.03,
+        "pcr": 0.22
+      }
+    },
+    "25650": {
+      "CEdata": {
+        "strike_price": 25650,
+        "total_oi": 5830370,
+        "total_oi_normalized": 2915.18,
+        "change_in_oi": 1126385,
+        "change_in_oi_normalized": 563.19,
+        "ltp": 62.95,
+        "premium": 62.95
+      },
+      "PEdata": {
+        "strike_price": 25650,
+        "total_oi": 709800,
+        "total_oi_normalized": 354.9,
+        "change_in_oi": -75660,
+        "change_in_oi_normalized": -37.83,
+        "ltp": 199,
+        "premium": 46.3
+      },
+      "combined": {
+        "net_oi_sum": 3270.08,
+        "net_coi_sum": 525.36,
+        "diff_toi": -2560.28,
+        "diff_coi": -601.02,
+        "pcr": 0.12
+      }
+    },
+    "25700": {
+      "CEdata": {
+        "strike_price": 25700,
+        "total_oi": 10732995,
+        "total_oi_normalized": 5366.5,
+        "change_in_oi": 2464280,
+        "change_in_oi_normalized": 1232.14,
+        "ltp": 48.55,
+        "premium": 48.55
+      },
+      "PEdata": {
+        "strike_price": 25700,
+        "total_oi": 1470300,
+        "total_oi_normalized": 735.15,
+        "change_in_oi": -84890,
+        "change_in_oi_normalized": -42.45,
+        "ltp": 233.85,
+        "premium": 31.15
+      },
+      "combined": {
+        "net_oi_sum": 6101.65,
+        "net_coi_sum": 1189.69,
+        "diff_toi": -4631.35,
+        "diff_coi": -1274.59,
+        "pcr": 0.14
+      }
+    },
+    "25750": {
+      "CEdata": {
+        "strike_price": 25750,
+        "total_oi": 4242225,
+        "total_oi_normalized": 2121.11,
+        "change_in_oi": 742495,
+        "change_in_oi_normalized": 371.25,
+        "ltp": 36.85,
+        "premium": 36.85
+      },
+      "PEdata": {
+        "strike_price": 25750,
+        "total_oi": 420940,
+        "total_oi_normalized": 210.47,
+        "change_in_oi": 42055,
+        "change_in_oi_normalized": 21.03,
+        "ltp": 273,
+        "premium": 20.3
+      },
+      "combined": {
+        "net_oi_sum": 2331.58,
+        "net_coi_sum": 392.28,
+        "diff_toi": -1910.64,
+        "diff_coi": -350.22,
+        "pcr": 0.1
+      }
+    },
+    "25800": {
+      "CEdata": {
+        "strike_price": 25800,
+        "total_oi": 8301930,
+        "total_oi_normalized": 4150.97,
+        "change_in_oi": 2071615,
+        "change_in_oi_normalized": 1035.81,
+        "ltp": 27.8,
+        "premium": 27.8
+      },
+      "PEdata": {
+        "strike_price": 25800,
+        "total_oi": 806650,
+        "total_oi_normalized": 403.32,
+        "change_in_oi": -48230,
+        "change_in_oi_normalized": -24.11,
+        "ltp": 314.6,
+        "premium": 11.9
+      },
+      "combined": {
+        "net_oi_sum": 4554.29,
+        "net_coi_sum": 1011.7,
+        "diff_toi": -3747.65,
+        "diff_coi": -1059.92,
+        "pcr": 0.1
+      }
+    },
+    "25850": {
+      "CEdata": {
+        "strike_price": 25850,
+        "total_oi": 3436225,
+        "total_oi_normalized": 1718.11,
+        "change_in_oi": 766220,
+        "change_in_oi_normalized": 383.11,
+        "ltp": 21.15,
+        "premium": 21.15
+      },
+      "PEdata": {
+        "strike_price": 25850,
+        "total_oi": 145275,
+        "total_oi_normalized": 72.64,
+        "change_in_oi": -36660,
+        "change_in_oi_normalized": -18.33,
+        "ltp": 358.65,
+        "premium": 5.95
+      },
+      "combined": {
+        "net_oi_sum": 1790.75,
+        "net_coi_sum": 364.78,
+        "diff_toi": -1645.47,
+        "diff_coi": -401.44,
+        "pcr": 0.04
+      }
+    },
+    "25900": {
+      "CEdata": {
+        "strike_price": 25900,
+        "total_oi": 6242535,
+        "total_oi_normalized": 3121.27,
+        "change_in_oi": 1683890,
+        "change_in_oi_normalized": 841.95,
+        "ltp": 15.9,
+        "premium": 15.9
+      },
+      "PEdata": {
+        "strike_price": 25900,
+        "total_oi": 341380,
+        "total_oi_normalized": 170.69,
+        "change_in_oi": -41860,
+        "change_in_oi_normalized": -20.93,
+        "ltp": 400.25,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 3291.96,
+        "net_coi_sum": 821.02,
+        "diff_toi": -2950.58,
+        "diff_coi": -862.88,
+        "pcr": 0.05
+      }
+    },
+    "25950": {
+      "CEdata": {
+        "strike_price": 25950,
+        "total_oi": 2492490,
+        "total_oi_normalized": 1246.24,
+        "change_in_oi": 490880,
+        "change_in_oi_normalized": 245.44,
+        "ltp": 12.5,
+        "premium": 12.5
+      },
+      "PEdata": {
+        "strike_price": 25950,
+        "total_oi": 80405,
+        "total_oi_normalized": 40.2,
+        "change_in_oi": -4160,
+        "change_in_oi_normalized": -2.08,
+        "ltp": 451.05,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 1286.44,
+        "net_coi_sum": 243.36,
+        "diff_toi": -1206.04,
+        "diff_coi": -247.52,
+        "pcr": 0.03
+      }
+    },
+    "26000": {
+      "CEdata": {
+        "strike_price": 26000,
+        "total_oi": 9847045,
+        "total_oi_normalized": 4923.52,
+        "change_in_oi": 1825395,
+        "change_in_oi_normalized": 912.7,
+        "ltp": 10.2,
+        "premium": 10.2
+      },
+      "PEdata": {
+        "strike_price": 26000,
+        "total_oi": 909610,
+        "total_oi_normalized": 454.81,
+        "change_in_oi": 5850,
+        "change_in_oi_normalized": 2.92,
+        "ltp": 498.05,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 5378.33,
+        "net_coi_sum": 915.62,
+        "diff_toi": -4468.71,
+        "diff_coi": -909.78,
+        "pcr": 0.09
+      }
+    },
+    "26050": {
+      "CEdata": {
+        "strike_price": 26050,
+        "total_oi": 1947205,
+        "total_oi_normalized": 973.6,
+        "change_in_oi": 189995,
+        "change_in_oi_normalized": 95.0,
+        "ltp": 8.05,
+        "premium": 8.05
+      },
+      "PEdata": {
+        "strike_price": 26050,
+        "total_oi": 55835,
+        "total_oi_normalized": 27.92,
+        "change_in_oi": -2600,
+        "change_in_oi_normalized": -1.3,
+        "ltp": 546.65,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 1001.52,
+        "net_coi_sum": 93.7,
+        "diff_toi": -945.68,
+        "diff_coi": -96.3,
+        "pcr": 0.03
+      }
+    },
+    "26100": {
+      "CEdata": {
+        "strike_price": 26100,
+        "total_oi": 5869760,
+        "total_oi_normalized": 2934.88,
+        "change_in_oi": 1291225,
+        "change_in_oi_normalized": 645.61,
+        "ltp": 6.5,
+        "premium": 6.5
+      },
+      "PEdata": {
+        "strike_price": 26100,
+        "total_oi": 299910,
+        "total_oi_normalized": 149.96,
+        "change_in_oi": -11570,
+        "change_in_oi_normalized": -5.79,
+        "ltp": 595,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 3084.84,
+        "net_coi_sum": 639.82,
+        "diff_toi": -2784.92,
+        "diff_coi": -651.4,
+        "pcr": 0.05
+      }
+    }
+  }
+};
+const json2Data = {
+  "meta": {
+    "date_pulled": "26022026",
+    "timestamp": "15:19:01",
+    "symbol": "NIFTY",
+    "expiry": "02-Mar-2026",
+    "nifty_close": 25491.95,
+    "source": "DhanHQ_API",
+    "source_db": "D:\\databank\\optiondata\\option_chain_data.db",
+    "scalex_rule": "constant OI_NzScalex=2000",
+    "snapshot_pcr": 0.5
+  },
+  "per_strike": {
+    "25100": {
+      "CEdata": {
+        "strike_price": 25100,
+        "total_oi": 142155,
+        "total_oi_normalized": 71.08,
+        "change_in_oi": 7475,
+        "change_in_oi_normalized": 3.74,
+        "ltp": 435.85,
+        "premium": 43.9
+      },
+      "PEdata": {
+        "strike_price": 25100,
+        "total_oi": 2747680,
+        "total_oi_normalized": 1373.84,
+        "change_in_oi": 512720,
+        "change_in_oi_normalized": 256.36,
+        "ltp": 23.35,
+        "premium": 23.35
+      },
+      "combined": {
+        "net_oi_sum": 1444.92,
+        "net_coi_sum": 260.1,
+        "diff_toi": 1302.76,
+        "diff_coi": 252.62,
+        "pcr": 19.33
+      }
+    },
+    "25150": {
+      "CEdata": {
+        "strike_price": 25150,
+        "total_oi": 59150,
+        "total_oi_normalized": 29.57,
+        "change_in_oi": 3120,
+        "change_in_oi_normalized": 1.56,
+        "ltp": 392.45,
+        "premium": 50.5
+      },
+      "PEdata": {
+        "strike_price": 25150,
+        "total_oi": 1155635,
+        "total_oi_normalized": 577.82,
+        "change_in_oi": 78195,
+        "change_in_oi_normalized": 39.1,
+        "ltp": 27.95,
+        "premium": 27.95
+      },
+      "combined": {
+        "net_oi_sum": 607.39,
+        "net_coi_sum": 40.66,
+        "diff_toi": 548.25,
+        "diff_coi": 37.54,
+        "pcr": 19.54
+      }
+    },
+    "25200": {
+      "CEdata": {
+        "strike_price": 25200,
+        "total_oi": 347945,
+        "total_oi_normalized": 173.97,
+        "change_in_oi": 87620,
+        "change_in_oi_normalized": 43.81,
+        "ltp": 346.35,
+        "premium": 54.4
+      },
+      "PEdata": {
+        "strike_price": 25200,
+        "total_oi": 4807270,
+        "total_oi_normalized": 2403.64,
+        "change_in_oi": 1509495,
+        "change_in_oi_normalized": 754.75,
+        "ltp": 33.8,
+        "premium": 33.8
+      },
+      "combined": {
+        "net_oi_sum": 2577.61,
+        "net_coi_sum": 798.56,
+        "diff_toi": 2229.67,
+        "diff_coi": 710.94,
+        "pcr": 13.82
+      }
+    },
+    "25250": {
+      "CEdata": {
+        "strike_price": 25250,
+        "total_oi": 134680,
+        "total_oi_normalized": 67.34,
+        "change_in_oi": 52585,
+        "change_in_oi_normalized": 26.29,
+        "ltp": 304.85,
+        "premium": 62.9
+      },
+      "PEdata": {
+        "strike_price": 25250,
+        "total_oi": 2048410,
+        "total_oi_normalized": 1024.2,
+        "change_in_oi": 382395,
+        "change_in_oi_normalized": 191.2,
+        "ltp": 41,
+        "premium": 41
+      },
+      "combined": {
+        "net_oi_sum": 1091.54,
+        "net_coi_sum": 217.49,
+        "diff_toi": 956.86,
+        "diff_coi": 164.91,
+        "pcr": 15.21
+      }
+    },
+    "25300": {
+      "CEdata": {
+        "strike_price": 25300,
+        "total_oi": 878735,
+        "total_oi_normalized": 439.37,
+        "change_in_oi": 226915,
+        "change_in_oi_normalized": 113.46,
+        "ltp": 263.45,
+        "premium": 71.5
+      },
+      "PEdata": {
+        "strike_price": 25300,
+        "total_oi": 4604405,
+        "total_oi_normalized": 2302.2,
+        "change_in_oi": 959660,
+        "change_in_oi_normalized": 479.83,
+        "ltp": 50.25,
+        "premium": 50.25
+      },
+      "combined": {
+        "net_oi_sum": 2741.57,
+        "net_coi_sum": 593.29,
+        "diff_toi": 1862.83,
+        "diff_coi": 366.37,
+        "pcr": 5.24
+      }
+    },
+    "25350": {
+      "CEdata": {
+        "strike_price": 25350,
+        "total_oi": 434200,
+        "total_oi_normalized": 217.1,
+        "change_in_oi": 150150,
+        "change_in_oi_normalized": 75.08,
+        "ltp": 224.55,
+        "premium": 82.6
+      },
+      "PEdata": {
+        "strike_price": 25350,
+        "total_oi": 2562365,
+        "total_oi_normalized": 1281.18,
+        "change_in_oi": 879125,
+        "change_in_oi_normalized": 439.56,
+        "ltp": 61.8,
+        "premium": 61.8
+      },
+      "combined": {
+        "net_oi_sum": 1498.28,
+        "net_coi_sum": 514.64,
+        "diff_toi": 1064.08,
+        "diff_coi": 364.48,
+        "pcr": 5.9
+      }
+    },
+    "25400": {
+      "CEdata": {
+        "strike_price": 25400,
+        "total_oi": 3006770,
+        "total_oi_normalized": 1503.38,
+        "change_in_oi": 1021865,
+        "change_in_oi_normalized": 510.93,
+        "ltp": 189.45,
+        "premium": 97.5
+      },
+      "PEdata": {
+        "strike_price": 25400,
+        "total_oi": 7848815,
+        "total_oi_normalized": 3924.41,
+        "change_in_oi": 2963155,
+        "change_in_oi_normalized": 1481.58,
+        "ltp": 75.65,
+        "premium": 75.65
+      },
+      "combined": {
+        "net_oi_sum": 5427.79,
+        "net_coi_sum": 1992.51,
+        "diff_toi": 2421.03,
+        "diff_coi": 970.65,
+        "pcr": 2.61
+      }
+    },
+    "25450": {
+      "CEdata": {
+        "strike_price": 25450,
+        "total_oi": 3224260,
+        "total_oi_normalized": 1612.13,
+        "change_in_oi": 1323205,
+        "change_in_oi_normalized": 661.6,
+        "ltp": 156.5,
+        "premium": 114.55
+      },
+      "PEdata": {
+        "strike_price": 25450,
+        "total_oi": 4418245,
+        "total_oi_normalized": 2209.12,
+        "change_in_oi": 1763775,
+        "change_in_oi_normalized": 881.89,
+        "ltp": 93,
+        "premium": 93
+      },
+      "combined": {
+        "net_oi_sum": 3821.25,
+        "net_coi_sum": 1543.49,
+        "diff_toi": 596.99,
+        "diff_coi": 220.29,
+        "pcr": 1.37
+      }
+    },
+    "25500": {
+      "CEdata": {
+        "strike_price": 25500,
+        "total_oi": 11616670,
+        "total_oi_normalized": 5808.34,
+        "change_in_oi": 4272515,
+        "change_in_oi_normalized": 2136.26,
+        "ltp": 126.8,
+        "premium": 126.8
+      },
+      "PEdata": {
+        "strike_price": 25500,
+        "total_oi": 7648420,
+        "total_oi_normalized": 3824.21,
+        "change_in_oi": 1613885,
+        "change_in_oi_normalized": 806.94,
+        "ltp": 113.95,
+        "premium": 105.9
+      },
+      "combined": {
+        "net_oi_sum": 9632.55,
+        "net_coi_sum": 2943.2,
+        "diff_toi": -1984.13,
+        "diff_coi": -1329.32,
+        "pcr": 0.66
+      }
+    },
+    "25550": {
+      "CEdata": {
+        "strike_price": 25550,
+        "total_oi": 5790395,
+        "total_oi_normalized": 2895.2,
+        "change_in_oi": 2663700,
+        "change_in_oi_normalized": 1331.85,
+        "ltp": 102.15,
+        "premium": 102.15
+      },
+      "PEdata": {
+        "strike_price": 25550,
+        "total_oi": 2216630,
+        "total_oi_normalized": 1108.32,
+        "change_in_oi": 1077115,
+        "change_in_oi_normalized": 538.56,
+        "ltp": 138.7,
+        "premium": 80.65
+      },
+      "combined": {
+        "net_oi_sum": 4003.52,
+        "net_coi_sum": 1870.41,
+        "diff_toi": -1786.88,
+        "diff_coi": -793.29,
+        "pcr": 0.38
+      }
+    },
+    "25600": {
+      "CEdata": {
+        "strike_price": 25600,
+        "total_oi": 11019775,
+        "total_oi_normalized": 5509.89,
+        "change_in_oi": 2608645,
+        "change_in_oi_normalized": 1304.32,
+        "ltp": 80.7,
+        "premium": 80.7
+      },
+      "PEdata": {
+        "strike_price": 25600,
+        "total_oi": 2413450,
+        "total_oi_normalized": 1206.72,
+        "change_in_oi": -396890,
+        "change_in_oi_normalized": -198.44,
+        "ltp": 167.2,
+        "premium": 59.15
+      },
+      "combined": {
+        "net_oi_sum": 6716.61,
+        "net_coi_sum": 1105.88,
+        "diff_toi": -4303.17,
+        "diff_coi": -1502.76,
+        "pcr": 0.22
+      }
+    },
+    "25650": {
+      "CEdata": {
+        "strike_price": 25650,
+        "total_oi": 5708365,
+        "total_oi_normalized": 2854.18,
+        "change_in_oi": 1004380,
+        "change_in_oi_normalized": 502.19,
+        "ltp": 63,
+        "premium": 63
+      },
+      "PEdata": {
+        "strike_price": 25650,
+        "total_oi": 713570,
+        "total_oi_normalized": 356.79,
+        "change_in_oi": -71890,
+        "change_in_oi_normalized": -35.95,
+        "ltp": 199.05,
+        "premium": 41.0
+      },
+      "combined": {
+        "net_oi_sum": 3210.97,
+        "net_coi_sum": 466.24,
+        "diff_toi": -2497.39,
+        "diff_coi": -538.14,
+        "pcr": 0.13
+      }
+    },
+    "25700": {
+      "CEdata": {
+        "strike_price": 25700,
+        "total_oi": 10567570,
+        "total_oi_normalized": 5283.78,
+        "change_in_oi": 2298855,
+        "change_in_oi_normalized": 1149.43,
+        "ltp": 48.45,
+        "premium": 48.45
+      },
+      "PEdata": {
+        "strike_price": 25700,
+        "total_oi": 1437020,
+        "total_oi_normalized": 718.51,
+        "change_in_oi": -118170,
+        "change_in_oi_normalized": -59.09,
+        "ltp": 234.75,
+        "premium": 26.7
+      },
+      "combined": {
+        "net_oi_sum": 6002.29,
+        "net_coi_sum": 1090.34,
+        "diff_toi": -4565.27,
+        "diff_coi": -1208.52,
+        "pcr": 0.14
+      }
+    },
+    "25750": {
+      "CEdata": {
+        "strike_price": 25750,
+        "total_oi": 4154800,
+        "total_oi_normalized": 2077.4,
+        "change_in_oi": 655070,
+        "change_in_oi_normalized": 327.54,
+        "ltp": 36.75,
+        "premium": 36.75
+      },
+      "PEdata": {
+        "strike_price": 25750,
+        "total_oi": 419835,
+        "total_oi_normalized": 209.92,
+        "change_in_oi": 40950,
+        "change_in_oi_normalized": 20.48,
+        "ltp": 273.2,
+        "premium": 15.15
+      },
+      "combined": {
+        "net_oi_sum": 2287.32,
+        "net_coi_sum": 348.02,
+        "diff_toi": -1867.48,
+        "diff_coi": -307.06,
+        "pcr": 0.1
+      }
+    },
+    "25800": {
+      "CEdata": {
+        "strike_price": 25800,
+        "total_oi": 8170825,
+        "total_oi_normalized": 4085.41,
+        "change_in_oi": 1940510,
+        "change_in_oi_normalized": 970.25,
+        "ltp": 27.65,
+        "premium": 27.65
+      },
+      "PEdata": {
+        "strike_price": 25800,
+        "total_oi": 799045,
+        "total_oi_normalized": 399.52,
+        "change_in_oi": -55835,
+        "change_in_oi_normalized": -27.92,
+        "ltp": 314.55,
+        "premium": 6.5
+      },
+      "combined": {
+        "net_oi_sum": 4484.93,
+        "net_coi_sum": 942.33,
+        "diff_toi": -3685.89,
+        "diff_coi": -998.17,
+        "pcr": 0.1
+      }
+    },
+    "25850": {
+      "CEdata": {
+        "strike_price": 25850,
+        "total_oi": 3378310,
+        "total_oi_normalized": 1689.15,
+        "change_in_oi": 708305,
+        "change_in_oi_normalized": 354.15,
+        "ltp": 20.8,
+        "premium": 20.8
+      },
+      "PEdata": {
+        "strike_price": 25850,
+        "total_oi": 143910,
+        "total_oi_normalized": 71.95,
+        "change_in_oi": -38025,
+        "change_in_oi_normalized": -19.01,
+        "ltp": 354.55,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 1761.1,
+        "net_coi_sum": 335.14,
+        "diff_toi": -1617.2,
+        "diff_coi": -373.16,
+        "pcr": 0.04
+      }
+    },
+    "25900": {
+      "CEdata": {
+        "strike_price": 25900,
+        "total_oi": 6307600,
+        "total_oi_normalized": 3153.8,
+        "change_in_oi": 1748955,
+        "change_in_oi_normalized": 874.48,
+        "ltp": 15.7,
+        "premium": 15.7
+      },
+      "PEdata": {
+        "strike_price": 25900,
+        "total_oi": 340470,
+        "total_oi_normalized": 170.24,
+        "change_in_oi": -42770,
+        "change_in_oi_normalized": -21.39,
+        "ltp": 402.7,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 3324.04,
+        "net_coi_sum": 853.09,
+        "diff_toi": -2983.56,
+        "diff_coi": -895.87,
+        "pcr": 0.05
+      }
+    },
+    "25950": {
+      "CEdata": {
+        "strike_price": 25950,
+        "total_oi": 2565680,
+        "total_oi_normalized": 1282.84,
+        "change_in_oi": 564070,
+        "change_in_oi_normalized": 282.04,
+        "ltp": 12.3,
+        "premium": 12.3
+      },
+      "PEdata": {
+        "strike_price": 25950,
+        "total_oi": 80405,
+        "total_oi_normalized": 40.2,
+        "change_in_oi": -4160,
+        "change_in_oi_normalized": -2.08,
+        "ltp": 448.1,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 1323.04,
+        "net_coi_sum": 279.96,
+        "diff_toi": -1242.64,
+        "diff_coi": -284.12,
+        "pcr": 0.03
+      }
+    },
+    "26000": {
+      "CEdata": {
+        "strike_price": 26000,
+        "total_oi": 10089885,
+        "total_oi_normalized": 5044.94,
+        "change_in_oi": 2068235,
+        "change_in_oi_normalized": 1034.12,
+        "ltp": 10.1,
+        "premium": 10.1
+      },
+      "PEdata": {
+        "strike_price": 26000,
+        "total_oi": 909350,
+        "total_oi_normalized": 454.68,
+        "change_in_oi": 5590,
+        "change_in_oi_normalized": 2.79,
+        "ltp": 496.15,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 5499.62,
+        "net_coi_sum": 1036.91,
+        "diff_toi": -4590.26,
+        "diff_coi": -1031.33,
+        "pcr": 0.09
+      }
+    },
+    "26050": {
+      "CEdata": {
+        "strike_price": 26050,
+        "total_oi": 1894750,
+        "total_oi_normalized": 947.38,
+        "change_in_oi": 137540,
+        "change_in_oi_normalized": 68.77,
+        "ltp": 8.05,
+        "premium": 8.05
+      },
+      "PEdata": {
+        "strike_price": 26050,
+        "total_oi": 55900,
+        "total_oi_normalized": 27.95,
+        "change_in_oi": -2535,
+        "change_in_oi_normalized": -1.27,
+        "ltp": 545,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 975.33,
+        "net_coi_sum": 67.5,
+        "diff_toi": -919.43,
+        "diff_coi": -70.04,
+        "pcr": 0.03
+      }
+    },
+    "26100": {
+      "CEdata": {
+        "strike_price": 26100,
+        "total_oi": 6093100,
+        "total_oi_normalized": 3046.55,
+        "change_in_oi": 1514565,
+        "change_in_oi_normalized": 757.28,
+        "ltp": 6.45,
+        "premium": 6.45
+      },
+      "PEdata": {
+        "strike_price": 26100,
+        "total_oi": 299650,
+        "total_oi_normalized": 149.82,
+        "change_in_oi": -11830,
+        "change_in_oi_normalized": -5.92,
+        "ltp": 590,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 3196.37,
+        "net_coi_sum": 751.36,
+        "diff_toi": -2896.73,
+        "diff_coi": -763.2,
+        "pcr": 0.05
+      }
+    }
+  }
+};
+const json3Data = {
+  "topheader": {
+    "date": "26022026",
+    "latest_cinID": 178
+  },
+  "data": {
+    "logdata": [
+      {
+        "cin": 1,
+        "timestamp": "091701",
+        "sum_oiCE": 72597720,
+        "sum_oiPE": 38605970,
+        "sum_CoiCE": 2070380,
+        "sum_CoiPE": 1979445,
+        "total_ce_premium": 1330.4,
+        "total_pe_premium": 910.85,
+        "pcr": 0.5318,
+        "premium_ratio": 1.459,
+        "nifty_close": 25541.8
+      },
+      {
+        "cin": 2,
+        "timestamp": "091901",
+        "sum_oiCE": 79522755,
+        "sum_oiPE": 42109405,
+        "sum_CoiCE": 8995415,
+        "sum_CoiPE": 5482880,
+        "total_ce_premium": 1337.65,
+        "total_pe_premium": 894.85,
+        "pcr": 0.5295,
+        "premium_ratio": 1.4932,
+        "nifty_close": 25530.55
+      },
+      {
+        "cin": 3,
+        "timestamp": "092101",
+        "sum_oiCE": 79525485,
+        "sum_oiPE": 42109340,
+        "sum_CoiCE": 8998145,
+        "sum_CoiPE": 5482815,
+        "total_ce_premium": 1342.4,
+        "total_pe_premium": 848.65,
+        "pcr": 0.5295,
+        "premium_ratio": 1.5799,
+        "nifty_close": 25532.3
+      },
+      {
+        "cin": 4,
+        "timestamp": "092301",
+        "sum_oiCE": 82708925,
+        "sum_oiPE": 46389330,
+        "sum_CoiCE": 12181585,
+        "sum_CoiPE": 9762805,
+        "total_ce_premium": 1420.35,
+        "total_pe_premium": 846.25,
+        "pcr": 0.5609,
+        "premium_ratio": 1.6764,
+        "nifty_close": 25504
+      },
+      {
+        "cin": 5,
+        "timestamp": "092501",
+        "sum_oiCE": 86205795,
+        "sum_oiPE": 48932325,
+        "sum_CoiCE": 15678455,
+        "sum_CoiPE": 12305800,
+        "total_ce_premium": 1350.7,
+        "total_pe_premium": 899.25,
+        "pcr": 0.5676,
+        "premium_ratio": 1.5004,
+        "nifty_close": 25502.25
+      },
+      {
+        "cin": 6,
+        "timestamp": "092701",
+        "sum_oiCE": 86238620,
+        "sum_oiPE": 48932455,
+        "sum_CoiCE": 15711280,
+        "sum_CoiPE": 12305930,
+        "total_ce_premium": 1368.9,
+        "total_pe_premium": 894.85,
+        "pcr": 0.5674,
+        "premium_ratio": 1.528,
+        "nifty_close": 25505
+      },
+      {
+        "cin": 7,
+        "timestamp": "092901",
+        "sum_oiCE": 88098855,
+        "sum_oiPE": 51868245,
+        "sum_CoiCE": 17571515,
+        "sum_CoiPE": 15241720,
+        "total_ce_premium": 1360.65,
+        "total_pe_premium": 891.2,
+        "pcr": 0.5888,
+        "premium_ratio": 1.5251,
+        "nifty_close": 25509.75
+      },
+      {
+        "cin": 8,
+        "timestamp": "093101",
+        "sum_oiCE": 88508355,
+        "sum_oiPE": 52163345,
+        "sum_CoiCE": 17981015,
+        "sum_CoiPE": 15536820,
+        "total_ce_premium": 1335.0,
+        "total_pe_premium": 897.05,
+        "pcr": 0.5894,
+        "premium_ratio": 1.4866,
+        "nifty_close": 25516.2
+      },
+      {
+        "cin": 9,
+        "timestamp": "093301",
+        "sum_oiCE": 89601005,
+        "sum_oiPE": 52905645,
+        "sum_CoiCE": 19073665,
+        "sum_CoiPE": 16279120,
+        "total_ce_premium": 1351.15,
+        "total_pe_premium": 905.5,
+        "pcr": 0.5905,
+        "premium_ratio": 1.4905,
+        "nifty_close": 25507.15
+      },
+      {
+        "cin": 10,
+        "timestamp": "093501",
+        "sum_oiCE": 91112190,
+        "sum_oiPE": 54301390,
+        "sum_CoiCE": 20584850,
+        "sum_CoiPE": 17674865,
+        "total_ce_premium": 1341.6,
+        "total_pe_premium": 890.25,
+        "pcr": 0.596,
+        "premium_ratio": 1.5053,
+        "nifty_close": 25520.7
+      },
+      {
+        "cin": 11,
+        "timestamp": "093701",
+        "sum_oiCE": 91541190,
+        "sum_oiPE": 54288000,
+        "sum_CoiCE": 21013850,
+        "sum_CoiPE": 17661475,
+        "total_ce_premium": 1335.6,
+        "total_pe_premium": 869.6,
+        "pcr": 0.593,
+        "premium_ratio": 1.5341,
+        "nifty_close": 25531.3
+      },
+      {
+        "cin": 12,
+        "timestamp": "093902",
+        "sum_oiCE": 91862420,
+        "sum_oiPE": 54797015,
+        "sum_CoiCE": 21335080,
+        "sum_CoiPE": 18170490,
+        "total_ce_premium": 1391.0,
+        "total_pe_premium": 841.45,
+        "pcr": 0.5965,
+        "premium_ratio": 1.6511,
+        "nifty_close": 25544
+      },
+      {
+        "cin": 13,
+        "timestamp": "094101",
+        "sum_oiCE": 89776700,
+        "sum_oiPE": 56029480,
+        "sum_CoiCE": 19249360,
+        "sum_CoiPE": 19402955,
+        "total_ce_premium": 1370.55,
+        "total_pe_premium": 833.85,
+        "pcr": 0.6241,
+        "premium_ratio": 1.6417,
+        "nifty_close": 25556.05
+      },
+      {
+        "cin": 14,
+        "timestamp": "094301",
+        "sum_oiCE": 89776700,
+        "sum_oiPE": 56029480,
+        "sum_CoiCE": 19249360,
+        "sum_CoiPE": 19402955,
+        "total_ce_premium": 1353.4,
+        "total_pe_premium": 835.5,
+        "pcr": 0.6241,
+        "premium_ratio": 1.6179,
+        "nifty_close": 25541.45
+      },
+      {
+        "cin": 15,
+        "timestamp": "094501",
+        "sum_oiCE": 89298950,
+        "sum_oiPE": 57914350,
+        "sum_CoiCE": 18771610,
+        "sum_CoiPE": 21287825,
+        "total_ce_premium": 1369.6,
+        "total_pe_premium": 827.7,
+        "pcr": 0.6485,
+        "premium_ratio": 1.6527,
+        "nifty_close": 25555.8
+      },
+      {
+        "cin": 16,
+        "timestamp": "094701",
+        "sum_oiCE": 88774725,
+        "sum_oiPE": 58889155,
+        "sum_CoiCE": 18247385,
+        "sum_CoiPE": 22262630,
+        "total_ce_premium": 1343.8,
+        "total_pe_premium": 843.55,
+        "pcr": 0.6634,
+        "premium_ratio": 1.5911,
+        "nifty_close": 25547.3
+      },
+      {
+        "cin": 17,
+        "timestamp": "094901",
+        "sum_oiCE": 88774725,
+        "sum_oiPE": 58889155,
+        "sum_CoiCE": 18247385,
+        "sum_CoiPE": 22262630,
+        "total_ce_premium": 1354.45,
+        "total_pe_premium": 833.85,
+        "pcr": 0.6634,
+        "premium_ratio": 1.6224,
+        "nifty_close": 25562.4
+      },
+      {
+        "cin": 18,
+        "timestamp": "095101",
+        "sum_oiCE": 88578490,
+        "sum_oiPE": 60402420,
+        "sum_CoiCE": 18051150,
+        "sum_CoiPE": 23775895,
+        "total_ce_premium": 1343.65,
+        "total_pe_premium": 846.5,
+        "pcr": 0.6819,
+        "premium_ratio": 1.5854,
+        "nifty_close": 25552.55
+      },
+      {
+        "cin": 19,
+        "timestamp": "095301",
+        "sum_oiCE": 88493340,
+        "sum_oiPE": 61737000,
+        "sum_CoiCE": 17966000,
+        "sum_CoiPE": 25110475,
+        "total_ce_premium": 1349.75,
+        "total_pe_premium": 819.95,
+        "pcr": 0.6976,
+        "premium_ratio": 1.6441,
+        "nifty_close": 25542.9
+      },
+      {
+        "cin": 20,
+        "timestamp": "095501",
+        "sum_oiCE": 88493340,
+        "sum_oiPE": 61737000,
+        "sum_CoiCE": 17966000,
+        "sum_CoiPE": 25110475,
+        "total_ce_premium": 1277.8,
+        "total_pe_premium": 899.2,
+        "pcr": 0.6976,
+        "premium_ratio": 1.4195,
+        "nifty_close": 25511
+      },
+      {
+        "cin": 21,
+        "timestamp": "095701",
+        "sum_oiCE": 88322650,
+        "sum_oiPE": 59485465,
+        "sum_CoiCE": 17795310,
+        "sum_CoiPE": 22858940,
+        "total_ce_premium": 1263.35,
+        "total_pe_premium": 899.9,
+        "pcr": 0.6735,
+        "premium_ratio": 1.4023,
+        "nifty_close": 25515.55
+      },
+      {
+        "cin": 22,
+        "timestamp": "095901",
+        "sum_oiCE": 91095290,
+        "sum_oiPE": 58373380,
+        "sum_CoiCE": 20567950,
+        "sum_CoiPE": 21746855,
+        "total_ce_premium": 1220.9,
+        "total_pe_premium": 957.55,
+        "pcr": 0.6408,
+        "premium_ratio": 1.2737,
+        "nifty_close": 25508.75
+      },
+      {
+        "cin": 23,
+        "timestamp": "100101",
+        "sum_oiCE": 91096395,
+        "sum_oiPE": 58373380,
+        "sum_CoiCE": 20569055,
+        "sum_CoiPE": 21746855,
+        "total_ce_premium": 1235.65,
+        "total_pe_premium": 899.3,
+        "pcr": 0.6408,
+        "premium_ratio": 1.3725,
+        "nifty_close": 25522.5
+      },
+      {
+        "cin": 24,
+        "timestamp": "100301",
+        "sum_oiCE": 92416610,
+        "sum_oiPE": 58760195,
+        "sum_CoiCE": 21889270,
+        "sum_CoiPE": 22133670,
+        "total_ce_premium": 1237.0,
+        "total_pe_premium": 886.75,
+        "pcr": 0.6358,
+        "premium_ratio": 1.3934,
+        "nifty_close": 25530.1
+      },
+      {
+        "cin": 25,
+        "timestamp": "100501",
+        "sum_oiCE": 92250990,
+        "sum_oiPE": 58395805,
+        "sum_CoiCE": 21723650,
+        "sum_CoiPE": 21769280,
+        "total_ce_premium": 1288.05,
+        "total_pe_premium": 833.65,
+        "pcr": 0.633,
+        "premium_ratio": 1.5432,
+        "nifty_close": 25544.7
+      },
+      {
+        "cin": 26,
+        "timestamp": "100701",
+        "sum_oiCE": 92250990,
+        "sum_oiPE": 58395805,
+        "sum_CoiCE": 21723650,
+        "sum_CoiPE": 21769280,
+        "total_ce_premium": 1318.25,
+        "total_pe_premium": 833.3,
+        "pcr": 0.633,
+        "premium_ratio": 1.5801,
+        "nifty_close": 25560.9
+      },
+      {
+        "cin": 27,
+        "timestamp": "100901",
+        "sum_oiCE": 90186135,
+        "sum_oiPE": 59269145,
+        "sum_CoiCE": 19658795,
+        "sum_CoiPE": 22642620,
+        "total_ce_premium": 1330.2,
+        "total_pe_premium": 812.0,
+        "pcr": 0.6572,
+        "premium_ratio": 1.6362,
+        "nifty_close": 25559.95
+      },
+      {
+        "cin": 28,
+        "timestamp": "101101",
+        "sum_oiCE": 87734010,
+        "sum_oiPE": 62239580,
+        "sum_CoiCE": 17206670,
+        "sum_CoiPE": 25613055,
+        "total_ce_premium": 1377.85,
+        "total_pe_premium": 793.7,
+        "pcr": 0.7094,
+        "premium_ratio": 1.7338,
+        "nifty_close": 25570.6
+      },
+      {
+        "cin": 29,
+        "timestamp": "101301",
+        "sum_oiCE": 87734010,
+        "sum_oiPE": 62239580,
+        "sum_CoiCE": 17206670,
+        "sum_CoiPE": 25613055,
+        "total_ce_premium": 1349.65,
+        "total_pe_premium": 813.95,
+        "pcr": 0.7094,
+        "premium_ratio": 1.6561,
+        "nifty_close": 25561.95
+      },
+      {
+        "cin": 30,
+        "timestamp": "101501",
+        "sum_oiCE": 86061105,
+        "sum_oiPE": 63053965,
+        "sum_CoiCE": 15533765,
+        "sum_CoiPE": 26427440,
+        "total_ce_premium": 1344.95,
+        "total_pe_premium": 813.7,
+        "pcr": 0.7327,
+        "premium_ratio": 1.6509,
+        "nifty_close": 25559.5
+      },
+      {
+        "cin": 31,
+        "timestamp": "101701",
+        "sum_oiCE": 85832630,
+        "sum_oiPE": 64664925,
+        "sum_CoiCE": 15305290,
+        "sum_CoiPE": 28038400,
+        "total_ce_premium": 1326.2,
+        "total_pe_premium": 827.0,
+        "pcr": 0.7534,
+        "premium_ratio": 1.6017,
+        "nifty_close": 25548.45
+      },
+      {
+        "cin": 32,
+        "timestamp": "101901",
+        "sum_oiCE": 85832630,
+        "sum_oiPE": 64664925,
+        "sum_CoiCE": 15305290,
+        "sum_CoiPE": 28038400,
+        "total_ce_premium": 1324.9,
+        "total_pe_premium": 809.75,
+        "pcr": 0.7534,
+        "premium_ratio": 1.6342,
+        "nifty_close": 25559.6
+      },
+      {
+        "cin": 33,
+        "timestamp": "102101",
+        "sum_oiCE": 86377915,
+        "sum_oiPE": 64767820,
+        "sum_CoiCE": 15850575,
+        "sum_CoiPE": 28141295,
+        "total_ce_premium": 1277.2,
+        "total_pe_premium": 847.65,
+        "pcr": 0.7498,
+        "premium_ratio": 1.505,
+        "nifty_close": 25550.75
+      },
+      {
+        "cin": 34,
+        "timestamp": "102301",
+        "sum_oiCE": 86518575,
+        "sum_oiPE": 65241540,
+        "sum_CoiCE": 15991235,
+        "sum_CoiPE": 28615015,
+        "total_ce_premium": 1293.25,
+        "total_pe_premium": 807.05,
+        "pcr": 0.7541,
+        "premium_ratio": 1.6005,
+        "nifty_close": 25538.8
+      },
+      {
+        "cin": 35,
+        "timestamp": "102501",
+        "sum_oiCE": 86518575,
+        "sum_oiPE": 65241540,
+        "sum_CoiCE": 15991235,
+        "sum_CoiPE": 28615015,
+        "total_ce_premium": 1249.75,
+        "total_pe_premium": 831.65,
+        "pcr": 0.7541,
+        "premium_ratio": 1.5009,
+        "nifty_close": 25539.2
+      },
+      {
+        "cin": 36,
+        "timestamp": "102828",
+        "sum_oiCE": 88305165,
+        "sum_oiPE": 63995620,
+        "sum_CoiCE": 17777825,
+        "sum_CoiPE": 27369095,
+        "total_ce_premium": 1211.0,
+        "total_pe_premium": 850.5,
+        "pcr": 0.7247,
+        "premium_ratio": 1.4222,
+        "nifty_close": 25537.8
+      },
+      {
+        "cin": 37,
+        "timestamp": "102900",
+        "sum_oiCE": 88305165,
+        "sum_oiPE": 63995620,
+        "sum_CoiCE": 17777825,
+        "sum_CoiPE": 27369095,
+        "total_ce_premium": 1194.1,
+        "total_pe_premium": 875.95,
+        "pcr": 0.7247,
+        "premium_ratio": 1.3617,
+        "nifty_close": 25534.05
+      },
+      {
+        "cin": 38,
+        "timestamp": "103101",
+        "sum_oiCE": 88305165,
+        "sum_oiPE": 63995620,
+        "sum_CoiCE": 17777825,
+        "sum_CoiPE": 27369095,
+        "total_ce_premium": 1238.1,
+        "total_pe_premium": 850.9,
+        "pcr": 0.7247,
+        "premium_ratio": 1.4533,
+        "nifty_close": 25527.1
+      },
+      {
+        "cin": 39,
+        "timestamp": "103301",
+        "sum_oiCE": 88125375,
+        "sum_oiPE": 62363600,
+        "sum_CoiCE": 17598035,
+        "sum_CoiPE": 25737075,
+        "total_ce_premium": 1243.8,
+        "total_pe_premium": 848.2,
+        "pcr": 0.7077,
+        "premium_ratio": 1.4647,
+        "nifty_close": 25529.25
+      },
+      {
+        "cin": 40,
+        "timestamp": "103501",
+        "sum_oiCE": 88454795,
+        "sum_oiPE": 61893975,
+        "sum_CoiCE": 17927455,
+        "sum_CoiPE": 25267450,
+        "total_ce_premium": 1232.25,
+        "total_pe_premium": 826.4,
+        "pcr": 0.6997,
+        "premium_ratio": 1.4893,
+        "nifty_close": 25539.45
+      },
+      {
+        "cin": 41,
+        "timestamp": "103701",
+        "sum_oiCE": 88454795,
+        "sum_oiPE": 61893975,
+        "sum_CoiCE": 17927455,
+        "sum_CoiPE": 25267450,
+        "total_ce_premium": 1233.85,
+        "total_pe_premium": 839.0,
+        "pcr": 0.6997,
+        "premium_ratio": 1.4689,
+        "nifty_close": 25530.75
+      },
+      {
+        "cin": 42,
+        "timestamp": "103901",
+        "sum_oiCE": 89127155,
+        "sum_oiPE": 62503350,
+        "sum_CoiCE": 18599815,
+        "sum_CoiPE": 25876825,
+        "total_ce_premium": 1207.55,
+        "total_pe_premium": 873.65,
+        "pcr": 0.7013,
+        "premium_ratio": 1.3806,
+        "nifty_close": 25526.55
+      },
+      {
+        "cin": 43,
+        "timestamp": "104101",
+        "sum_oiCE": 89744850,
+        "sum_oiPE": 62185955,
+        "sum_CoiCE": 19217510,
+        "sum_CoiPE": 25559430,
+        "total_ce_premium": 1211.05,
+        "total_pe_premium": 878.7,
+        "pcr": 0.6929,
+        "premium_ratio": 1.3767,
+        "nifty_close": 25525.65
+      },
+      {
+        "cin": 44,
+        "timestamp": "104301",
+        "sum_oiCE": 89744850,
+        "sum_oiPE": 62185630,
+        "sum_CoiCE": 19217510,
+        "sum_CoiPE": 25559105,
+        "total_ce_premium": 1209.1,
+        "total_pe_premium": 851.95,
+        "pcr": 0.6929,
+        "premium_ratio": 1.4176,
+        "nifty_close": 25536.95
+      },
+      {
+        "cin": 45,
+        "timestamp": "104501",
+        "sum_oiCE": 90018045,
+        "sum_oiPE": 61560655,
+        "sum_CoiCE": 19490705,
+        "sum_CoiPE": 24934130,
+        "total_ce_premium": 1189.2,
+        "total_pe_premium": 869.55,
+        "pcr": 0.6839,
+        "premium_ratio": 1.366,
+        "nifty_close": 25532.45
+      },
+      {
+        "cin": 46,
+        "timestamp": "104701",
+        "sum_oiCE": 90500475,
+        "sum_oiPE": 62265580,
+        "sum_CoiCE": 19973135,
+        "sum_CoiPE": 25639055,
+        "total_ce_premium": 1209.35,
+        "total_pe_premium": 832.55,
+        "pcr": 0.688,
+        "premium_ratio": 1.4508,
+        "nifty_close": 25532.9
+      },
+      {
+        "cin": 47,
+        "timestamp": "104901",
+        "sum_oiCE": 90500475,
+        "sum_oiPE": 62265710,
+        "sum_CoiCE": 19973135,
+        "sum_CoiPE": 25639185,
+        "total_ce_premium": 1224.3,
+        "total_pe_premium": 827.4,
+        "pcr": 0.688,
+        "premium_ratio": 1.4779,
+        "nifty_close": 25546.45
+      },
+      {
+        "cin": 48,
+        "timestamp": "105101",
+        "sum_oiCE": 90673700,
+        "sum_oiPE": 62469485,
+        "sum_CoiCE": 20146360,
+        "sum_CoiPE": 25842960,
+        "total_ce_premium": 1210.3,
+        "total_pe_premium": 825.35,
+        "pcr": 0.6889,
+        "premium_ratio": 1.4646,
+        "nifty_close": 25544.6
+      },
+      {
+        "cin": 49,
+        "timestamp": "105301",
+        "sum_oiCE": 90607400,
+        "sum_oiPE": 63128845,
+        "sum_CoiCE": 20080060,
+        "sum_CoiPE": 26502320,
+        "total_ce_premium": 1197.45,
+        "total_pe_premium": 834.05,
+        "pcr": 0.6967,
+        "premium_ratio": 1.434,
+        "nifty_close": 25532.15
+      },
+      {
+        "cin": 50,
+        "timestamp": "110301",
+        "sum_oiCE": 93116855,
+        "sum_oiPE": 61457955,
+        "sum_CoiCE": 22589515,
+        "sum_CoiPE": 24831430,
+        "total_ce_premium": 1197.55,
+        "total_pe_premium": 858.55,
+        "pcr": 0.66,
+        "premium_ratio": 1.3932,
+        "nifty_close": 25505.7
+      },
+      {
+        "cin": 51,
+        "timestamp": "110500",
+        "sum_oiCE": 94210155,
+        "sum_oiPE": 60143655,
+        "sum_CoiCE": 23682815,
+        "sum_CoiPE": 23517130,
+        "total_ce_premium": 1159.8,
+        "total_pe_premium": 862.5,
+        "pcr": 0.6384,
+        "premium_ratio": 1.3431,
+        "nifty_close": 25520.75
+      },
+      {
+        "cin": 52,
+        "timestamp": "110702",
+        "sum_oiCE": 94210155,
+        "sum_oiPE": 60143655,
+        "sum_CoiCE": 23682815,
+        "sum_CoiPE": 23517130,
+        "total_ce_premium": 1188.1,
+        "total_pe_premium": 840.35,
+        "pcr": 0.6384,
+        "premium_ratio": 1.4121,
+        "nifty_close": 25513
+      },
+      {
+        "cin": 53,
+        "timestamp": "110900",
+        "sum_oiCE": 94223025,
+        "sum_oiPE": 61574695,
+        "sum_CoiCE": 23695685,
+        "sum_CoiPE": 24948170,
+        "total_ce_premium": 1192.55,
+        "total_pe_premium": 803.4,
+        "pcr": 0.6535,
+        "premium_ratio": 1.4825,
+        "nifty_close": 25516.5
+      },
+      {
+        "cin": 54,
+        "timestamp": "111103",
+        "sum_oiCE": 94316755,
+        "sum_oiPE": 62241790,
+        "sum_CoiCE": 23789415,
+        "sum_CoiPE": 25615265,
+        "total_ce_premium": 1178.25,
+        "total_pe_premium": 800.25,
+        "pcr": 0.6599,
+        "premium_ratio": 1.4705,
+        "nifty_close": 25521.65
+      },
+      {
+        "cin": 55,
+        "timestamp": "111300",
+        "sum_oiCE": 94316105,
+        "sum_oiPE": 62241790,
+        "sum_CoiCE": 23788765,
+        "sum_CoiPE": 25615265,
+        "total_ce_premium": 1191.6,
+        "total_pe_premium": 779.75,
+        "pcr": 0.6599,
+        "premium_ratio": 1.5262,
+        "nifty_close": 25517.25
+      },
+      {
+        "cin": 56,
+        "timestamp": "111500",
+        "sum_oiCE": 94478605,
+        "sum_oiPE": 62438220,
+        "sum_CoiCE": 23951265,
+        "sum_CoiPE": 25811695,
+        "total_ce_premium": 1164.1,
+        "total_pe_premium": 805.3,
+        "pcr": 0.6609,
+        "premium_ratio": 1.4438,
+        "nifty_close": 25523.5
+      },
+      {
+        "cin": 57,
+        "timestamp": "111701",
+        "sum_oiCE": 94699345,
+        "sum_oiPE": 62487880,
+        "sum_CoiCE": 24172005,
+        "sum_CoiPE": 25861355,
+        "total_ce_premium": 1179.95,
+        "total_pe_premium": 769.85,
+        "pcr": 0.6599,
+        "premium_ratio": 1.5307,
+        "nifty_close": 25519.45
+      },
+      {
+        "cin": 58,
+        "timestamp": "111901",
+        "sum_oiCE": 94699345,
+        "sum_oiPE": 62487685,
+        "sum_CoiCE": 24172005,
+        "sum_CoiPE": 25861160,
+        "total_ce_premium": 1155.2,
+        "total_pe_premium": 785.3,
+        "pcr": 0.6599,
+        "premium_ratio": 1.4692,
+        "nifty_close": 25537.6
+      },
+      {
+        "cin": 59,
+        "timestamp": "112100",
+        "sum_oiCE": 93761915,
+        "sum_oiPE": 62975185,
+        "sum_CoiCE": 23234575,
+        "sum_CoiPE": 26348660,
+        "total_ce_premium": 1166.85,
+        "total_pe_premium": 782.7,
+        "pcr": 0.6716,
+        "premium_ratio": 1.4889,
+        "nifty_close": 25532.05
+      },
+      {
+        "cin": 60,
+        "timestamp": "112300",
+        "sum_oiCE": 93550275,
+        "sum_oiPE": 63812970,
+        "sum_CoiCE": 23022935,
+        "sum_CoiPE": 27186445,
+        "total_ce_premium": 1186.2,
+        "total_pe_premium": 770.9,
+        "pcr": 0.6821,
+        "premium_ratio": 1.5367,
+        "nifty_close": 25536.6
+      },
+      {
+        "cin": 61,
+        "timestamp": "112500",
+        "sum_oiCE": 93550275,
+        "sum_oiPE": 63812970,
+        "sum_CoiCE": 23022935,
+        "sum_CoiPE": 27186445,
+        "total_ce_premium": 1178.45,
+        "total_pe_premium": 777.6,
+        "pcr": 0.6821,
+        "premium_ratio": 1.5135,
+        "nifty_close": 25542
+      },
+      {
+        "cin": 62,
+        "timestamp": "112700",
+        "sum_oiCE": 92059630,
+        "sum_oiPE": 64495340,
+        "sum_CoiCE": 21532290,
+        "sum_CoiPE": 27868815,
+        "total_ce_premium": 1243.55,
+        "total_pe_premium": 770.9,
+        "pcr": 0.7006,
+        "premium_ratio": 1.611,
+        "nifty_close": 25567.55
+      },
+      {
+        "cin": 63,
+        "timestamp": "112900",
+        "sum_oiCE": 87900215,
+        "sum_oiPE": 65525785,
+        "sum_CoiCE": 17372875,
+        "sum_CoiPE": 28899260,
+        "total_ce_premium": 1270.1,
+        "total_pe_premium": 726.6,
+        "pcr": 0.7455,
+        "premium_ratio": 1.7456,
+        "nifty_close": 25539.8
+      },
+      {
+        "cin": 64,
+        "timestamp": "113100",
+        "sum_oiCE": 87900215,
+        "sum_oiPE": 65525785,
+        "sum_CoiCE": 17372875,
+        "sum_CoiPE": 28899260,
+        "total_ce_premium": 1291.2,
+        "total_pe_premium": 709.4,
+        "pcr": 0.7455,
+        "premium_ratio": 1.8176,
+        "nifty_close": 25525.3
+      },
+      {
+        "cin": 65,
+        "timestamp": "113300",
+        "sum_oiCE": 87032075,
+        "sum_oiPE": 66540565,
+        "sum_CoiCE": 16504735,
+        "sum_CoiPE": 29914040,
+        "total_ce_premium": 1258.85,
+        "total_pe_premium": 714.2,
+        "pcr": 0.7646,
+        "premium_ratio": 1.7601,
+        "nifty_close": 25519
+      },
+      {
+        "cin": 66,
+        "timestamp": "113501",
+        "sum_oiCE": 87747010,
+        "sum_oiPE": 66260805,
+        "sum_CoiCE": 17219670,
+        "sum_CoiPE": 29634280,
+        "total_ce_premium": 1178.85,
+        "total_pe_premium": 759.95,
+        "pcr": 0.7551,
+        "premium_ratio": 1.5492,
+        "nifty_close": 25522.1
+      },
+      {
+        "cin": 67,
+        "timestamp": "113700",
+        "sum_oiCE": 87747010,
+        "sum_oiPE": 66258725,
+        "sum_CoiCE": 17219670,
+        "sum_CoiPE": 29632200,
+        "total_ce_premium": 1235.65,
+        "total_pe_premium": 721.65,
+        "pcr": 0.7551,
+        "premium_ratio": 1.7099,
+        "nifty_close": 25513.75
+      },
+      {
+        "cin": 68,
+        "timestamp": "113900",
+        "sum_oiCE": 88609235,
+        "sum_oiPE": 65554385,
+        "sum_CoiCE": 18081895,
+        "sum_CoiPE": 28927860,
+        "total_ce_premium": 1204.2,
+        "total_pe_premium": 763.3,
+        "pcr": 0.7398,
+        "premium_ratio": 1.5756,
+        "nifty_close": 25506.6
+      },
+      {
+        "cin": 69,
+        "timestamp": "114100",
+        "sum_oiCE": 90928305,
+        "sum_oiPE": 63201775,
+        "sum_CoiCE": 20400965,
+        "sum_CoiPE": 26575250,
+        "total_ce_premium": 1261.4,
+        "total_pe_premium": 774.2,
+        "pcr": 0.6951,
+        "premium_ratio": 1.6272,
+        "nifty_close": 25479.25
+      },
+      {
+        "cin": 70,
+        "timestamp": "114300",
+        "sum_oiCE": 90928305,
+        "sum_oiPE": 63201775,
+        "sum_CoiCE": 20400965,
+        "sum_CoiPE": 26575250,
+        "total_ce_premium": 1298.4,
+        "total_pe_premium": 741.7,
+        "pcr": 0.6951,
+        "premium_ratio": 1.7482,
+        "nifty_close": 25465.35
+      },
+      {
+        "cin": 71,
+        "timestamp": "114500",
+        "sum_oiCE": 94347305,
+        "sum_oiPE": 59430280,
+        "sum_CoiCE": 23819965,
+        "sum_CoiPE": 22803755,
+        "total_ce_premium": 1253.3,
+        "total_pe_premium": 826.65,
+        "pcr": 0.6299,
+        "premium_ratio": 1.5143,
+        "nifty_close": 25462.3
+      },
+      {
+        "cin": 72,
+        "timestamp": "114700",
+        "sum_oiCE": 97580860,
+        "sum_oiPE": 54366325,
+        "sum_CoiCE": 27053520,
+        "sum_CoiPE": 17739800,
+        "total_ce_premium": 1207.1,
+        "total_pe_premium": 843.15,
+        "pcr": 0.5571,
+        "premium_ratio": 1.43,
+        "nifty_close": 25471.6
+      },
+      {
+        "cin": 73,
+        "timestamp": "114901",
+        "sum_oiCE": 97580860,
+        "sum_oiPE": 54366325,
+        "sum_CoiCE": 27053520,
+        "sum_CoiPE": 17739800,
+        "total_ce_premium": 1123.75,
+        "total_pe_premium": 879.95,
+        "pcr": 0.5571,
+        "premium_ratio": 1.2756,
+        "nifty_close": 25487.45
+      },
+      {
+        "cin": 74,
+        "timestamp": "115100",
+        "sum_oiCE": 99261175,
+        "sum_oiPE": 54337595,
+        "sum_CoiCE": 28733835,
+        "sum_CoiPE": 17711070,
+        "total_ce_premium": 1123.5,
+        "total_pe_premium": 921.95,
+        "pcr": 0.5474,
+        "premium_ratio": 1.2173,
+        "nifty_close": 25487.25
+      },
+      {
+        "cin": 75,
+        "timestamp": "115300",
+        "sum_oiCE": 99530990,
+        "sum_oiPE": 54965365,
+        "sum_CoiCE": 29003650,
+        "sum_CoiPE": 18338840,
+        "total_ce_premium": 1140.85,
+        "total_pe_premium": 891.15,
+        "pcr": 0.5522,
+        "premium_ratio": 1.2788,
+        "nifty_close": 25486.75
+      },
+      {
+        "cin": 76,
+        "timestamp": "115500",
+        "sum_oiCE": 99530990,
+        "sum_oiPE": 54965365,
+        "sum_CoiCE": 29003650,
+        "sum_CoiPE": 18338840,
+        "total_ce_premium": 1208.9,
+        "total_pe_premium": 841.0,
+        "pcr": 0.5522,
+        "premium_ratio": 1.4357,
+        "nifty_close": 25468.9
+      },
+      {
+        "cin": 77,
+        "timestamp": "115701",
+        "sum_oiCE": 99210410,
+        "sum_oiPE": 55429075,
+        "sum_CoiCE": 28683070,
+        "sum_CoiPE": 18802550,
+        "total_ce_premium": 1213.85,
+        "total_pe_premium": 855.35,
+        "pcr": 0.5587,
+        "premium_ratio": 1.4175,
+        "nifty_close": 25454.65
+      },
+      {
+        "cin": 78,
+        "timestamp": "115900",
+        "sum_oiCE": 99430825,
+        "sum_oiPE": 54666560,
+        "sum_CoiCE": 28903485,
+        "sum_CoiPE": 18040035,
+        "total_ce_premium": 1236.8,
+        "total_pe_premium": 816.0,
+        "pcr": 0.5498,
+        "premium_ratio": 1.5138,
+        "nifty_close": 25457.65
+      },
+      {
+        "cin": 79,
+        "timestamp": "120100",
+        "sum_oiCE": 99430825,
+        "sum_oiPE": 54666625,
+        "sum_CoiCE": 28903485,
+        "sum_CoiPE": 18040100,
+        "total_ce_premium": 1209.2,
+        "total_pe_premium": 835.15,
+        "pcr": 0.5498,
+        "premium_ratio": 1.4462,
+        "nifty_close": 25457.6
+      },
+      {
+        "cin": 80,
+        "timestamp": "120300",
+        "sum_oiCE": 100882925,
+        "sum_oiPE": 54470325,
+        "sum_CoiCE": 30355585,
+        "sum_CoiPE": 17843800,
+        "total_ce_premium": 1141.6,
+        "total_pe_premium": 902.4,
+        "pcr": 0.5399,
+        "premium_ratio": 1.2637,
+        "nifty_close": 25469.95
+      },
+      {
+        "cin": 81,
+        "timestamp": "120501",
+        "sum_oiCE": 101422360,
+        "sum_oiPE": 54047175,
+        "sum_CoiCE": 30895020,
+        "sum_CoiPE": 17420650,
+        "total_ce_premium": 1135.15,
+        "total_pe_premium": 864.9,
+        "pcr": 0.5329,
+        "premium_ratio": 1.3109,
+        "nifty_close": 25470.4
+      },
+      {
+        "cin": 82,
+        "timestamp": "120700",
+        "sum_oiCE": 101417485,
+        "sum_oiPE": 54047435,
+        "sum_CoiCE": 30890145,
+        "sum_CoiPE": 17420910,
+        "total_ce_premium": 1105.75,
+        "total_pe_premium": 889.05,
+        "pcr": 0.5329,
+        "premium_ratio": 1.2423,
+        "nifty_close": 25476.3
+      },
+      {
+        "cin": 83,
+        "timestamp": "120900",
+        "sum_oiCE": 102058060,
+        "sum_oiPE": 54280265,
+        "sum_CoiCE": 31530720,
+        "sum_CoiPE": 17653740,
+        "total_ce_premium": 1125.7,
+        "total_pe_premium": 887.75,
+        "pcr": 0.5319,
+        "premium_ratio": 1.2666,
+        "nifty_close": 25476.1
+      },
+      {
+        "cin": 84,
+        "timestamp": "121100",
+        "sum_oiCE": 102039275,
+        "sum_oiPE": 55033615,
+        "sum_CoiCE": 31511935,
+        "sum_CoiPE": 18407090,
+        "total_ce_premium": 1137.5,
+        "total_pe_premium": 902.6,
+        "pcr": 0.5393,
+        "premium_ratio": 1.2589,
+        "nifty_close": 25469.2
+      },
+      {
+        "cin": 85,
+        "timestamp": "121300",
+        "sum_oiCE": 102039925,
+        "sum_oiPE": 55033485,
+        "sum_CoiCE": 31512585,
+        "sum_CoiPE": 18406960,
+        "total_ce_premium": 1141.2,
+        "total_pe_premium": 876.2,
+        "pcr": 0.5393,
+        "premium_ratio": 1.301,
+        "nifty_close": 25469.15
+      },
+      {
+        "cin": 86,
+        "timestamp": "121500",
+        "sum_oiCE": 102255140,
+        "sum_oiPE": 55207880,
+        "sum_CoiCE": 31727800,
+        "sum_CoiPE": 18581355,
+        "total_ce_premium": 1171.1,
+        "total_pe_premium": 872.8,
+        "pcr": 0.5399,
+        "premium_ratio": 1.3402,
+        "nifty_close": 25458.05
+      },
+      {
+        "cin": 87,
+        "timestamp": "121700",
+        "sum_oiCE": 102216075,
+        "sum_oiPE": 55212170,
+        "sum_CoiCE": 31688735,
+        "sum_CoiPE": 18585645,
+        "total_ce_premium": 1163.7,
+        "total_pe_premium": 874.8,
+        "pcr": 0.5402,
+        "premium_ratio": 1.3287,
+        "nifty_close": 25462.75
+      },
+      {
+        "cin": 88,
+        "timestamp": "121900",
+        "sum_oiCE": 102215880,
+        "sum_oiPE": 55212560,
+        "sum_CoiCE": 31688540,
+        "sum_CoiPE": 18586035,
+        "total_ce_premium": 1212.55,
+        "total_pe_premium": 818.9,
+        "pcr": 0.5402,
+        "premium_ratio": 1.4789,
+        "nifty_close": 25455.95
+      },
+      {
+        "cin": 89,
+        "timestamp": "122100",
+        "sum_oiCE": 102272105,
+        "sum_oiPE": 55169530,
+        "sum_CoiCE": 31744765,
+        "sum_CoiPE": 18543005,
+        "total_ce_premium": 1221.05,
+        "total_pe_premium": 848.25,
+        "pcr": 0.5394,
+        "premium_ratio": 1.4378,
+        "nifty_close": 25436.3
+      },
+      {
+        "cin": 90,
+        "timestamp": "122300",
+        "sum_oiCE": 103046905,
+        "sum_oiPE": 52232635,
+        "sum_CoiCE": 32519565,
+        "sum_CoiPE": 15606110,
+        "total_ce_premium": 1226.55,
+        "total_pe_premium": 902.3,
+        "pcr": 0.5069,
+        "premium_ratio": 1.3579,
+        "nifty_close": 25410.7
+      },
+      {
+        "cin": 91,
+        "timestamp": "122500",
+        "sum_oiCE": 103046905,
+        "sum_oiPE": 52232635,
+        "sum_CoiCE": 32519565,
+        "sum_CoiPE": 15606110,
+        "total_ce_premium": 1157.0,
+        "total_pe_premium": 906.9,
+        "pcr": 0.5069,
+        "premium_ratio": 1.2744,
+        "nifty_close": 25432.85
+      },
+      {
+        "cin": 92,
+        "timestamp": "122701",
+        "sum_oiCE": 104616850,
+        "sum_oiPE": 47895185,
+        "sum_CoiCE": 34089510,
+        "sum_CoiPE": 11268660,
+        "total_ce_premium": 1147.85,
+        "total_pe_premium": 926.85,
+        "pcr": 0.4578,
+        "premium_ratio": 1.2371,
+        "nifty_close": 25435.35
+      },
+      {
+        "cin": 93,
+        "timestamp": "122901",
+        "sum_oiCE": 105858155,
+        "sum_oiPE": 48506055,
+        "sum_CoiCE": 35330815,
+        "sum_CoiPE": 11879530,
+        "total_ce_premium": 1130.85,
+        "total_pe_premium": 949.25,
+        "pcr": 0.4582,
+        "premium_ratio": 1.1901,
+        "nifty_close": 25432.55
+      },
+      {
+        "cin": 94,
+        "timestamp": "123100",
+        "sum_oiCE": 105858155,
+        "sum_oiPE": 48504755,
+        "sum_CoiCE": 35330815,
+        "sum_CoiPE": 11878230,
+        "total_ce_premium": 1124.8,
+        "total_pe_premium": 937.95,
+        "pcr": 0.4582,
+        "premium_ratio": 1.1979,
+        "nifty_close": 25439.55
+      },
+      {
+        "cin": 95,
+        "timestamp": "123300",
+        "sum_oiCE": 106500290,
+        "sum_oiPE": 49377640,
+        "sum_CoiCE": 35972950,
+        "sum_CoiPE": 12751115,
+        "total_ce_premium": 1105.95,
+        "total_pe_premium": 948.55,
+        "pcr": 0.4636,
+        "premium_ratio": 1.1647,
+        "nifty_close": 25433.3
+      },
+      {
+        "cin": 96,
+        "timestamp": "123501",
+        "sum_oiCE": 107103490,
+        "sum_oiPE": 49711675,
+        "sum_CoiCE": 36576150,
+        "sum_CoiPE": 13085150,
+        "total_ce_premium": 1084.4,
+        "total_pe_premium": 974.95,
+        "pcr": 0.4641,
+        "premium_ratio": 1.1111,
+        "nifty_close": 25437.7
+      },
+      {
+        "cin": 97,
+        "timestamp": "123700",
+        "sum_oiCE": 107103490,
+        "sum_oiPE": 49711870,
+        "sum_CoiCE": 36576150,
+        "sum_CoiPE": 13085345,
+        "total_ce_premium": 1100.8,
+        "total_pe_premium": 957.95,
+        "pcr": 0.4641,
+        "premium_ratio": 1.1479,
+        "nifty_close": 25442.5
+      },
+      {
+        "cin": 98,
+        "timestamp": "123900",
+        "sum_oiCE": 107482830,
+        "sum_oiPE": 49853245,
+        "sum_CoiCE": 36955490,
+        "sum_CoiPE": 13226720,
+        "total_ce_premium": 1095.95,
+        "total_pe_premium": 937.5,
+        "pcr": 0.4638,
+        "premium_ratio": 1.1678,
+        "nifty_close": 25446.25
+      },
+      {
+        "cin": 99,
+        "timestamp": "124100",
+        "sum_oiCE": 107685500,
+        "sum_oiPE": 50106940,
+        "sum_CoiCE": 37158160,
+        "sum_CoiPE": 13480415,
+        "total_ce_premium": 1083.9,
+        "total_pe_premium": 945.25,
+        "pcr": 0.4653,
+        "premium_ratio": 1.1455,
+        "nifty_close": 25445.1
+      },
+      {
+        "cin": 100,
+        "timestamp": "124300",
+        "sum_oiCE": 107677180,
+        "sum_oiPE": 50106030,
+        "sum_CoiCE": 37149840,
+        "sum_CoiPE": 13479505,
+        "total_ce_premium": 1070.5,
+        "total_pe_premium": 944.05,
+        "pcr": 0.4653,
+        "premium_ratio": 1.1327,
+        "nifty_close": 25456.9
+      },
+      {
+        "cin": 101,
+        "timestamp": "124500",
+        "sum_oiCE": 107540485,
+        "sum_oiPE": 50114610,
+        "sum_CoiCE": 37013145,
+        "sum_CoiPE": 13488085,
+        "total_ce_premium": 1072.9,
+        "total_pe_premium": 943.2,
+        "pcr": 0.466,
+        "premium_ratio": 1.1363,
+        "nifty_close": 25460.7
+      },
+      {
+        "cin": 102,
+        "timestamp": "124700",
+        "sum_oiCE": 107122990,
+        "sum_oiPE": 51036050,
+        "sum_CoiCE": 36595650,
+        "sum_CoiPE": 14409525,
+        "total_ce_premium": 1115.05,
+        "total_pe_premium": 916.3,
+        "pcr": 0.4764,
+        "premium_ratio": 1.2156,
+        "nifty_close": 25449.25
+      },
+      {
+        "cin": 103,
+        "timestamp": "124900",
+        "sum_oiCE": 107121820,
+        "sum_oiPE": 51037350,
+        "sum_CoiCE": 36594480,
+        "sum_CoiPE": 14410825,
+        "total_ce_premium": 1107.15,
+        "total_pe_premium": 920.8,
+        "pcr": 0.4764,
+        "premium_ratio": 1.2011,
+        "nifty_close": 25450.25
+      },
+      {
+        "cin": 104,
+        "timestamp": "125100",
+        "sum_oiCE": 107207230,
+        "sum_oiPE": 51593685,
+        "sum_CoiCE": 36679890,
+        "sum_CoiPE": 14967160,
+        "total_ce_premium": 1162.25,
+        "total_pe_premium": 860.3,
+        "pcr": 0.4813,
+        "premium_ratio": 1.3494,
+        "nifty_close": 25444.4
+      },
+      {
+        "cin": 105,
+        "timestamp": "125300",
+        "sum_oiCE": 107310905,
+        "sum_oiPE": 52191815,
+        "sum_CoiCE": 36783565,
+        "sum_CoiPE": 15565290,
+        "total_ce_premium": 1165.8,
+        "total_pe_premium": 851.4,
+        "pcr": 0.4864,
+        "premium_ratio": 1.3677,
+        "nifty_close": 25441.25
+      },
+      {
+        "cin": 106,
+        "timestamp": "125500",
+        "sum_oiCE": 107208595,
+        "sum_oiPE": 52227240,
+        "sum_CoiCE": 36681255,
+        "sum_CoiPE": 15600715,
+        "total_ce_premium": 1196.4,
+        "total_pe_premium": 816.6,
+        "pcr": 0.4872,
+        "premium_ratio": 1.4633,
+        "nifty_close": 25432.25
+      },
+      {
+        "cin": 107,
+        "timestamp": "125700",
+        "sum_oiCE": 107233295,
+        "sum_oiPE": 51695605,
+        "sum_CoiCE": 36705955,
+        "sum_CoiPE": 15069080,
+        "total_ce_premium": 1213.6,
+        "total_pe_premium": 813.65,
+        "pcr": 0.4821,
+        "premium_ratio": 1.4897,
+        "nifty_close": 25416.65
+      },
+      {
+        "cin": 108,
+        "timestamp": "125900",
+        "sum_oiCE": 107577860,
+        "sum_oiPE": 50975925,
+        "sum_CoiCE": 37050520,
+        "sum_CoiPE": 14349400,
+        "total_ce_premium": 1192.65,
+        "total_pe_premium": 827.15,
+        "pcr": 0.4739,
+        "premium_ratio": 1.4401,
+        "nifty_close": 25420.8
+      },
+      {
+        "cin": 109,
+        "timestamp": "130100",
+        "sum_oiCE": 107946020,
+        "sum_oiPE": 50853205,
+        "sum_CoiCE": 37418680,
+        "sum_CoiPE": 14226680,
+        "total_ce_premium": 1205.05,
+        "total_pe_premium": 796.85,
+        "pcr": 0.4711,
+        "premium_ratio": 1.5104,
+        "nifty_close": 25427.1
+      },
+      {
+        "cin": 110,
+        "timestamp": "130300",
+        "sum_oiCE": 108607135,
+        "sum_oiPE": 49597990,
+        "sum_CoiCE": 38079795,
+        "sum_CoiPE": 12971465,
+        "total_ce_premium": 1112.05,
+        "total_pe_premium": 875.95,
+        "pcr": 0.4567,
+        "premium_ratio": 1.2681,
+        "nifty_close": 25436.05
+      },
+      {
+        "cin": 111,
+        "timestamp": "130500",
+        "sum_oiCE": 108905225,
+        "sum_oiPE": 49600915,
+        "sum_CoiCE": 38377885,
+        "sum_CoiPE": 12974390,
+        "total_ce_premium": 1097.8,
+        "total_pe_premium": 889.05,
+        "pcr": 0.4555,
+        "premium_ratio": 1.2334,
+        "nifty_close": 25452.25
+      },
+      {
+        "cin": 112,
+        "timestamp": "130700",
+        "sum_oiCE": 108861285,
+        "sum_oiPE": 49410010,
+        "sum_CoiCE": 38333945,
+        "sum_CoiPE": 12783485,
+        "total_ce_premium": 1113.9,
+        "total_pe_premium": 886.4,
+        "pcr": 0.4539,
+        "premium_ratio": 1.2552,
+        "nifty_close": 25446.5
+      },
+      {
+        "cin": 113,
+        "timestamp": "130900",
+        "sum_oiCE": 109180500,
+        "sum_oiPE": 50175385,
+        "sum_CoiCE": 38653160,
+        "sum_CoiPE": 13548860,
+        "total_ce_premium": 1130.75,
+        "total_pe_premium": 870.4,
+        "pcr": 0.4596,
+        "premium_ratio": 1.2976,
+        "nifty_close": 25436.5
+      },
+      {
+        "cin": 114,
+        "timestamp": "131100",
+        "sum_oiCE": 109180500,
+        "sum_oiPE": 50175970,
+        "sum_CoiCE": 38653160,
+        "sum_CoiPE": 13549445,
+        "total_ce_premium": 1131.6,
+        "total_pe_premium": 864.95,
+        "pcr": 0.4596,
+        "premium_ratio": 1.3068,
+        "nifty_close": 25435.3
+      },
+      {
+        "cin": 115,
+        "timestamp": "131300",
+        "sum_oiCE": 109408715,
+        "sum_oiPE": 50586250,
+        "sum_CoiCE": 38881375,
+        "sum_CoiPE": 13959725,
+        "total_ce_premium": 1134.4,
+        "total_pe_premium": 864.0,
+        "pcr": 0.4624,
+        "premium_ratio": 1.3114,
+        "nifty_close": 25435.85
+      },
+      {
+        "cin": 116,
+        "timestamp": "131500",
+        "sum_oiCE": 109849805,
+        "sum_oiPE": 50709750,
+        "sum_CoiCE": 39322465,
+        "sum_CoiPE": 14083225,
+        "total_ce_premium": 1107.15,
+        "total_pe_premium": 894.65,
+        "pcr": 0.4616,
+        "premium_ratio": 1.2361,
+        "nifty_close": 25429.65
+      },
+      {
+        "cin": 117,
+        "timestamp": "131701",
+        "sum_oiCE": 109849805,
+        "sum_oiPE": 50710010,
+        "sum_CoiCE": 39322465,
+        "sum_CoiPE": 14083485,
+        "total_ce_premium": 1099.8,
+        "total_pe_premium": 924.3,
+        "pcr": 0.4616,
+        "premium_ratio": 1.1886,
+        "nifty_close": 25421.75
+      },
+      {
+        "cin": 118,
+        "timestamp": "131900",
+        "sum_oiCE": 110171945,
+        "sum_oiPE": 49985585,
+        "sum_CoiCE": 39644605,
+        "sum_CoiPE": 13359060,
+        "total_ce_premium": 1115.75,
+        "total_pe_premium": 890.45,
+        "pcr": 0.4537,
+        "premium_ratio": 1.2516,
+        "nifty_close": 25419.65
+      },
+      {
+        "cin": 119,
+        "timestamp": "132100",
+        "sum_oiCE": 110801600,
+        "sum_oiPE": 48338095,
+        "sum_CoiCE": 40274260,
+        "sum_CoiPE": 11711570,
+        "total_ce_premium": 1105.35,
+        "total_pe_premium": 918.8,
+        "pcr": 0.4363,
+        "premium_ratio": 1.2017,
+        "nifty_close": 25420.05
+      },
+      {
+        "cin": 120,
+        "timestamp": "132301",
+        "sum_oiCE": 110801600,
+        "sum_oiPE": 48338030,
+        "sum_CoiCE": 40274260,
+        "sum_CoiPE": 11711505,
+        "total_ce_premium": 1132.4,
+        "total_pe_premium": 875.3,
+        "pcr": 0.4363,
+        "premium_ratio": 1.2923,
+        "nifty_close": 25428.3
+      },
+      {
+        "cin": 121,
+        "timestamp": "132500",
+        "sum_oiCE": 110989060,
+        "sum_oiPE": 48503195,
+        "sum_CoiCE": 40461720,
+        "sum_CoiPE": 11876670,
+        "total_ce_premium": 1075.15,
+        "total_pe_premium": 972.65,
+        "pcr": 0.437,
+        "premium_ratio": 1.1042,
+        "nifty_close": 25438.9
+      },
+      {
+        "cin": 122,
+        "timestamp": "132700",
+        "sum_oiCE": 111309575,
+        "sum_oiPE": 49246730,
+        "sum_CoiCE": 40782235,
+        "sum_CoiPE": 12620205,
+        "total_ce_premium": 1071.65,
+        "total_pe_premium": 1000.7,
+        "pcr": 0.4424,
+        "premium_ratio": 1.0698,
+        "nifty_close": 25448.25
+      },
+      {
+        "cin": 123,
+        "timestamp": "132900",
+        "sum_oiCE": 111309575,
+        "sum_oiPE": 49246860,
+        "sum_CoiCE": 40782235,
+        "sum_CoiPE": 12620335,
+        "total_ce_premium": 1074.65,
+        "total_pe_premium": 1012.5,
+        "pcr": 0.4424,
+        "premium_ratio": 1.0603,
+        "nifty_close": 25438.95
+      },
+      {
+        "cin": 124,
+        "timestamp": "133101",
+        "sum_oiCE": 111070765,
+        "sum_oiPE": 50503180,
+        "sum_CoiCE": 40543425,
+        "sum_CoiPE": 13876655,
+        "total_ce_premium": 1098.1,
+        "total_pe_premium": 1025.6,
+        "pcr": 0.4547,
+        "premium_ratio": 1.0696,
+        "nifty_close": 25441.1
+      },
+      {
+        "cin": 125,
+        "timestamp": "133300",
+        "sum_oiCE": 110960135,
+        "sum_oiPE": 50836695,
+        "sum_CoiCE": 40432795,
+        "sum_CoiPE": 14210170,
+        "total_ce_premium": 1090.15,
+        "total_pe_premium": 994.85,
+        "pcr": 0.4582,
+        "premium_ratio": 1.0947,
+        "nifty_close": 25443.45
+      },
+      {
+        "cin": 126,
+        "timestamp": "133500",
+        "sum_oiCE": 110960135,
+        "sum_oiPE": 50834485,
+        "sum_CoiCE": 40432795,
+        "sum_CoiPE": 14207960,
+        "total_ce_premium": 1110.85,
+        "total_pe_premium": 970.0,
+        "pcr": 0.4581,
+        "premium_ratio": 1.144,
+        "nifty_close": 25433.95
+      },
+      {
+        "cin": 127,
+        "timestamp": "133700",
+        "sum_oiCE": 110746350,
+        "sum_oiPE": 51344020,
+        "sum_CoiCE": 40219010,
+        "sum_CoiPE": 14717495,
+        "total_ce_premium": 1108.1,
+        "total_pe_premium": 971.7,
+        "pcr": 0.4636,
+        "premium_ratio": 1.1392,
+        "nifty_close": 25443.3
+      },
+      {
+        "cin": 128,
+        "timestamp": "133900",
+        "sum_oiCE": 110705140,
+        "sum_oiPE": 51490205,
+        "sum_CoiCE": 40177800,
+        "sum_CoiPE": 14863680,
+        "total_ce_premium": 1111.75,
+        "total_pe_premium": 961.7,
+        "pcr": 0.4651,
+        "premium_ratio": 1.1548,
+        "nifty_close": 25436.9
+      },
+      {
+        "cin": 129,
+        "timestamp": "134100",
+        "sum_oiCE": 110705140,
+        "sum_oiPE": 51490725,
+        "sum_CoiCE": 40177800,
+        "sum_CoiPE": 14864200,
+        "total_ce_premium": 1124.45,
+        "total_pe_premium": 931.65,
+        "pcr": 0.4651,
+        "premium_ratio": 1.2057,
+        "nifty_close": 25440.55
+      },
+      {
+        "cin": 130,
+        "timestamp": "134300",
+        "sum_oiCE": 110819930,
+        "sum_oiPE": 52221910,
+        "sum_CoiCE": 40292590,
+        "sum_CoiPE": 15595385,
+        "total_ce_premium": 1138.1,
+        "total_pe_premium": 904.6,
+        "pcr": 0.4712,
+        "premium_ratio": 1.2567,
+        "nifty_close": 25441.95
+      },
+      {
+        "cin": 131,
+        "timestamp": "134500",
+        "sum_oiCE": 110637930,
+        "sum_oiPE": 52793325,
+        "sum_CoiCE": 40110590,
+        "sum_CoiPE": 16166800,
+        "total_ce_premium": 1150.7,
+        "total_pe_premium": 881.05,
+        "pcr": 0.4772,
+        "premium_ratio": 1.3046,
+        "nifty_close": 25439.2
+      },
+      {
+        "cin": 132,
+        "timestamp": "134700",
+        "sum_oiCE": 110637930,
+        "sum_oiPE": 52793130,
+        "sum_CoiCE": 40110590,
+        "sum_CoiPE": 16166605,
+        "total_ce_premium": 1171.2,
+        "total_pe_premium": 870.4,
+        "pcr": 0.4772,
+        "premium_ratio": 1.344,
+        "nifty_close": 25426.95
+      },
+      {
+        "cin": 133,
+        "timestamp": "134900",
+        "sum_oiCE": 111010315,
+        "sum_oiPE": 52826150,
+        "sum_CoiCE": 40482975,
+        "sum_CoiPE": 16199625,
+        "total_ce_premium": 1189.55,
+        "total_pe_premium": 859.85,
+        "pcr": 0.4759,
+        "premium_ratio": 1.3818,
+        "nifty_close": 25425.5
+      },
+      {
+        "cin": 134,
+        "timestamp": "135100",
+        "sum_oiCE": 111221240,
+        "sum_oiPE": 51826190,
+        "sum_CoiCE": 40693900,
+        "sum_CoiPE": 15199665,
+        "total_ce_premium": 1204.85,
+        "total_pe_premium": 827.3,
+        "pcr": 0.466,
+        "premium_ratio": 1.4546,
+        "nifty_close": 25417.4
+      },
+      {
+        "cin": 135,
+        "timestamp": "135300",
+        "sum_oiCE": 111221240,
+        "sum_oiPE": 51826190,
+        "sum_CoiCE": 40693900,
+        "sum_CoiPE": 15199665,
+        "total_ce_premium": 1108.5,
+        "total_pe_premium": 870.0,
+        "pcr": 0.466,
+        "premium_ratio": 1.2727,
+        "nifty_close": 25437.7
+      },
+      {
+        "cin": 136,
+        "timestamp": "135500",
+        "sum_oiCE": 111357675,
+        "sum_oiPE": 51039040,
+        "sum_CoiCE": 40830335,
+        "sum_CoiPE": 14412515,
+        "total_ce_premium": 1063.75,
+        "total_pe_premium": 891.1,
+        "pcr": 0.4583,
+        "premium_ratio": 1.1924,
+        "nifty_close": 25443.2
+      },
+      {
+        "cin": 137,
+        "timestamp": "135700",
+        "sum_oiCE": 112096205,
+        "sum_oiPE": 51418835,
+        "sum_CoiCE": 41568865,
+        "sum_CoiPE": 14792310,
+        "total_ce_premium": 1042.45,
+        "total_pe_premium": 946.65,
+        "pcr": 0.4587,
+        "premium_ratio": 1.1,
+        "nifty_close": 25447.3
+      },
+      {
+        "cin": 138,
+        "timestamp": "135900",
+        "sum_oiCE": 112096205,
+        "sum_oiPE": 51419095,
+        "sum_CoiCE": 41568865,
+        "sum_CoiPE": 14792570,
+        "total_ce_premium": 1043.5,
+        "total_pe_premium": 928.45,
+        "pcr": 0.4587,
+        "premium_ratio": 1.1227,
+        "nifty_close": 25437.05
+      },
+      {
+        "cin": 139,
+        "timestamp": "140100",
+        "sum_oiCE": 112371740,
+        "sum_oiPE": 51416170,
+        "sum_CoiCE": 41844400,
+        "sum_CoiPE": 14789645,
+        "total_ce_premium": 1043.85,
+        "total_pe_premium": 955.0,
+        "pcr": 0.4576,
+        "premium_ratio": 1.0919,
+        "nifty_close": 25442.7
+      },
+      {
+        "cin": 140,
+        "timestamp": "140300",
+        "sum_oiCE": 112709870,
+        "sum_oiPE": 51579515,
+        "sum_CoiCE": 42182530,
+        "sum_CoiPE": 14952990,
+        "total_ce_premium": 1030.65,
+        "total_pe_premium": 979.0,
+        "pcr": 0.4576,
+        "premium_ratio": 1.0517,
+        "nifty_close": 25438.25
+      },
+      {
+        "cin": 141,
+        "timestamp": "140500",
+        "sum_oiCE": 112709870,
+        "sum_oiPE": 51578475,
+        "sum_CoiCE": 42182530,
+        "sum_CoiPE": 14951950,
+        "total_ce_premium": 1081.45,
+        "total_pe_premium": 913.1,
+        "pcr": 0.4576,
+        "premium_ratio": 1.1831,
+        "nifty_close": 25425.3
+      },
+      {
+        "cin": 142,
+        "timestamp": "140700",
+        "sum_oiCE": 112916960,
+        "sum_oiPE": 50748685,
+        "sum_CoiCE": 42389620,
+        "sum_CoiPE": 14122160,
+        "total_ce_premium": 1079.2,
+        "total_pe_premium": 945.8,
+        "pcr": 0.4494,
+        "premium_ratio": 1.1398,
+        "nifty_close": 25413.9
+      },
+      {
+        "cin": 143,
+        "timestamp": "140900",
+        "sum_oiCE": 113721660,
+        "sum_oiPE": 49516285,
+        "sum_CoiCE": 43194320,
+        "sum_CoiPE": 12889760,
+        "total_ce_premium": 1076.7,
+        "total_pe_premium": 920.5,
+        "pcr": 0.4354,
+        "premium_ratio": 1.1684,
+        "nifty_close": 25432.9
+      },
+      {
+        "cin": 144,
+        "timestamp": "141100",
+        "sum_oiCE": 113721660,
+        "sum_oiPE": 49515505,
+        "sum_CoiCE": 43194320,
+        "sum_CoiPE": 12888980,
+        "total_ce_premium": 1061.65,
+        "total_pe_premium": 972.9,
+        "pcr": 0.4354,
+        "premium_ratio": 1.0901,
+        "nifty_close": 25448.75
+      },
+      {
+        "cin": 145,
+        "timestamp": "141300",
+        "sum_oiCE": 112756930,
+        "sum_oiPE": 49032100,
+        "sum_CoiCE": 42229590,
+        "sum_CoiPE": 12405575,
+        "total_ce_premium": 1060.05,
+        "total_pe_premium": 938.1,
+        "pcr": 0.4348,
+        "premium_ratio": 1.1288,
+        "nifty_close": 25455.25
+      },
+      {
+        "cin": 146,
+        "timestamp": "141500",
+        "sum_oiCE": 111987915,
+        "sum_oiPE": 49795850,
+        "sum_CoiCE": 41460575,
+        "sum_CoiPE": 13169325,
+        "total_ce_premium": 1058.9,
+        "total_pe_premium": 899.55,
+        "pcr": 0.4447,
+        "premium_ratio": 1.1758,
+        "nifty_close": 25456.65
+      },
+      {
+        "cin": 147,
+        "timestamp": "141700",
+        "sum_oiCE": 111987915,
+        "sum_oiPE": 49800205,
+        "sum_CoiCE": 41460575,
+        "sum_CoiPE": 13173680,
+        "total_ce_premium": 1047.8,
+        "total_pe_premium": 909.65,
+        "pcr": 0.4447,
+        "premium_ratio": 1.1506,
+        "nifty_close": 25453.05
+      },
+      {
+        "cin": 148,
+        "timestamp": "141900",
+        "sum_oiCE": 111807345,
+        "sum_oiPE": 50235900,
+        "sum_CoiCE": 41280005,
+        "sum_CoiPE": 13609375,
+        "total_ce_premium": 1086.55,
+        "total_pe_premium": 845.5,
+        "pcr": 0.4493,
+        "premium_ratio": 1.2836,
+        "nifty_close": 25445.7
+      },
+      {
+        "cin": 149,
+        "timestamp": "142101",
+        "sum_oiCE": 111529210,
+        "sum_oiPE": 50454300,
+        "sum_CoiCE": 41001870,
+        "sum_CoiPE": 13827775,
+        "total_ce_premium": 1075.5,
+        "total_pe_premium": 843.85,
+        "pcr": 0.4524,
+        "premium_ratio": 1.273,
+        "nifty_close": 25446.3
+      },
+      {
+        "cin": 150,
+        "timestamp": "142300",
+        "sum_oiCE": 111529210,
+        "sum_oiPE": 50454170,
+        "sum_CoiCE": 41001870,
+        "sum_CoiPE": 13827645,
+        "total_ce_premium": 1071.8,
+        "total_pe_premium": 815.15,
+        "pcr": 0.4524,
+        "premium_ratio": 1.3132,
+        "nifty_close": 25434.2
+      },
+      {
+        "cin": 151,
+        "timestamp": "142500",
+        "sum_oiCE": 111533630,
+        "sum_oiPE": 50377470,
+        "sum_CoiCE": 41006290,
+        "sum_CoiPE": 13750945,
+        "total_ce_premium": 1071.85,
+        "total_pe_premium": 804.25,
+        "pcr": 0.4517,
+        "premium_ratio": 1.3311,
+        "nifty_close": 25429.55
+      },
+      {
+        "cin": 152,
+        "timestamp": "142700",
+        "sum_oiCE": 111445945,
+        "sum_oiPE": 50240710,
+        "sum_CoiCE": 40918605,
+        "sum_CoiPE": 13614185,
+        "total_ce_premium": 1057.5,
+        "total_pe_premium": 803.9,
+        "pcr": 0.4508,
+        "premium_ratio": 1.3138,
+        "nifty_close": 25434.45
+      },
+      {
+        "cin": 153,
+        "timestamp": "142900",
+        "sum_oiCE": 111445945,
+        "sum_oiPE": 50240775,
+        "sum_CoiCE": 40918605,
+        "sum_CoiPE": 13614250,
+        "total_ce_premium": 1028.75,
+        "total_pe_premium": 836.7,
+        "pcr": 0.4508,
+        "premium_ratio": 1.2281,
+        "nifty_close": 25447.65
+      },
+      {
+        "cin": 154,
+        "timestamp": "143100",
+        "sum_oiCE": 111400055,
+        "sum_oiPE": 50615630,
+        "sum_CoiCE": 40872715,
+        "sum_CoiPE": 13989105,
+        "total_ce_premium": 1066.75,
+        "total_pe_premium": 781.6,
+        "pcr": 0.4544,
+        "premium_ratio": 1.3631,
+        "nifty_close": 25442.5
+      },
+      {
+        "cin": 155,
+        "timestamp": "143300",
+        "sum_oiCE": 111321860,
+        "sum_oiPE": 51109110,
+        "sum_CoiCE": 40794520,
+        "sum_CoiPE": 14482585,
+        "total_ce_premium": 1096.05,
+        "total_pe_premium": 746.8,
+        "pcr": 0.4591,
+        "premium_ratio": 1.4657,
+        "nifty_close": 25445.15
+      },
+      {
+        "cin": 156,
+        "timestamp": "143500",
+        "sum_oiCE": 111321860,
+        "sum_oiPE": 51109240,
+        "sum_CoiCE": 40794520,
+        "sum_CoiPE": 14482715,
+        "total_ce_premium": 1076.75,
+        "total_pe_premium": 751.6,
+        "pcr": 0.4591,
+        "premium_ratio": 1.4307,
+        "nifty_close": 25462.45
+      },
+      {
+        "cin": 157,
+        "timestamp": "143701",
+        "sum_oiCE": 110931470,
+        "sum_oiPE": 49881455,
+        "sum_CoiCE": 40404130,
+        "sum_CoiPE": 13254930,
+        "total_ce_premium": 1073.6,
+        "total_pe_premium": 727.95,
+        "pcr": 0.4497,
+        "premium_ratio": 1.4728,
+        "nifty_close": 25467.35
+      },
+      {
+        "cin": 158,
+        "timestamp": "143900",
+        "sum_oiCE": 110201520,
+        "sum_oiPE": 50662690,
+        "sum_CoiCE": 39674180,
+        "sum_CoiPE": 14036165,
+        "total_ce_premium": 1061.65,
+        "total_pe_premium": 723.2,
+        "pcr": 0.4597,
+        "premium_ratio": 1.466,
+        "nifty_close": 25473.2
+      },
+      {
+        "cin": 159,
+        "timestamp": "144100",
+        "sum_oiCE": 110201520,
+        "sum_oiPE": 50663210,
+        "sum_CoiCE": 39674180,
+        "sum_CoiPE": 14036685,
+        "total_ce_premium": 1059.15,
+        "total_pe_premium": 725.3,
+        "pcr": 0.4597,
+        "premium_ratio": 1.4583,
+        "nifty_close": 25485.25
+      },
+      {
+        "cin": 160,
+        "timestamp": "144300",
+        "sum_oiCE": 108657250,
+        "sum_oiPE": 50929775,
+        "sum_CoiCE": 38129910,
+        "sum_CoiPE": 14303250,
+        "total_ce_premium": 1054.65,
+        "total_pe_premium": 741.8,
+        "pcr": 0.4687,
+        "premium_ratio": 1.4198,
+        "nifty_close": 25495.15
+      },
+      {
+        "cin": 161,
+        "timestamp": "144500",
+        "sum_oiCE": 104874185,
+        "sum_oiPE": 52007995,
+        "sum_CoiCE": 34346845,
+        "sum_CoiPE": 15381470,
+        "total_ce_premium": 1071.45,
+        "total_pe_premium": 735.75,
+        "pcr": 0.4959,
+        "premium_ratio": 1.4543,
+        "nifty_close": 25516.9
+      },
+      {
+        "cin": 162,
+        "timestamp": "144700",
+        "sum_oiCE": 104874185,
+        "sum_oiPE": 52007995,
+        "sum_CoiCE": 34346845,
+        "sum_CoiPE": 15381470,
+        "total_ce_premium": 1035.3,
+        "total_pe_premium": 783.35,
+        "pcr": 0.4959,
+        "premium_ratio": 1.3199,
+        "nifty_close": 25516.85
+      },
+      {
+        "cin": 163,
+        "timestamp": "144901",
+        "sum_oiCE": 101675340,
+        "sum_oiPE": 52867295,
+        "sum_CoiCE": 31148000,
+        "sum_CoiPE": 16240770,
+        "total_ce_premium": 1005.35,
+        "total_pe_premium": 792.35,
+        "pcr": 0.52,
+        "premium_ratio": 1.2672,
+        "nifty_close": 25511.5
+      },
+      {
+        "cin": 164,
+        "timestamp": "145102",
+        "sum_oiCE": 101565750,
+        "sum_oiPE": 53633710,
+        "sum_CoiCE": 31038410,
+        "sum_CoiPE": 17007185,
+        "total_ce_premium": 995.05,
+        "total_pe_premium": 807.4,
+        "pcr": 0.5281,
+        "premium_ratio": 1.2309,
+        "nifty_close": 25508.1
+      },
+      {
+        "cin": 165,
+        "timestamp": "145301",
+        "sum_oiCE": 101565750,
+        "sum_oiPE": 53632930,
+        "sum_CoiCE": 31038410,
+        "sum_CoiPE": 17006405,
+        "total_ce_premium": 1044.85,
+        "total_pe_premium": 729.85,
+        "pcr": 0.5281,
+        "premium_ratio": 1.4296,
+        "nifty_close": 25492.2
+      },
+      {
+        "cin": 166,
+        "timestamp": "145501",
+        "sum_oiCE": 100433255,
+        "sum_oiPE": 53515215,
+        "sum_CoiCE": 29905915,
+        "sum_CoiPE": 16888690,
+        "total_ce_premium": 1013.15,
+        "total_pe_premium": 760.9,
+        "pcr": 0.5328,
+        "premium_ratio": 1.3298,
+        "nifty_close": 25504.8
+      },
+      {
+        "cin": 167,
+        "timestamp": "145701",
+        "sum_oiCE": 101215790,
+        "sum_oiPE": 53788020,
+        "sum_CoiCE": 30688450,
+        "sum_CoiPE": 17161495,
+        "total_ce_premium": 1020.15,
+        "total_pe_premium": 754.45,
+        "pcr": 0.5314,
+        "premium_ratio": 1.3504,
+        "nifty_close": 25492.45
+      },
+      {
+        "cin": 168,
+        "timestamp": "145902",
+        "sum_oiCE": 101215790,
+        "sum_oiPE": 53788020,
+        "sum_CoiCE": 30688450,
+        "sum_CoiPE": 17161495,
+        "total_ce_premium": 1054.35,
+        "total_pe_premium": 719.1,
+        "pcr": 0.5314,
+        "premium_ratio": 1.4642,
+        "nifty_close": 25495.1
+      },
+      {
+        "cin": 169,
+        "timestamp": "150101",
+        "sum_oiCE": 100862775,
+        "sum_oiPE": 53341470,
+        "sum_CoiCE": 30335435,
+        "sum_CoiPE": 16714945,
+        "total_ce_premium": 941.55,
+        "total_pe_premium": 826.1,
+        "pcr": 0.5289,
+        "premium_ratio": 1.1384,
+        "nifty_close": 25520.7
+      },
+      {
+        "cin": 170,
+        "timestamp": "150301",
+        "sum_oiCE": 99196110,
+        "sum_oiPE": 52993135,
+        "sum_CoiCE": 28668770,
+        "sum_CoiPE": 16366610,
+        "total_ce_premium": 1066.5,
+        "total_pe_premium": 683.0,
+        "pcr": 0.5342,
+        "premium_ratio": 1.5592,
+        "nifty_close": 25479.95
+      },
+      {
+        "cin": 171,
+        "timestamp": "150501",
+        "sum_oiCE": 99196110,
+        "sum_oiPE": 52993135,
+        "sum_CoiCE": 28668770,
+        "sum_CoiPE": 16366610,
+        "total_ce_premium": 1071.5,
+        "total_pe_premium": 704.5,
+        "pcr": 0.5342,
+        "premium_ratio": 1.5188,
+        "nifty_close": 25486.25
+      },
+      {
+        "cin": 172,
+        "timestamp": "150701",
+        "sum_oiCE": 98238790,
+        "sum_oiPE": 52072995,
+        "sum_CoiCE": 27711450,
+        "sum_CoiPE": 15446470,
+        "total_ce_premium": 1069.95,
+        "total_pe_premium": 753.5,
+        "pcr": 0.5301,
+        "premium_ratio": 1.4181,
+        "nifty_close": 25501.4
+      },
+      {
+        "cin": 173,
+        "timestamp": "150901",
+        "sum_oiCE": 97472570,
+        "sum_oiPE": 50693695,
+        "sum_CoiCE": 26945230,
+        "sum_CoiPE": 14067170,
+        "total_ce_premium": 1041.45,
+        "total_pe_premium": 781.9,
+        "pcr": 0.5201,
+        "premium_ratio": 1.3302,
+        "nifty_close": 25502.55
+      },
+      {
+        "cin": 174,
+        "timestamp": "151101",
+        "sum_oiCE": 97472765,
+        "sum_oiPE": 50693825,
+        "sum_CoiCE": 26945425,
+        "sum_CoiPE": 14067300,
+        "total_ce_premium": 1050.95,
+        "total_pe_premium": 781.4,
+        "pcr": 0.5201,
+        "premium_ratio": 1.3432,
+        "nifty_close": 25497.6
+      },
+      {
+        "cin": 175,
+        "timestamp": "151301",
+        "sum_oiCE": 95936490,
+        "sum_oiPE": 49660390,
+        "sum_CoiCE": 25409150,
+        "sum_CoiPE": 13033865,
+        "total_ce_premium": 1037.75,
+        "total_pe_premium": 753.85,
+        "pcr": 0.5176,
+        "premium_ratio": 1.3748,
+        "nifty_close": 25500
+      },
+      {
+        "cin": 176,
+        "timestamp": "151501",
+        "sum_oiCE": 96835570,
+        "sum_oiPE": 48425715,
+        "sum_CoiCE": 26308230,
+        "sum_CoiPE": 11799190,
+        "total_ce_premium": 1103.45,
+        "total_pe_premium": 733.4,
+        "pcr": 0.5001,
+        "premium_ratio": 1.5025,
+        "nifty_close": 25487.2
+      },
+      {
+        "cin": 177,
+        "timestamp": "151701",
+        "sum_oiCE": 96835570,
+        "sum_oiPE": 48425715,
+        "sum_CoiCE": 26308230,
+        "sum_CoiPE": 11799190,
+        "total_ce_premium": 1089.1,
+        "total_pe_premium": 779.95,
+        "pcr": 0.5001,
+        "premium_ratio": 1.3946,
+        "nifty_close": 25497.3
+      },
+      {
+        "cin": 178,
+        "timestamp": "151901",
+        "sum_oiCE": 95585620,
+        "sum_oiPE": 47670480,
+        "sum_CoiCE": 25058280,
+        "sum_CoiPE": 11043955,
+        "total_ce_premium": 1136.75,
+        "total_pe_premium": 741.85,
+        "pcr": 0.4987,
+        "premium_ratio": 1.5303,
+        "nifty_close": 25491.95
+      }
+    ]
+  }
+};
+
+const el = (id) => document.getElementById(id);
+
+function showTab(tabId) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    el(tabId).classList.add('active');
+    document.querySelector('.nav-btn[onclick="showTab(\'' + tabId + '\')"]').classList.add('active');
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+    renderOITab(json1Data, json2Data, json3Data);
+    renderPremiumTab(json3Data, json2Data);
+    renderCombinedTab(json1Data, json2Data, json3Data);
+    renderOIPrmDiversionTab(json1Data, json2Data, json3Data);
+    renderGamaZoneTab(json1Data, json2Data, json3Data);
+});
+</script>
+</body>
+</html>

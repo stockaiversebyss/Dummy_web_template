@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OI Tech Dashboard – StockAiVerse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* ── BASE ── */
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+        background: #0b0f1a;
+        font-family: "DM Sans", sans-serif;
+      }
+
+      /* ════════════════════════════
+         SIDEBAR
+      ════════════════════════════ */
+      .sidebar {
+        width: 224px;
+        min-width: 224px;
+        height: 100vh;
+        background: #0d1220;
+        border-right: 1px solid #1a2540;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .sb-logo {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 15px 14px 13px;
+        border-bottom: 1px solid #1a2540;
+        flex-shrink: 0;
+      }
+      .sb-logo-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #8b5cf6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        flex-shrink: 0;
+      }
+      .sb-logo-text {
+        font-family: "Sora", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #e8edf5;
+      }
+      .sb-logo-text span { color: #8b5cf6; }
+
+      .sb-nav {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 14px 8px 0;
+      }
+      .sb-nav::-webkit-scrollbar { width: 0; }
+
+      .sb-section-label {
+        font-size: 0.62rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: #4f617a;
+        padding: 0 10px 6px;
+        margin-top: 6px;
+      }
+
+      .sb-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        border-radius: 8px;
+        margin-bottom: 2px;
+        cursor: pointer;
+        color: #8899b4;
+        font-size: 0.875rem;
+        font-weight: 400;
+        transition: background 0.15s, color 0.15s;
+        user-select: none;
+        position: relative;
+      }
+      .sb-item:hover { background: #141c2e; color: #e8edf5; }
+      .sb-item.active {
+        background: rgba(139, 92, 246, 0.14);
+        color: #8b5cf6;
+        font-weight: 600;
+      }
+      .sb-item.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 20%;
+        height: 60%;
+        width: 3px;
+        border-radius: 0 3px 3px 0;
+        background: #8b5cf6;
+      }
+      .sb-item svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex-shrink: 0;
+      }
+      .sb-badge {
+        margin-left: auto;
+        font-size: 0.65rem;
+        font-weight: 700;
+        background: #8b5cf6;
+        color: #fff;
+        border-radius: 20px;
+        padding: 1px 7px;
+      }
+      .sb-badge.green { background: #16a34a; }
+      .sb-badge.amber { background: #d97706; }
+
+      .sb-divider {
+        height: 1px;
+        background: #1a2540;
+        margin: 10px 8px;
+      }
+
+      .sb-footer {
+        flex-shrink: 0;
+        padding: 8px 8px 10px;
+        border-top: 1px solid #1a2540;
+      }
+      .sb-user {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 8px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .sb-user:hover { background: #141c2e; }
+      .sb-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #6d28d9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Sora", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .sb-user-info { flex: 1; min-width: 0; }
+      .sb-user-name { font-size: 0.84rem; font-weight: 600; color: #e8edf5; line-height: 1.2; }
+      .sb-user-role { font-size: 0.68rem; color: #4f617a; }
+      .sb-back-btn {
+        background: none;
+        border: none;
+        color: #4f617a;
+        font-size: 13px;
+        cursor: pointer;
+        padding: 2px;
+        transition: color 0.2s;
+        flex-shrink: 0;
+      }
+      .sb-back-btn:hover { color: #8899b4; }
+      .sb-version { font-size: 0.66rem; color: #4f617a; padding: 4px 10px 0; }
+
+      /* ════════════════════════════
+         MAIN
+      ════════════════════════════ */
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+        min-width: 0;
+      }
+
+      /* Topbar */
+      .topbar {
+        height: 58px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        border-bottom: 1px solid #1a2540;
+        background: #0b0f1a;
+        gap: 14px;
+      }
+      .topbar-title {
+        font-family: "Sora", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #e8edf5;
+        white-space: nowrap;
+      }
+      .topbar-title span { color: #8b5cf6; }
+
+      .topbar-sep {
+        width: 1px;
+        height: 20px;
+        background: #1a2540;
+        flex-shrink: 0;
+      }
+
+      .search-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #111827;
+        border: 1px solid #1e2d47;
+        border-radius: 10px;
+        padding: 0 14px;
+        height: 36px;
+        flex: 1;
+        max-width: 380px;
+        transition: border-color 0.2s;
+      }
+      .search-wrap:focus-within { border-color: #8b5cf6; }
+      .search-wrap svg {
+        width: 14px;
+        height: 14px;
+        stroke: #4f617a;
+        fill: none;
+        stroke-width: 2;
+        flex-shrink: 0;
+      }
+      .search-wrap input {
+        flex: 1;
+        background: none;
+        border: none;
+        outline: none;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.87rem;
+        color: #e8edf5;
+      }
+      .search-wrap input::placeholder { color: #4f617a; }
+
+      .topbar-right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .tb-icon-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid #1e2d47;
+        background: #111827;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: border-color 0.2s, background 0.2s;
+      }
+      .tb-icon-btn:hover { border-color: #8b5cf6; background: #141c2e; }
+      .tb-icon-btn svg {
+        width: 15px;
+        height: 15px;
+        stroke: #8899b4;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .topbar-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: #6d28d9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Sora", sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #fff;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      /* ── CONTENT FRAME ── */
+      #content-frame {
+        flex: 1;
+        border: none;
+        height: 100vh;
+        min-width: 0;
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- ══════════ SIDEBAR ══════════ -->
+    <aside class="sidebar">
+
+      <!-- Logo -->
+      <div class="sb-logo">
+        <div class="sb-logo-icon">📊</div>
+        <div class="sb-logo-text">OI<span>Tech</span></div>
+      </div>
+
+      <!-- Nav -->
+      <div class="sb-nav">
+
+        <div class="sb-section-label">OI Tech Dashboard</div>
+
+        <div class="sb-item active" onclick="loadPage(this, 'oi-analyzer.html')">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          OI Analyzer
+          <span class="sb-badge green">Live</span>
+        </div>
+
+        <div class="sb-item" onclick="loadPage(this, 'data.html')">
+          <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          Data – 26 Feb 2026
+          <span class="sb-badge">HC</span>
+        </div>
+
+        <div class="sb-divider"></div>
+
+        <div class="sb-item" onclick="goTo('oi-tech.html')">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to Main App
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="sb-footer">
+        <div class="sb-item" style="margin-bottom:4px;">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </div>
+        <div class="sb-user">
+          <div class="sb-avatar">H</div>
+          <div class="sb-user-info">
+            <div class="sb-user-name">Harman</div>
+            <div class="sb-user-role">Pro Member</div>
+          </div>
+          <button class="sb-back-btn" onclick="goTo('index.html')" title="Sign out">↗</button>
+        </div>
+        <div class="sb-version">OI Tech v0.1 · Pre-alpha</div>
+      </div>
+    </aside>
+
+    <!-- ══════════ CONTENT FRAME ══════════ -->
+    <div class="main">
+      <!-- Topbar -->
+      <div class="topbar">
+        <div class="topbar-title">OI<span>Tech</span></div>
+        <div class="topbar-sep"></div>
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search symbol or expiry..." />
+        </div>
+        <div class="topbar-right">
+          <div class="tb-icon-btn" title="Refresh">
+            <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          </div>
+          <div class="topbar-avatar">H</div>
+        </div>
+      </div>
+
+      <iframe id="content-frame" src="oi-analyzer.html"></iframe>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <script src="navigation.js"></script>
+    <script>
+      function loadPage(el, page) {
+        document.querySelectorAll('.sb-item').forEach(function(item) {
+          item.classList.remove('active');
+        });
+        el.classList.add('active');
+        document.getElementById('content-frame').src = page;
+      }
+    </script>
+  </body>
+</html>

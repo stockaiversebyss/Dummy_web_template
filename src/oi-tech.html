@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stock Tech – StockAiVerse</title>
+    <title>OI Tech – StockAiVerse</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
@@ -11,7 +11,6 @@
     />
     <link rel="stylesheet" href="style.css" />
     <style>
-      /* ── RESET FOR DASHBOARD ── */
       body {
         margin: 0;
         display: flex;
@@ -21,8 +20,8 @@
       }
 
       /* ════════════════════════════
-       SIDEBAR
-    ════════════════════════════ */
+         SIDEBAR
+      ════════════════════════════ */
       .sidebar {
         width: 210px;
         min-width: 210px;
@@ -34,7 +33,6 @@
         overflow: hidden;
       }
 
-      /* Logo row */
       .sb-logo {
         display: flex;
         align-items: center;
@@ -47,7 +45,7 @@
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        background: #3b7ef8;
+        background: #8b5cf6;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -60,22 +58,16 @@
         font-weight: 700;
         color: #e8edf5;
       }
-      .sb-logo-text span {
-        color: #3b7ef8;
-      }
+      .sb-logo-text span { color: #8b5cf6; }
 
-      /* Scrollable nav body */
       .sb-nav {
         flex: 1;
         overflow-y: auto;
         overflow-x: hidden;
         padding: 12px 8px 0;
       }
-      .sb-nav::-webkit-scrollbar {
-        width: 0;
-      }
+      .sb-nav::-webkit-scrollbar { width: 0; }
 
-      /* Section label */
       .sb-label {
         font-size: 0.65rem;
         font-weight: 700;
@@ -86,7 +78,6 @@
         margin-top: 4px;
       }
 
-      /* Nav row */
       .sb-item {
         display: flex;
         align-items: center;
@@ -99,17 +90,12 @@
         font-family: "DM Sans", sans-serif;
         font-size: 0.875rem;
         font-weight: 400;
-        transition:
-          background 0.15s,
-          color 0.15s;
+        transition: background 0.15s, color 0.15s;
         user-select: none;
       }
-      .sb-item:hover {
-        background: #141c2e;
-        color: #e8edf5;
-      }
+      .sb-item:hover { background: #141c2e; color: #e8edf5; }
       .sb-item.active {
-        background: #3b7ef8;
+        background: #8b5cf6;
         color: #ffffff;
         font-weight: 500;
       }
@@ -120,7 +106,6 @@
         gap: 10px;
       }
 
-      /* Icon wrapper */
       .sb-icon {
         width: 18px;
         height: 18px;
@@ -139,17 +124,14 @@
         stroke-linejoin: round;
       }
 
-      /* Blue dot indicator */
       .sb-dot {
         width: 7px;
         height: 7px;
         border-radius: 50%;
-        background: #3b7ef8;
+        background: #8b5cf6;
         flex-shrink: 0;
       }
-      .sb-item.active .sb-dot {
-        background: rgba(255, 255, 255, 0.55);
-      }
+      .sb-item.active .sb-dot { background: rgba(255, 255, 255, 0.55); }
 
       /* ── DISABLED / COMING SOON ── */
       .sb-item.sb-disabled {
@@ -169,8 +151,8 @@
         right: 10px;
         top: 50%;
         transform: translateY(-50%);
-        background: rgba(59, 126, 248, 0.1);
-        color: #3b7ef8;
+        background: rgba(139, 92, 246, 0.1);
+        color: #8b5cf6;
         font-size: 0.6rem;
         font-weight: 700;
         letter-spacing: 0.05em;
@@ -183,26 +165,19 @@
       }
       .sb-item.sb-disabled:hover::after { opacity: 1; }
 
-      /* Chevron for explore items */
       .sb-chevron {
         font-size: 11px;
         color: #4f617a;
         flex-shrink: 0;
         transition: transform 0.2s;
       }
-      .sb-item.open .sb-chevron {
-        transform: rotate(180deg);
-      }
 
-      /* Sub-menu */
       .sb-sub {
         overflow: hidden;
         max-height: 0;
         transition: max-height 0.22s ease;
       }
-      .sb-sub.open {
-        max-height: 250px;
-      }
+      .sb-sub.open { max-height: 250px; }
       .sb-sub-item {
         display: flex;
         align-items: center;
@@ -212,19 +187,11 @@
         border-radius: 7px;
         cursor: pointer;
         margin-bottom: 1px;
-        transition:
-          background 0.12s,
-          color 0.12s;
+        transition: background 0.12s, color 0.12s;
       }
-      .sb-sub-item:hover {
-        background: #141c2e;
-        color: #8899b4;
-      }
+      .sb-sub-item:hover { background: #141c2e; color: #8899b4; }
 
-      /* Explore section spacing */
-      .sb-explore-gap {
-        margin-top: 14px;
-      }
+      .sb-explore-gap { margin-top: 14px; }
 
       /* ── SIDEBAR FOOTER ── */
       .sb-footer {
@@ -232,7 +199,6 @@
         padding: 8px 8px 6px;
         border-top: 1px solid #1a2540;
       }
-
       .sb-user {
         display: flex;
         align-items: center;
@@ -243,14 +209,12 @@
         transition: background 0.15s;
         margin-bottom: 2px;
       }
-      .sb-user:hover {
-        background: #141c2e;
-      }
+      .sb-user:hover { background: #141c2e; }
       .sb-avatar {
         width: 30px;
         height: 30px;
         border-radius: 50%;
-        background: #2563c4;
+        background: #6d28d9;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -260,24 +224,9 @@
         color: #fff;
         flex-shrink: 0;
       }
-      .sb-user-info {
-        flex: 1;
-        min-width: 0;
-      }
-      .sb-user-name {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #e8edf5;
-        line-height: 1.2;
-      }
-      .sb-user-email {
-        font-size: 0.7rem;
-        color: #4f617a;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 110px;
-      }
+      .sb-user-info { flex: 1; min-width: 0; }
+      .sb-user-name { font-size: 0.85rem; font-weight: 600; color: #e8edf5; line-height: 1.2; }
+      .sb-user-email { font-size: 0.7rem; color: #4f617a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; }
       .sb-logout {
         background: none;
         border: none;
@@ -288,19 +237,12 @@
         transition: color 0.2s;
         flex-shrink: 0;
       }
-      .sb-logout:hover {
-        color: #8899b4;
-      }
-
-      .sb-version {
-        font-size: 0.68rem;
-        color: #4f617a;
-        padding: 2px 10px 4px;
-      }
+      .sb-logout:hover { color: #8899b4; }
+      .sb-version { font-size: 0.68rem; color: #4f617a; padding: 2px 10px 4px; }
 
       /* ════════════════════════════
-       MAIN AREA
-    ════════════════════════════ */
+         MAIN AREA
+      ════════════════════════════ */
       .main {
         flex: 1;
         display: flex;
@@ -311,7 +253,6 @@
         background: #0b0f1a;
       }
 
-      /* Top bar */
       .topbar {
         height: 56px;
         flex-shrink: 0;
@@ -334,9 +275,7 @@
         max-width: 420px;
         transition: border-color 0.2s;
       }
-      .search-wrap:focus-within {
-        border-color: #3b7ef8;
-      }
+      .search-wrap:focus-within { border-color: #8b5cf6; }
       .search-wrap svg {
         width: 14px;
         height: 14px;
@@ -354,16 +293,14 @@
         font-size: 0.87rem;
         color: #e8edf5;
       }
-      .search-wrap input::placeholder {
-        color: #4f617a;
-      }
+      .search-wrap input::placeholder { color: #4f617a; }
 
       .topbar-avatar {
         margin-left: auto;
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        background: #2563c4;
+        background: #6d28d9;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -375,7 +312,6 @@
         flex-shrink: 0;
       }
 
-      /* ── CONTENT ── */
       .content {
         flex: 1;
         overflow-y: auto;
@@ -385,7 +321,6 @@
         align-items: center;
       }
 
-      /* Page heading */
       .st-title {
         font-family: "Sora", sans-serif;
         font-size: 2.2rem;
@@ -395,11 +330,8 @@
         text-align: center;
         letter-spacing: -0.01em;
       }
-      .st-title span {
-        color: #3b7ef8;
-      }
+      .st-title span { color: #8b5cf6; }
 
-      /* Description */
       .st-desc {
         font-family: "DM Sans", sans-serif;
         font-size: 0.97rem;
@@ -410,7 +342,6 @@
         margin: 0 0 32px;
       }
 
-      /* Video player area */
       .video-wrap {
         width: 100%;
         max-width: 760px;
@@ -425,12 +356,7 @@
         position: relative;
         margin-bottom: 32px;
       }
-      .video-wrap video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
+      .video-wrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
       .video-placeholder {
         display: flex;
         flex-direction: column;
@@ -442,7 +368,8 @@
         width: 56px;
         height: 56px;
         border-radius: 50%;
-        border: 2px solid #1e2d47;
+        border: 2px solid #2d1d6e;
+        background: rgba(139, 92, 246, 0.08);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -450,56 +377,47 @@
       .video-placeholder .play-icon svg {
         width: 22px;
         height: 22px;
-        fill: #4f617a;
+        fill: #8b5cf6;
         stroke: none;
         margin-left: 3px;
       }
-      .video-placeholder span {
-        font-size: 0.82rem;
-        font-family: "DM Sans", sans-serif;
-      }
+      .video-placeholder span { font-size: 0.82rem; font-family: "DM Sans", sans-serif; }
 
-      /* Enter button */
       .enter-btn {
         font-family: "Sora", sans-serif;
         font-size: 0.95rem;
         font-weight: 700;
         color: #fff;
-        background: #3b7ef8;
+        background: #8b5cf6;
         border: none;
         border-radius: 12px;
         padding: 14px 36px;
         cursor: pointer;
         letter-spacing: 0.01em;
         transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-        box-shadow: 0 4px 20px rgba(59, 126, 248, 0.30);
+        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.30);
       }
       .enter-btn:hover {
-        background: #2563c4;
+        background: #7c3aed;
         transform: translateY(-2px);
-        box-shadow: 0 8px 28px rgba(59, 126, 248, 0.40);
+        box-shadow: 0 8px 28px rgba(139, 92, 246, 0.40);
       }
-      .enter-btn:active {
-        transform: translateY(0);
-      }
+      .enter-btn:active { transform: translateY(0); }
     </style>
   </head>
   <body>
     <!-- ══════════ SIDEBAR ══════════ -->
     <aside class="sidebar">
-      <!-- Logo -->
       <div class="sb-logo">
-        <div class="sb-logo-icon">🌐</div>
+        <div class="sb-logo-icon">📊</div>
         <div class="sb-logo-text">Stock<span>AiVerse</span></div>
       </div>
 
-      <!-- Nav -->
       <div class="sb-nav">
-        <!-- DASHBOARD -->
         <div class="sb-label">Dashboard</div>
 
         <!-- Stock Tech -->
-        <div class="sb-item active" onclick="goTo('stock-tech.html')">
+        <div class="sb-item" onclick="goTo('stock-tech.html')">
           <div class="sb-item-left">
             <span class="sb-icon">
               <svg viewBox="0 0 24 24">
@@ -512,8 +430,8 @@
           <span class="sb-dot"></span>
         </div>
 
-        <!-- OI Tech -->
-        <div class="sb-item" onclick="goTo('oi-tech.html')">
+        <!-- OI Tech (active) -->
+        <div class="sb-item active" onclick="goTo('oi-tech.html')">
           <div class="sb-item-left">
             <span class="sb-icon">
               <svg viewBox="0 0 24 24">
@@ -548,13 +466,7 @@
               <svg viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="10" />
                 <path d="M12 8c-2 0-4 1.5-4 4s2 4 4 4" />
-                <circle
-                  cx="12"
-                  cy="17"
-                  r="0.6"
-                  fill="currentColor"
-                  stroke="none"
-                />
+                <circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none" />
               </svg>
             </span>
             DeepSightAI
@@ -606,7 +518,6 @@
         <!-- EXPLORE -->
         <div class="sb-label sb-explore-gap">Explore</div>
 
-        <!-- Market -->
         <div class="sb-item sb-disabled" id="nav-market">
           <div class="sb-item-left">
             <span class="sb-icon">
@@ -618,26 +529,10 @@
             </span>
             Market
           </div>
-          <span class="sb-chevron" id="chev-market">▾</span>
-        </div>
-        <div class="sb-sub" id="sub-market">
-          <div class="sb-sub-item" onclick="goTo('market-home.html')">
-            Market Home
-          </div>
-          <div class="sb-sub-item" onclick="goTo('indices.html')">Indices</div>
-          <div class="sb-sub-item" onclick="goTo('trending-stocks.html')">
-            Trending Stocks
-          </div>
-          <div class="sb-sub-item" onclick="goTo('news-updates.html')">
-            News &amp; Updates
-          </div>
+          <span class="sb-chevron">▾</span>
         </div>
 
-        <!-- Analytics -->
-        <div
-          class="sb-item sb-disabled"
-          id="nav-analytics"
-        >
+        <div class="sb-item sb-disabled" id="nav-analytics">
           <div class="sb-item-left">
             <span class="sb-icon">
               <svg viewBox="0 0 24 24">
@@ -646,25 +541,10 @@
             </span>
             Analytics
           </div>
-          <span class="sb-chevron" id="chev-analytics">▾</span>
-        </div>
-        <div class="sb-sub" id="sub-analytics">
-          <div class="sb-sub-item" onclick="goTo('analytics-home.html')">
-            Analytics Home
-          </div>
-          <div class="sb-sub-item" onclick="goTo('chart-patterns.html')">
-            Chart Patterns
-          </div>
-          <div class="sb-sub-item" onclick="goTo('trading-strategies.html')">
-            Trading Strategies
-          </div>
+          <span class="sb-chevron">▾</span>
         </div>
 
-        <!-- My AIVerse -->
-        <div
-          class="sb-item sb-disabled"
-          id="nav-myaiverse"
-        >
+        <div class="sb-item sb-disabled" id="nav-myaiverse">
           <div class="sb-item-left">
             <span class="sb-icon">
               <svg viewBox="0 0 24 24">
@@ -674,54 +554,31 @@
             </span>
             My AIVerse
           </div>
-          <span class="sb-chevron" id="chev-myaiverse">▾</span>
-        </div>
-        <div class="sb-sub" id="sub-myaiverse">
-          <div class="sb-sub-item" onclick="goTo('watchlist.html')">
-            Watchlist
-          </div>
-          <div class="sb-sub-item" onclick="goTo('settings.html')">
-            Settings
-          </div>
+          <span class="sb-chevron">▾</span>
         </div>
       </div>
-      <!-- end sb-nav -->
 
       <!-- Footer -->
       <div class="sb-footer">
-        <!-- Settings -->
-        <div
-          class="sb-item"
-          onclick="goTo('settings.html')"
-          style="margin-bottom: 4px"
-        >
+        <div class="sb-item" onclick="goTo('settings.html')" style="margin-bottom:4px">
           <div class="sb-item-left">
             <span class="sb-icon">
               <svg viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="3" />
-                <path
-                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
-                />
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
               </svg>
             </span>
             Settings
           </div>
         </div>
 
-        <!-- User row -->
         <div class="sb-user">
           <div class="sb-avatar">H</div>
           <div class="sb-user-info">
             <div class="sb-user-name">Harman</div>
             <div class="sb-user-email">harmanpreet21@g...</div>
           </div>
-          <button
-            class="sb-logout"
-            onclick="goTo('index.html')"
-            title="Sign out"
-          >
-            ↗
-          </button>
+          <button class="sb-logout" onclick="goTo('index.html')" title="Sign out">↗</button>
         </div>
 
         <div class="sb-version">v0.1.0 · Pre-alpha</div>
@@ -730,69 +587,41 @@
 
     <!-- ══════════ MAIN ══════════ -->
     <div class="main">
-      <!-- Topbar -->
       <div class="topbar">
         <div class="search-wrap">
           <svg viewBox="0 0 24 24">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
-          <input type="text" placeholder="Search symbol..." />
+          <input type="text" placeholder="Search symbol or expiry..." />
         </div>
         <div class="topbar-avatar">H</div>
       </div>
 
-      <!-- Stock Tech Content -->
       <div class="content">
+        <div class="st-title">OI<span>Tech</span></div>
 
-        <!-- Title -->
-        <div class="st-title">Stock<span>Tech</span></div>
-
-        <!-- Description -->
         <p class="st-desc">
-          Advanced technical intelligence powered by smart indicators, real-time analytics, and data-driven signals to help you decode market movements with confidence.
+          A derivatives intelligence engine that analyzes Open Interest, price–OI relationships, and buildup patterns to detect long/short activity in real time.
         </p>
 
-        <!-- Video area -->
         <div class="video-wrap">
-          <!-- Replace the src below with your video file path or URL -->
-          <!-- <video controls src="your-video.mp4"></video> -->
+          <!-- <video controls src="your-oi-tech-video.mp4"></video> -->
           <div class="video-placeholder">
             <div class="play-icon">
-              <svg viewBox="0 0 24 24">
-                <polygon points="5 3 19 12 5 21 5 3" />
-              </svg>
+              <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" /></svg>
             </div>
             <span>Your video goes here</span>
           </div>
         </div>
 
-        <!-- CTA Button -->
-        <button class="enter-btn" onclick="goTo('stock-tech-app.html')">
-          Enter to Stock Tech Universe
+        <button class="enter-btn" onclick="goTo('oi-tech-app.html')">
+          Enter OI Tech Universe
         </button>
-
       </div>
     </div>
 
     <div class="toast" id="toast"></div>
     <script src="navigation.js"></script>
-    <script>
-      function toggleSub(key) {
-        const sub = document.getElementById("sub-" + key);
-        const nav = document.getElementById("nav-" + key);
-        const isOpen = sub.classList.contains("open");
-        document
-          .querySelectorAll(".sb-sub")
-          .forEach((s) => s.classList.remove("open"));
-        document
-          .querySelectorAll(".sb-item")
-          .forEach((n) => n.classList.remove("open"));
-        if (!isOpen) {
-          sub.classList.add("open");
-          nav.classList.add("open");
-        }
-      }
-    </script>
   </body>
 </html>

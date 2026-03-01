@@ -14,6 +14,10 @@ const PAGES = [
   'dashboard.html',
   'stock-tech.html',
   'stock-tech-app.html',
+  'oi-tech.html',
+  'oi-tech-app.html',
+  'oi-analyzer.html',
+  'data.html',
   
   // 'market-home.html',
   // 'indices.html',

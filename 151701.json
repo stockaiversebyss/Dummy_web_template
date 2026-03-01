@@ -1,0 +1,582 @@
+{
+  "meta": {
+    "date_pulled": "26022026",
+    "timestamp": "15:17:01",
+    "symbol": "NIFTY",
+    "expiry": "02-Mar-2026",
+    "nifty_close": 25497.3,
+    "source": "DhanHQ_API",
+    "source_db": "D:\\databank\\optiondata\\option_chain_data.db",
+    "scalex_rule": "constant OI_NzScalex=2000",
+    "snapshot_pcr": 0.5
+  },
+  "per_strike": {
+    "25100": {
+      "CEdata": {
+        "strike_price": 25100,
+        "total_oi": 144235,
+        "total_oi_normalized": 72.12,
+        "change_in_oi": 9555,
+        "change_in_oi_normalized": 4.78,
+        "ltp": 437,
+        "premium": 39.7
+      },
+      "PEdata": {
+        "strike_price": 25100,
+        "total_oi": 2713685,
+        "total_oi_normalized": 1356.84,
+        "change_in_oi": 478725,
+        "change_in_oi_normalized": 239.36,
+        "ltp": 23.2,
+        "premium": 23.2
+      },
+      "combined": {
+        "net_oi_sum": 1428.96,
+        "net_coi_sum": 244.14,
+        "diff_toi": 1284.72,
+        "diff_coi": 234.58,
+        "pcr": 18.81
+      }
+    },
+    "25150": {
+      "CEdata": {
+        "strike_price": 25150,
+        "total_oi": 59865,
+        "total_oi_normalized": 29.93,
+        "change_in_oi": 3835,
+        "change_in_oi_normalized": 1.92,
+        "ltp": 387.2,
+        "premium": 39.9
+      },
+      "PEdata": {
+        "strike_price": 25150,
+        "total_oi": 1184235,
+        "total_oi_normalized": 592.12,
+        "change_in_oi": 106795,
+        "change_in_oi_normalized": 53.4,
+        "ltp": 27.7,
+        "premium": 27.7
+      },
+      "combined": {
+        "net_oi_sum": 622.05,
+        "net_coi_sum": 55.32,
+        "diff_toi": 562.19,
+        "diff_coi": 51.48,
+        "pcr": 19.78
+      }
+    },
+    "25200": {
+      "CEdata": {
+        "strike_price": 25200,
+        "total_oi": 350220,
+        "total_oi_normalized": 175.11,
+        "change_in_oi": 89895,
+        "change_in_oi_normalized": 44.95,
+        "ltp": 346.5,
+        "premium": 49.2
+      },
+      "PEdata": {
+        "strike_price": 25200,
+        "total_oi": 4785560,
+        "total_oi_normalized": 2392.78,
+        "change_in_oi": 1487785,
+        "change_in_oi_normalized": 743.89,
+        "ltp": 33.3,
+        "premium": 33.3
+      },
+      "combined": {
+        "net_oi_sum": 2567.89,
+        "net_coi_sum": 788.84,
+        "diff_toi": 2217.67,
+        "diff_coi": 698.94,
+        "pcr": 13.66
+      }
+    },
+    "25250": {
+      "CEdata": {
+        "strike_price": 25250,
+        "total_oi": 133445,
+        "total_oi_normalized": 66.72,
+        "change_in_oi": 51350,
+        "change_in_oi_normalized": 25.68,
+        "ltp": 303.9,
+        "premium": 56.6
+      },
+      "PEdata": {
+        "strike_price": 25250,
+        "total_oi": 2108210,
+        "total_oi_normalized": 1054.11,
+        "change_in_oi": 442195,
+        "change_in_oi_normalized": 221.1,
+        "ltp": 40.7,
+        "premium": 40.7
+      },
+      "combined": {
+        "net_oi_sum": 1120.83,
+        "net_coi_sum": 246.78,
+        "diff_toi": 987.39,
+        "diff_coi": 195.42,
+        "pcr": 15.8
+      }
+    },
+    "25300": {
+      "CEdata": {
+        "strike_price": 25300,
+        "total_oi": 901355,
+        "total_oi_normalized": 450.68,
+        "change_in_oi": 249535,
+        "change_in_oi_normalized": 124.77,
+        "ltp": 263,
+        "premium": 65.7
+      },
+      "PEdata": {
+        "strike_price": 25300,
+        "total_oi": 4584060,
+        "total_oi_normalized": 2292.03,
+        "change_in_oi": 939315,
+        "change_in_oi_normalized": 469.66,
+        "ltp": 49.95,
+        "premium": 49.95
+      },
+      "combined": {
+        "net_oi_sum": 2742.71,
+        "net_coi_sum": 594.43,
+        "diff_toi": 1841.35,
+        "diff_coi": 344.89,
+        "pcr": 5.09
+      }
+    },
+    "25350": {
+      "CEdata": {
+        "strike_price": 25350,
+        "total_oi": 451620,
+        "total_oi_normalized": 225.81,
+        "change_in_oi": 167570,
+        "change_in_oi_normalized": 83.78,
+        "ltp": 224.8,
+        "premium": 77.5
+      },
+      "PEdata": {
+        "strike_price": 25350,
+        "total_oi": 2639065,
+        "total_oi_normalized": 1319.53,
+        "change_in_oi": 955825,
+        "change_in_oi_normalized": 477.91,
+        "ltp": 61.25,
+        "premium": 61.25
+      },
+      "combined": {
+        "net_oi_sum": 1545.34,
+        "net_coi_sum": 561.69,
+        "diff_toi": 1093.72,
+        "diff_coi": 394.13,
+        "pcr": 5.84
+      }
+    },
+    "25400": {
+      "CEdata": {
+        "strike_price": 25400,
+        "total_oi": 3131115,
+        "total_oi_normalized": 1565.56,
+        "change_in_oi": 1146210,
+        "change_in_oi_normalized": 573.11,
+        "ltp": 188.7,
+        "premium": 91.4
+      },
+      "PEdata": {
+        "strike_price": 25400,
+        "total_oi": 7824635,
+        "total_oi_normalized": 3912.32,
+        "change_in_oi": 2938975,
+        "change_in_oi_normalized": 1469.49,
+        "ltp": 75.5,
+        "premium": 75.5
+      },
+      "combined": {
+        "net_oi_sum": 5477.88,
+        "net_coi_sum": 2042.6,
+        "diff_toi": 2346.76,
+        "diff_coi": 896.38,
+        "pcr": 2.5
+      }
+    },
+    "25450": {
+      "CEdata": {
+        "strike_price": 25450,
+        "total_oi": 3377335,
+        "total_oi_normalized": 1688.67,
+        "change_in_oi": 1476280,
+        "change_in_oi_normalized": 738.14,
+        "ltp": 156,
+        "premium": 108.7
+      },
+      "PEdata": {
+        "strike_price": 25450,
+        "total_oi": 4609150,
+        "total_oi_normalized": 2304.57,
+        "change_in_oi": 1954680,
+        "change_in_oi_normalized": 977.34,
+        "ltp": 92.6,
+        "premium": 92.6
+      },
+      "combined": {
+        "net_oi_sum": 3993.24,
+        "net_coi_sum": 1715.48,
+        "diff_toi": 615.9,
+        "diff_coi": 239.2,
+        "pcr": 1.36
+      }
+    },
+    "25500": {
+      "CEdata": {
+        "strike_price": 25500,
+        "total_oi": 11822980,
+        "total_oi_normalized": 5911.49,
+        "change_in_oi": 4478825,
+        "change_in_oi_normalized": 2239.41,
+        "ltp": 126.85,
+        "premium": 126.85
+      },
+      "PEdata": {
+        "strike_price": 25500,
+        "total_oi": 7858370,
+        "total_oi_normalized": 3929.18,
+        "change_in_oi": 1823835,
+        "change_in_oi_normalized": 911.92,
+        "ltp": 113.35,
+        "premium": 110.65
+      },
+      "combined": {
+        "net_oi_sum": 9840.67,
+        "net_coi_sum": 3151.33,
+        "diff_toi": -1982.31,
+        "diff_coi": -1327.49,
+        "pcr": 0.66
+      }
+    },
+    "25550": {
+      "CEdata": {
+        "strike_price": 25550,
+        "total_oi": 6125730,
+        "total_oi_normalized": 3062.86,
+        "change_in_oi": 2999035,
+        "change_in_oi_normalized": 1499.52,
+        "ltp": 102.25,
+        "premium": 102.25
+      },
+      "PEdata": {
+        "strike_price": 25550,
+        "total_oi": 2316600,
+        "total_oi_normalized": 1158.3,
+        "change_in_oi": 1177085,
+        "change_in_oi_normalized": 588.54,
+        "ltp": 138.25,
+        "premium": 85.55
+      },
+      "combined": {
+        "net_oi_sum": 4221.16,
+        "net_coi_sum": 2088.06,
+        "diff_toi": -1904.56,
+        "diff_coi": -910.98,
+        "pcr": 0.38
+      }
+    },
+    "25600": {
+      "CEdata": {
+        "strike_price": 25600,
+        "total_oi": 11394890,
+        "total_oi_normalized": 5697.44,
+        "change_in_oi": 2983760,
+        "change_in_oi_normalized": 1491.88,
+        "ltp": 80.85,
+        "premium": 80.85
+      },
+      "PEdata": {
+        "strike_price": 25600,
+        "total_oi": 2562040,
+        "total_oi_normalized": 1281.02,
+        "change_in_oi": -248300,
+        "change_in_oi_normalized": -124.15,
+        "ltp": 166.65,
+        "premium": 63.95
+      },
+      "combined": {
+        "net_oi_sum": 6978.46,
+        "net_coi_sum": 1367.73,
+        "diff_toi": -4416.42,
+        "diff_coi": -1616.03,
+        "pcr": 0.22
+      }
+    },
+    "25650": {
+      "CEdata": {
+        "strike_price": 25650,
+        "total_oi": 5830370,
+        "total_oi_normalized": 2915.18,
+        "change_in_oi": 1126385,
+        "change_in_oi_normalized": 563.19,
+        "ltp": 62.95,
+        "premium": 62.95
+      },
+      "PEdata": {
+        "strike_price": 25650,
+        "total_oi": 709800,
+        "total_oi_normalized": 354.9,
+        "change_in_oi": -75660,
+        "change_in_oi_normalized": -37.83,
+        "ltp": 199,
+        "premium": 46.3
+      },
+      "combined": {
+        "net_oi_sum": 3270.08,
+        "net_coi_sum": 525.36,
+        "diff_toi": -2560.28,
+        "diff_coi": -601.02,
+        "pcr": 0.12
+      }
+    },
+    "25700": {
+      "CEdata": {
+        "strike_price": 25700,
+        "total_oi": 10732995,
+        "total_oi_normalized": 5366.5,
+        "change_in_oi": 2464280,
+        "change_in_oi_normalized": 1232.14,
+        "ltp": 48.55,
+        "premium": 48.55
+      },
+      "PEdata": {
+        "strike_price": 25700,
+        "total_oi": 1470300,
+        "total_oi_normalized": 735.15,
+        "change_in_oi": -84890,
+        "change_in_oi_normalized": -42.45,
+        "ltp": 233.85,
+        "premium": 31.15
+      },
+      "combined": {
+        "net_oi_sum": 6101.65,
+        "net_coi_sum": 1189.69,
+        "diff_toi": -4631.35,
+        "diff_coi": -1274.59,
+        "pcr": 0.14
+      }
+    },
+    "25750": {
+      "CEdata": {
+        "strike_price": 25750,
+        "total_oi": 4242225,
+        "total_oi_normalized": 2121.11,
+        "change_in_oi": 742495,
+        "change_in_oi_normalized": 371.25,
+        "ltp": 36.85,
+        "premium": 36.85
+      },
+      "PEdata": {
+        "strike_price": 25750,
+        "total_oi": 420940,
+        "total_oi_normalized": 210.47,
+        "change_in_oi": 42055,
+        "change_in_oi_normalized": 21.03,
+        "ltp": 273,
+        "premium": 20.3
+      },
+      "combined": {
+        "net_oi_sum": 2331.58,
+        "net_coi_sum": 392.28,
+        "diff_toi": -1910.64,
+        "diff_coi": -350.22,
+        "pcr": 0.1
+      }
+    },
+    "25800": {
+      "CEdata": {
+        "strike_price": 25800,
+        "total_oi": 8301930,
+        "total_oi_normalized": 4150.97,
+        "change_in_oi": 2071615,
+        "change_in_oi_normalized": 1035.81,
+        "ltp": 27.8,
+        "premium": 27.8
+      },
+      "PEdata": {
+        "strike_price": 25800,
+        "total_oi": 806650,
+        "total_oi_normalized": 403.32,
+        "change_in_oi": -48230,
+        "change_in_oi_normalized": -24.11,
+        "ltp": 314.6,
+        "premium": 11.9
+      },
+      "combined": {
+        "net_oi_sum": 4554.29,
+        "net_coi_sum": 1011.7,
+        "diff_toi": -3747.65,
+        "diff_coi": -1059.92,
+        "pcr": 0.1
+      }
+    },
+    "25850": {
+      "CEdata": {
+        "strike_price": 25850,
+        "total_oi": 3436225,
+        "total_oi_normalized": 1718.11,
+        "change_in_oi": 766220,
+        "change_in_oi_normalized": 383.11,
+        "ltp": 21.15,
+        "premium": 21.15
+      },
+      "PEdata": {
+        "strike_price": 25850,
+        "total_oi": 145275,
+        "total_oi_normalized": 72.64,
+        "change_in_oi": -36660,
+        "change_in_oi_normalized": -18.33,
+        "ltp": 358.65,
+        "premium": 5.95
+      },
+      "combined": {
+        "net_oi_sum": 1790.75,
+        "net_coi_sum": 364.78,
+        "diff_toi": -1645.47,
+        "diff_coi": -401.44,
+        "pcr": 0.04
+      }
+    },
+    "25900": {
+      "CEdata": {
+        "strike_price": 25900,
+        "total_oi": 6242535,
+        "total_oi_normalized": 3121.27,
+        "change_in_oi": 1683890,
+        "change_in_oi_normalized": 841.95,
+        "ltp": 15.9,
+        "premium": 15.9
+      },
+      "PEdata": {
+        "strike_price": 25900,
+        "total_oi": 341380,
+        "total_oi_normalized": 170.69,
+        "change_in_oi": -41860,
+        "change_in_oi_normalized": -20.93,
+        "ltp": 400.25,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 3291.96,
+        "net_coi_sum": 821.02,
+        "diff_toi": -2950.58,
+        "diff_coi": -862.88,
+        "pcr": 0.05
+      }
+    },
+    "25950": {
+      "CEdata": {
+        "strike_price": 25950,
+        "total_oi": 2492490,
+        "total_oi_normalized": 1246.24,
+        "change_in_oi": 490880,
+        "change_in_oi_normalized": 245.44,
+        "ltp": 12.5,
+        "premium": 12.5
+      },
+      "PEdata": {
+        "strike_price": 25950,
+        "total_oi": 80405,
+        "total_oi_normalized": 40.2,
+        "change_in_oi": -4160,
+        "change_in_oi_normalized": -2.08,
+        "ltp": 451.05,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 1286.44,
+        "net_coi_sum": 243.36,
+        "diff_toi": -1206.04,
+        "diff_coi": -247.52,
+        "pcr": 0.03
+      }
+    },
+    "26000": {
+      "CEdata": {
+        "strike_price": 26000,
+        "total_oi": 9847045,
+        "total_oi_normalized": 4923.52,
+        "change_in_oi": 1825395,
+        "change_in_oi_normalized": 912.7,
+        "ltp": 10.2,
+        "premium": 10.2
+      },
+      "PEdata": {
+        "strike_price": 26000,
+        "total_oi": 909610,
+        "total_oi_normalized": 454.81,
+        "change_in_oi": 5850,
+        "change_in_oi_normalized": 2.92,
+        "ltp": 498.05,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 5378.33,
+        "net_coi_sum": 915.62,
+        "diff_toi": -4468.71,
+        "diff_coi": -909.78,
+        "pcr": 0.09
+      }
+    },
+    "26050": {
+      "CEdata": {
+        "strike_price": 26050,
+        "total_oi": 1947205,
+        "total_oi_normalized": 973.6,
+        "change_in_oi": 189995,
+        "change_in_oi_normalized": 95.0,
+        "ltp": 8.05,
+        "premium": 8.05
+      },
+      "PEdata": {
+        "strike_price": 26050,
+        "total_oi": 55835,
+        "total_oi_normalized": 27.92,
+        "change_in_oi": -2600,
+        "change_in_oi_normalized": -1.3,
+        "ltp": 546.65,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 1001.52,
+        "net_coi_sum": 93.7,
+        "diff_toi": -945.68,
+        "diff_coi": -96.3,
+        "pcr": 0.03
+      }
+    },
+    "26100": {
+      "CEdata": {
+        "strike_price": 26100,
+        "total_oi": 5869760,
+        "total_oi_normalized": 2934.88,
+        "change_in_oi": 1291225,
+        "change_in_oi_normalized": 645.61,
+        "ltp": 6.5,
+        "premium": 6.5
+      },
+      "PEdata": {
+        "strike_price": 26100,
+        "total_oi": 299910,
+        "total_oi_normalized": 149.96,
+        "change_in_oi": -11570,
+        "change_in_oi_normalized": -5.79,
+        "ltp": 595,
+        "premium": 0
+      },
+      "combined": {
+        "net_oi_sum": 3084.84,
+        "net_coi_sum": 639.82,
+        "diff_toi": -2784.92,
+        "diff_coi": -651.4,
+        "pcr": 0.05
+      }
+    }
+  }
+}
