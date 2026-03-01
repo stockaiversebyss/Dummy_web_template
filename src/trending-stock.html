@@ -331,8 +331,7 @@
             <span class="panel-action" onclick="toggleViewAll(this,'vs')">View all</span>
           </div>
           <div class="filter-bar">
-            <button class="filter-btn active-green" onclick="switchFilter(this,'vs','gainers')">Top Gainers</button>
-            <button class="filter-btn" onclick="switchFilter(this,'vs','losers')">Top Losers</button>
+            <button class="filter-btn active-green" onclick="switchFilter(this,'vs','gainers')">Volume Gainer</button>
           </div>
           <div class="filter-panel active" id="filter-vs-gainers"><div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Loading…</p></div></div>
           <div class="filter-panel"        id="filter-vs-losers"> <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Loading…</p></div></div>
@@ -389,17 +388,23 @@
       }
 
       function showError(msg) {
-        ['filter-pm-gainers','filter-pm-losers','filter-vs-gainers','filter-vs-losers'].forEach(function(id) {
+        ['filter-pm-gainers','filter-pm-losers'].forEach(function(id) {
           document.getElementById(id).innerHTML =
             '<div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
             + '<p>Could not load data.</p><p class="err">' + msg + '</p></div>';
         });
       }
 
+      function showVsError(msg) {
+        document.getElementById('filter-vs-gainers').innerHTML =
+          '<div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+          + '<p>Could not load data.</p><p class="err">' + msg + '</p></div>';
+      }
+
       /* ── FETCH ── */
       function setLoading() {
         const spinner = '<div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Loading…</p></div>';
-        ['filter-pm-gainers','filter-pm-losers','filter-vs-gainers','filter-vs-losers'].forEach(id => {
+        ['filter-pm-gainers','filter-pm-losers','filter-vs-gainers'].forEach(id => {
           document.getElementById(id).innerHTML = spinner;
         });
         document.getElementById('no-data-banner').classList.remove('visible');
@@ -411,34 +416,89 @@
         document.getElementById('ts-date-label').textContent = fmt;
         renderTable('filter-pm-gainers', data.top_gainers, 'gainers');
         renderTable('filter-pm-losers',  data.top_losers,  'losers');
-        renderTable('filter-vs-gainers', data.top_gainers, 'gainers');
-        renderTable('filter-vs-losers',  data.top_losers,  'losers');
-        // Reset all View all buttons
-        document.querySelectorAll('.panel-action').forEach(b => b.textContent = 'View all');
-        document.querySelectorAll('.extra-row').forEach(r => r.style.display = 'none');
+        // Reset Price Mover View all button
+        var pmPanel = document.getElementById('tab-price-mover');
+        pmPanel.querySelector('.panel-action').textContent = 'View all';
+        pmPanel.querySelectorAll('.extra-row').forEach(r => r.style.display = 'none');
+      }
+
+      function renderVsTable(containerId, stocks) {
+        const el = document.getElementById(containerId);
+        if (!stocks || stocks.length === 0) {
+          el.innerHTML = '<div class="state-msg"><p>No data available.</p></div>';
+          return;
+        }
+        let rows = stocks.map((s, i) => `
+          <tr${i >= 5 ? ' class="extra-row"' : ''}>
+            <td class="td-rank">${i + 1}</td>
+            <td class="td-symbol">${s.symbol}</td>
+            <td class="td-volume">${fmtVol(s.volume)}</td>
+            <td class="td-volume">${fmtVol(s.emavol20)}</td>
+            <td class="td-change up">${Number(s.volume_shocker).toFixed(2)}x</td>
+          </tr>`).join('');
+        el.innerHTML = `
+          <div class="stock-table-wrap">
+            <table class="stock-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Symbol</th>
+                  <th>Volume</th>
+                  <th>EMA Vol (20D)</th>
+                  <th>Shock Ratio</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>`;
+      }
+
+      function renderVsData(data) {
+        renderVsTable('filter-vs-gainers', data.volume_shockers);
+        // Reset Volume Shockers View all button
+        var vsPanel = document.getElementById('tab-volume-shockers');
+        vsPanel.querySelector('.panel-action').textContent = 'View all';
+        vsPanel.querySelectorAll('.extra-row').forEach(r => r.style.display = 'none');
       }
 
       async function loadData(dateStr) {
         setLoading();
-        const url = dateStr ? '/data/trending/' + dateStr : '/data/trending-latest';
+        const pmUrl = dateStr ? '/data/trending/' + dateStr : '/data/trending-latest';
+        const vsUrl = dateStr ? '/data/volumeshocker/' + dateStr : '/data/volumeshocker-latest';
+
+        // Price Mover
         try {
-          const res = await fetch(url);
+          const res = await fetch(pmUrl);
           if (res.status === 404) {
             const banner = document.getElementById('no-data-banner');
             document.getElementById('no-data-msg').textContent =
               'No data found for ' + dateStr.slice(6,8) + '/' + dateStr.slice(4,6) + '/' + dateStr.slice(0,4);
             banner.classList.add('visible');
-            ['filter-pm-gainers','filter-pm-losers','filter-vs-gainers','filter-vs-losers'].forEach(id => {
+            ['filter-pm-gainers','filter-pm-losers'].forEach(id => {
               document.getElementById(id).innerHTML = '<div class="state-msg"><p>—</p></div>';
             });
             document.getElementById('ts-date-label').textContent = '—';
-            return;
+          } else if (!res.ok) {
+            throw new Error('HTTP ' + res.status);
+          } else {
+            renderData(await res.json());
           }
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          const data = await res.json();
-          renderData(data);
         } catch (e) {
           showError(e.message);
+        }
+
+        // Volume Shockers
+        try {
+          const vsRes = await fetch(vsUrl);
+          if (vsRes.status === 404) {
+            document.getElementById('filter-vs-gainers').innerHTML = '<div class="state-msg"><p>No volume shocker data for this date.</p></div>';
+          } else if (!vsRes.ok) {
+            throw new Error('HTTP ' + vsRes.status);
+          } else {
+            renderVsData(await vsRes.json());
+          }
+        } catch (e) {
+          showVsError(e.message);
         }
       }
 

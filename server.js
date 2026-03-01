@@ -18,7 +18,15 @@ const MIME = {
 
 function latestTrendingFile() {
   const files = fs.readdirSync(DATA_DIR)
-    .filter(f => /^trendingstock_details\d{8}\.json$/.test(f))
+    .filter(f => /^trendingstock_pricemover\d{8}\.json$/.test(f))
+    .map(f => ({ name: f, mtime: fs.statSync(path.join(DATA_DIR, f)).mtime }))
+    .sort((a, b) => b.mtime - a.mtime);
+  return files.length ? path.join(DATA_DIR, files[0].name) : null;
+}
+
+function latestVolumeshockerFile() {
+  const files = fs.readdirSync(DATA_DIR)
+    .filter(f => /^trendingstock_volumeshocker_\d{8}\.json$/.test(f))
     .map(f => ({ name: f, mtime: fs.statSync(path.join(DATA_DIR, f)).mtime }))
     .sort((a, b) => b.mtime - a.mtime);
   return files.length ? path.join(DATA_DIR, files[0].name) : null;
@@ -58,11 +66,52 @@ http.createServer(function(req, res) {
       res.end(JSON.stringify({ error: 'Invalid date. Use YYYYMMDD.' }));
       return;
     }
-    const file = path.join(DATA_DIR, 'trendingstock_details' + dateStr + '.json');
+    const file = path.join(DATA_DIR, 'trendingstock_pricemover' + dateStr + '.json');
     fs.readFile(file, function(err, data) {
       if (err) {
         res.writeHead(404, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'No data found for date ' + dateStr }));
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.end(data);
+    });
+    return;
+  }
+
+  // Auto-resolve latest volumeshocker file
+  if (urlPath === '/data/volumeshocker-latest') {
+    const file = latestVolumeshockerFile();
+    if (!file) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'No trendingstock_volumeshocker file found in ' + DATA_DIR }));
+      return;
+    }
+    fs.readFile(file, function(err, data) {
+      if (err) {
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Error reading file: ' + file);
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.end(data);
+    });
+    return;
+  }
+
+  // Serve volumeshocker data for a specific date: /data/volumeshocker/YYYYMMDD
+  if (urlPath.startsWith('/data/volumeshocker/')) {
+    const dateStr = urlPath.slice(20);
+    if (!/^\d{8}$/.test(dateStr)) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Invalid date. Use YYYYMMDD.' }));
+      return;
+    }
+    const file = path.join(DATA_DIR, 'trendingstock_volumeshocker_' + dateStr + '.json');
+    fs.readFile(file, function(err, data) {
+      if (err) {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'No volumeshocker data found for date ' + dateStr }));
         return;
       }
       res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
