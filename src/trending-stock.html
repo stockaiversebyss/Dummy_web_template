@@ -5,274 +5,367 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trending Stock – StockAiVerse</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
     <style>
-      * { box-sizing: border-box; margin: 0; padding: 0; }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --blue-900: #0a1628;
+        --blue-800: #0d2040;
+        --blue-700: #0f3460;
+        --blue-600: #1565C0;
+        --blue-500: #1976D2;
+        --blue-400: #2196F3;
+        --blue-300: #64B5F6;
+        --blue-100: #BBDEFB;
+        --blue-50:  #E3F2FD;
+        --accent:   #00B4D8;
+        --white:    #ffffff;
+        --gray-50:  #F8FAFC;
+        --gray-100: #EEF2F7;
+        --gray-300: #CBD5E1;
+        --gray-500: #64748B;
+        --gray-700: #334155;
+        --green:    #00C897;
+        --red:      #FF4B6E;
+        --font:     'Plus Jakarta Sans', sans-serif;
+        --serif:    'Instrument Serif', serif;
+      }
+
+      html { scroll-behavior: smooth; }
       body {
+        font-family: var(--font);
+        background: var(--gray-50);
+        color: var(--gray-700);
         display: flex;
         flex-direction: column;
         height: 100vh;
         overflow: hidden;
-        background: #0b0f1a;
-        font-family: "DM Sans", sans-serif;
       }
+      em { font-style: italic; font-family: var(--serif); color: var(--accent); font-weight: 400; }
 
-      /* Topbar */
+      /* ── TOPBAR ── */
       .topbar {
-        height: 58px;
+        height: 56px;
         flex-shrink: 0;
         display: flex;
         align-items: center;
         padding: 0 24px;
-        border-bottom: 1px solid #1a2540;
-        background: #0b0f1a;
-        gap: 14px;
+        border-bottom: 1.5px solid var(--gray-100);
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(16px);
+        gap: 12px;
+        box-shadow: 0 2px 12px rgba(21,101,192,0.04);
       }
       .search-wrap {
         display: flex; align-items: center; gap: 8px;
-        background: #111827; border: 1px solid #1e2d47;
+        background: var(--gray-50); border: 1.5px solid var(--gray-100);
         border-radius: 10px; padding: 0 14px;
-        height: 36px; flex: 1; max-width: 380px;
-        transition: border-color 0.2s;
+        height: 36px; flex: 1; max-width: 360px;
+        transition: border-color 0.2s, box-shadow 0.2s;
       }
-      .search-wrap:focus-within { border-color: #3b7ef8; }
-      .search-wrap svg { width: 14px; height: 14px; stroke: #4f617a; fill: none; stroke-width: 2; flex-shrink: 0; }
-      .search-wrap input { flex: 1; background: none; border: none; outline: none; font-family: "DM Sans", sans-serif; font-size: 0.87rem; color: #e8edf5; }
-      .search-wrap input::placeholder { color: #4f617a; }
-      .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+      .search-wrap:focus-within {
+        border-color: var(--blue-400);
+        box-shadow: 0 0 0 3px rgba(33,150,243,0.08);
+      }
+      .search-wrap svg { width: 13px; height: 13px; stroke: var(--gray-300); fill: none; stroke-width: 2; flex-shrink: 0; }
+      .search-wrap input { flex: 1; background: none; border: none; outline: none; font-family: var(--font); font-size: 0.85rem; color: var(--gray-700); }
+      .search-wrap input::placeholder { color: var(--gray-300); }
+      .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
       .tb-icon-btn {
-        width: 34px; height: 34px; border-radius: 8px;
-        border: 1px solid #1e2d47; background: #111827;
+        width: 34px; height: 34px; border-radius: 9px;
+        border: 1.5px solid var(--gray-100); background: var(--white);
         display: flex; align-items: center; justify-content: center;
-        cursor: pointer; transition: border-color 0.2s, background 0.2s;
+        cursor: pointer; transition: all 0.2s;
       }
-      .tb-icon-btn:hover { border-color: #3b7ef8; background: #141c2e; }
-      .tb-icon-btn svg { width: 15px; height: 15px; stroke: #8899b4; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+      .tb-icon-btn:hover { border-color: var(--blue-300); background: var(--blue-50); }
+      .tb-icon-btn svg { width: 14px; height: 14px; stroke: var(--gray-500); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
       .topbar-avatar {
         width: 34px; height: 34px; border-radius: 50%;
-        background: #2563c4; display: flex; align-items: center; justify-content: center;
-        font-family: "Sora", sans-serif; font-size: 0.82rem; font-weight: 700;
-        color: #fff; cursor: pointer; flex-shrink: 0;
+        background: linear-gradient(135deg, var(--blue-600), var(--accent));
+        display: flex; align-items: center; justify-content: center;
+        font-family: var(--font); font-size: 0.78rem; font-weight: 800;
+        color: var(--white); cursor: pointer; flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(21,101,192,0.25);
       }
 
-      /* Content */
-      .content { flex: 1; overflow-y: auto; padding: 28px 28px 32px; }
+      /* ── CONTENT ── */
+      .content { flex: 1; overflow-y: auto; padding: 26px 26px 32px; }
       .content::-webkit-scrollbar { width: 5px; }
       .content::-webkit-scrollbar-track { background: transparent; }
-      .content::-webkit-scrollbar-thumb { background: #1e2d47; border-radius: 4px; }
+      .content::-webkit-scrollbar-thumb { background: var(--gray-100); border-radius: 4px; }
 
       /* Page header */
-      .pg-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; gap: 16px; }
-      .pg-title { font-family: "Sora", sans-serif; font-size: 1.75rem; font-weight: 800; color: #e8edf5; line-height: 1.2; margin-bottom: 4px; }
-      .pg-title span { color: #3b7ef8; }
-      .pg-sub { font-size: 0.86rem; color: #8899b4; }
-      .pg-sub b { color: #3b7ef8; font-weight: 600; }
+      .pg-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 22px; gap: 16px; }
+      .pg-title {
+        font-family: var(--font); font-size: 1.7rem; font-weight: 800;
+        color: var(--blue-900); line-height: 1.2; margin-bottom: 4px;
+        letter-spacing: -0.5px;
+      }
+      .pg-title span { color: var(--blue-500); }
+      .pg-sub { font-size: 0.85rem; color: var(--gray-500); font-weight: 500; }
+      .pg-sub b { color: var(--blue-500); font-weight: 700; }
+
       .live-badge {
         display: flex; align-items: center; gap: 6px;
-        background: rgba(22,163,74,0.12); border: 1px solid rgba(22,163,74,0.3);
-        border-radius: 20px; padding: 5px 12px;
-        font-size: 0.75rem; font-weight: 600; color: #4ade80; white-space: nowrap; flex-shrink: 0;
+        background: rgba(0,200,151,0.08); border: 1.5px solid rgba(0,200,151,0.25);
+        border-radius: 20px; padding: 5px 13px;
+        font-size: 0.72rem; font-weight: 700; color: var(--green);
+        white-space: nowrap; flex-shrink: 0;
+        text-transform: uppercase; letter-spacing: 0.3px;
       }
-      .live-badge .pulse { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; animation: pulse 1.8s infinite; }
-      @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.85)} }
+      .live-badge .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 1.8s infinite; }
 
-      .date-badge {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        background: rgba(59,126,248,0.1);
-        border: 1px solid rgba(59,126,248,0.25);
-        border-radius: 20px;
-        padding: 5px 12px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #3b7ef8;
-        white-space: nowrap;
-        flex-shrink: 0;
+      @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.45;} }
+      @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+      /* ── TAB SLIDER ── */
+      .tab-slider {
+        display: inline-flex; align-items: center;
+        background: var(--white); border: 1.5px solid var(--gray-100);
+        border-radius: 12px; padding: 4px; gap: 3px;
+        margin-bottom: 22px;
+        box-shadow: 0 2px 8px rgba(21,101,192,0.05);
       }
-      .date-badge svg {
-        width: 13px; height: 13px;
-        stroke: #3b7ef8; fill: none;
-        stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-        flex-shrink: 0;
+      .tab-pill {
+        padding: 8px 22px; border-radius: 9px;
+        font-family: var(--font); font-size: 0.84rem; font-weight: 600;
+        color: var(--gray-500); cursor: pointer;
+        transition: all 0.2s; user-select: none; white-space: nowrap;
       }
-
-      /* Panel */
-      .panel { background: #111827; border: 1px solid #1e2d47; border-radius: 14px; overflow: hidden; }
-      .panel-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #1a2540; }
-      .panel-title { font-family: "Sora", sans-serif; font-size: 0.9rem; font-weight: 700; color: #e8edf5; }
-      .panel-action { font-size: 0.75rem; color: #3b7ef8; cursor: pointer; font-weight: 500; transition: opacity 0.2s; }
-      .panel-action:hover { opacity: 0.75; }
-
-      /* Tab Slider */
-      .tab-slider { display: inline-flex; align-items: center; background: #111827; border: 1px solid #1e2d47; border-radius: 12px; padding: 4px; gap: 4px; margin-bottom: 24px; }
-      .tab-pill { padding: 8px 22px; border-radius: 9px; font-family: "Sora", sans-serif; font-size: 0.84rem; font-weight: 600; color: #8899b4; cursor: pointer; transition: background 0.2s, color 0.2s; user-select: none; white-space: nowrap; }
-      .tab-pill:hover { color: #e8edf5; }
-      .tab-pill.active { background: #3b7ef8; color: #fff; box-shadow: 0 2px 10px rgba(59,126,248,0.35); }
+      .tab-pill:hover { color: var(--blue-600); background: var(--blue-50); }
+      .tab-pill.active {
+        background: var(--blue-600); color: var(--white);
+        box-shadow: 0 3px 12px rgba(21,101,192,0.3);
+      }
       .tab-panel { display: none; }
-      .tab-panel.active { display: block; }
+      .tab-panel.active { display: block; animation: fadeUp 0.25s ease both; }
 
-      /* Filter Bar */
-      .filter-bar { display: flex; align-items: center; gap: 8px; padding: 14px 20px; border-bottom: 1px solid #1a2540; }
+      /* ── DATE FILTER ROW ── */
+      .date-filter-row {
+        display: flex; align-items: center; gap: 10px; margin-bottom: 22px;
+      }
+      .date-input-wrap {
+        display: flex; align-items: center; gap: 8px;
+        background: var(--white); border: 1.5px solid var(--gray-100);
+        border-radius: 10px; padding: 0 14px; height: 40px;
+        transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer;
+        box-shadow: 0 1px 4px rgba(21,101,192,0.04);
+      }
+      .date-input-wrap:focus-within {
+        border-color: var(--blue-400);
+        box-shadow: 0 0 0 3px rgba(33,150,243,0.08);
+      }
+      .date-input-wrap svg { width: 14px; height: 14px; stroke: var(--blue-400); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+      .date-input-wrap input[type="date"] {
+        background: none; border: none; outline: none;
+        font-family: var(--font); font-size: 0.83rem; font-weight: 600;
+        color: var(--blue-700); cursor: pointer; width: 130px;
+      }
+      .date-input-wrap input[type="date"]::-webkit-calendar-picker-indicator {
+        opacity: 0.5; cursor: pointer;
+      }
+
+      /* ── PANEL ── */
+      .panel {
+        background: var(--white); border: 1.5px solid var(--gray-100);
+        border-radius: 20px; overflow: hidden;
+        box-shadow: 0 2px 16px rgba(21,101,192,0.05);
+        margin-bottom: 16px;
+      }
+      .panel-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 16px 22px; border-bottom: 1.5px solid var(--gray-100);
+        background: var(--gray-50);
+      }
+      .panel-title {
+        font-family: var(--font); font-size: 0.92rem; font-weight: 800;
+        color: var(--blue-900); letter-spacing: -0.2px;
+      }
+      .panel-title-date {
+        font-size: 0.75rem; font-weight: 600; color: var(--blue-500);
+        background: var(--blue-50); padding: 3px 10px; border-radius: 8px;
+        margin-left: 8px;
+      }
+      .panel-action {
+        font-size: 0.78rem; color: var(--blue-500); cursor: pointer;
+        font-weight: 700; transition: color 0.2s;
+        padding: 4px 10px; border-radius: 8px; background: var(--blue-50);
+      }
+      .panel-action:hover { color: var(--blue-700); background: var(--blue-100); }
+
+      /* ── FILTER BAR ── */
+      .filter-bar {
+        display: flex; align-items: center; gap: 8px;
+        padding: 12px 22px; border-bottom: 1.5px solid var(--gray-100);
+        background: var(--white);
+      }
       .filter-btn {
         padding: 6px 18px; border-radius: 8px;
-        font-family: "Sora", sans-serif; font-size: 0.78rem; font-weight: 600;
-        cursor: pointer; border: 1px solid #1e2d47; background: transparent; color: #8899b4;
-        transition: background 0.2s, color 0.2s, border-color 0.2s; user-select: none; white-space: nowrap;
+        font-family: var(--font); font-size: 0.8rem; font-weight: 600;
+        cursor: pointer; border: 1.5px solid var(--gray-100);
+        background: transparent; color: var(--gray-500);
+        transition: all 0.2s; user-select: none; white-space: nowrap;
       }
-      .filter-btn:hover { color: #e8edf5; border-color: #2a3f60; }
-      .filter-btn.active-green { background: rgba(74,222,128,0.12); border-color: rgba(74,222,128,0.35); color: #4ade80; }
-      .filter-btn.active-red   { background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.35); color: #f87171; }
+      .filter-btn:hover { color: var(--blue-600); border-color: var(--blue-300); background: var(--blue-50); }
+      .filter-btn.active-green {
+        background: rgba(0,200,151,0.08);
+        border-color: rgba(0,200,151,0.3);
+        color: #00a37a;
+        font-weight: 700;
+      }
+      .filter-btn.active-red {
+        background: rgba(255,75,110,0.08);
+        border-color: rgba(255,75,110,0.3);
+        color: var(--red);
+        font-weight: 700;
+      }
       .filter-panel { display: none; }
       .filter-panel.active { display: block; }
 
       /* ── STOCK TABLE ── */
       .stock-table-wrap { overflow-x: auto; }
-      .stock-table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      .stock-table thead tr {
-        border-bottom: 1px solid #1a2540;
-      }
+      .stock-table { width: 100%; border-collapse: collapse; }
+      .stock-table thead tr { border-bottom: 1.5px solid var(--gray-100); }
       .stock-table thead th {
-        padding: 10px 20px;
-        font-size: 0.68rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: #4f617a;
-        text-align: left;
-        white-space: nowrap;
+        padding: 11px 22px;
+        font-size: 0.67rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.1em;
+        color: var(--gray-500); text-align: left; white-space: nowrap;
+        background: var(--gray-50);
       }
       .stock-table thead th:last-child { text-align: right; }
       .stock-table tbody tr {
-        border-bottom: 1px solid #0f1829;
-        transition: background 0.12s;
-        cursor: default;
+        border-bottom: 1px solid var(--gray-100);
+        transition: background 0.12s; cursor: default;
       }
       .stock-table tbody tr:last-child { border-bottom: none; }
-      .stock-table tbody tr:hover { background: #0f1829; }
+      .stock-table tbody tr:hover { background: var(--blue-50); }
       .stock-table td {
-        padding: 13px 20px;
-        font-size: 0.85rem;
-        color: #8899b4;
-        white-space: nowrap;
+        padding: 14px 22px; font-size: 0.85rem;
+        color: var(--gray-500); white-space: nowrap;
       }
       .stock-table td:last-child { text-align: right; }
 
       .td-rank {
-        font-family: "Sora", sans-serif;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #4f617a;
-        width: 36px;
+        font-family: var(--font); font-size: 0.75rem;
+        font-weight: 700; color: var(--gray-300); width: 36px;
       }
       .td-symbol {
-        font-family: "Sora", sans-serif;
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: #e8edf5;
-        min-width: 120px;
+        font-family: var(--font); font-size: 0.88rem;
+        font-weight: 800; color: var(--blue-900); min-width: 120px;
+        letter-spacing: -0.1px;
       }
-      .td-price {
-        font-family: "Sora", sans-serif;
-        font-weight: 600;
-        color: #e8edf5;
-      }
-      .td-change {
-        font-family: "Sora", sans-serif;
-        font-weight: 700;
-        font-size: 0.85rem;
-      }
-      .td-change.up   { color: #4ade80; }
-      .td-change.down { color: #f87171; }
-      .td-volume { color: #8899b4; font-size: 0.82rem; }
+      .td-price { font-family: var(--font); font-weight: 600; color: var(--gray-700); }
+      .td-change { font-family: var(--font); font-weight: 700; font-size: 0.85rem; }
+      .td-change.up   { color: #00a37a; }
+      .td-change.down { color: var(--red); }
+      .td-volume { color: var(--gray-500); font-size: 0.82rem; }
 
-      /* Loading / error state */
+      /* ── STATE MESSAGES ── */
       .state-msg {
         display: flex; flex-direction: column;
         align-items: center; justify-content: center;
-        padding: 48px 20px; gap: 10px; color: #4f617a;
+        padding: 52px 20px; gap: 12px; color: var(--gray-300);
       }
-      .state-msg svg { width: 34px; height: 34px; stroke: #1e2d47; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-      .state-msg p { font-size: 0.82rem; }
-      .state-msg p.err { color: #f87171; font-size: 0.78rem; margin-top: 4px; }
+      .state-msg svg { width: 34px; height: 34px; stroke: var(--gray-100); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+      .state-msg p { font-size: 0.83rem; font-weight: 500; color: var(--gray-300); }
+      .state-msg p.err { color: var(--red); font-size: 0.78rem; margin-top: 4px; }
 
-      /* Extra rows hidden until View all */
+      /* ── EXTRA ROWS ── */
       .extra-row { display: none; }
 
-      /* Date picker */
-      .date-filter-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 24px;
-      }
-      .date-input-wrap {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: #111827;
-        border: 1px solid #1e2d47;
-        border-radius: 10px;
-        padding: 0 14px;
-        height: 38px;
-        transition: border-color 0.2s;
-        cursor: pointer;
-      }
-      .date-input-wrap:focus-within { border-color: #3b7ef8; }
-      .date-input-wrap svg { width: 14px; height: 14px; stroke: #4f617a; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-      .date-input-wrap input[type="date"] {
-        background: none; border: none; outline: none;
-        font-family: "Sora", sans-serif;
-        font-size: 0.82rem; font-weight: 600;
-        color: #e8edf5; cursor: pointer;
-        width: 130px;
-      }
-      .date-input-wrap input[type="date"]::-webkit-calendar-picker-indicator {
-        filter: invert(0.5); cursor: pointer;
-      }
-
-      /* No data banner */
+      /* ── NO DATA BANNER ── */
       .no-data-banner {
-        display: none;
-        align-items: center;
-        gap: 10px;
-        background: rgba(248,113,113,0.08);
-        border: 1px solid rgba(248,113,113,0.25);
-        border-radius: 10px;
-        padding: 10px 16px;
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: #f87171;
-        margin-bottom: 20px;
+        display: none; align-items: center; gap: 10px;
+        background: rgba(255,75,110,0.06); border: 1.5px solid rgba(255,75,110,0.2);
+        border-radius: 12px; padding: 10px 16px;
+        font-size: 0.83rem; font-weight: 600; color: var(--red);
+        margin-bottom: 18px;
       }
       .no-data-banner.visible { display: flex; }
-      .no-data-banner svg { width: 16px; height: 16px; stroke: #f87171; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+      .no-data-banner svg { width: 16px; height: 16px; stroke: var(--red); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+      /* ── OHLCV MODAL ── */
+      .ohlcv-overlay {
+        position: fixed; inset: 0; z-index: 1000;
+        background: rgba(10,22,40,0.45); backdrop-filter: blur(4px);
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; pointer-events: none; transition: opacity 0.22s;
+      }
+      .ohlcv-overlay.open { opacity: 1; pointer-events: all; }
+      .ohlcv-modal {
+        background: var(--white); border: 1.5px solid var(--gray-100);
+        border-radius: 20px; padding: 0; width: 480px; max-width: 95vw;
+        box-shadow: 0 24px 64px rgba(10,22,40,0.18);
+        transform: translateY(16px) scale(0.98); transition: transform 0.22s;
+      }
+      .ohlcv-overlay.open .ohlcv-modal { transform: translateY(0) scale(1); }
+      .ohlcv-modal-head {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 18px 22px 16px; border-bottom: 1.5px solid var(--gray-100);
+      }
+      .ohlcv-symbol {
+        font-size: 1.1rem; font-weight: 800; color: var(--blue-900); letter-spacing: -0.3px;
+      }
+      .ohlcv-sub { font-size: 0.72rem; color: var(--gray-500); margin-top: 2px; font-weight: 500; }
+      .ohlcv-close {
+        width: 32px; height: 32px; border-radius: 50%;
+        background: var(--gray-50); border: 1.5px solid var(--gray-100);
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; color: var(--gray-500); font-size: 14px;
+        transition: all 0.15s; flex-shrink: 0;
+      }
+      .ohlcv-close:hover { background: var(--blue-50); color: var(--blue-600); border-color: var(--blue-300); }
+      .ohlcv-body { padding: 20px 22px 22px; }
+      .ohlcv-grid {
+        display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px;
+      }
+      .ohlcv-card {
+        background: var(--gray-50); border: 1.5px solid var(--gray-100);
+        border-radius: 12px; padding: 12px 14px;
+      }
+      .ohlcv-card-label {
+        font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.1em; color: var(--gray-500); margin-bottom: 5px;
+      }
+      .ohlcv-card-val {
+        font-size: 1rem; font-weight: 800; color: var(--blue-900); letter-spacing: -0.3px;
+      }
+      .ohlcv-card-val.green { color: var(--green); }
+      .ohlcv-card-val.red   { color: var(--red); }
+      .ohlcv-vol-row {
+        display: flex; align-items: center; justify-content: space-between;
+        background: var(--blue-50); border: 1.5px solid var(--blue-100);
+        border-radius: 12px; padding: 12px 16px;
+      }
+      .ohlcv-vol-label { font-size: 0.75rem; font-weight: 700; color: var(--blue-600); text-transform: uppercase; letter-spacing: 0.08em; }
+      .ohlcv-vol-val   { font-size: 1rem; font-weight: 800; color: var(--blue-900); }
+      .ohlcv-state {
+        display: flex; flex-direction: column; align-items: center;
+        justify-content: center; gap: 10px; padding: 36px 20px; color: var(--gray-300);
+      }
+      .ohlcv-state svg { width: 32px; height: 32px; stroke: var(--gray-200); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+      .ohlcv-state p { font-size: 0.83rem; color: var(--gray-300); font-weight: 500; }
+      .ohlcv-state p.err { color: var(--red); font-size: 0.78rem; }
+      .td-symbol-link { cursor: pointer; transition: color 0.15s; }
+      .td-symbol-link:hover { color: var(--blue-500); text-decoration: underline; }
+
+      /* ── TOAST ── */
+      .toast {
+        position: fixed; bottom: 28px; left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--blue-900); color: white;
+        padding: 12px 24px; border-radius: 30px;
+        font-size: 0.85rem; font-weight: 600;
+        opacity: 0; transition: all 0.3s;
+        pointer-events: none; z-index: 9999;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      }
+      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     </style>
   </head>
   <body>
-
-    <!-- Topbar -->
-    <div class="topbar">
-      <div class="search-wrap">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" placeholder="Search stock symbol…" />
-      </div>
-      <div class="topbar-right">
-        <div class="tb-icon-btn" title="Refresh" onclick="loadData()">
-          <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-        </div>
-        <div class="tb-icon-btn" title="Alerts">
-          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        </div>
-        <div class="topbar-avatar">H</div>
-      </div>
-    </div>
 
     <!-- Content -->
     <div class="content">
@@ -291,6 +384,9 @@
         <div class="tab-slider" style="margin-bottom:0;">
           <div class="tab-pill active" onclick="switchTab(this,'price-mover')">Price Mover</div>
           <div class="tab-pill" onclick="switchTab(this,'volume-shockers')">Volume Shockers</div>
+          <div class="tab-pill" onclick="switchTab(this,'52-week')">52 Week</div>
+          <div class="tab-pill" onclick="switchTab(this,'3-months')">3 Months</div>
+          <div class="tab-pill" onclick="switchTab(this,'6-months')">6 Months</div>
         </div>
         <div class="date-input-wrap">
           <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -306,11 +402,11 @@
 
       <!-- ── PRICE MOVER ── -->
       <div class="tab-panel active" id="tab-price-mover">
-        <div class="panel" style="margin-bottom:16px;">
+        <div class="panel">
           <div class="panel-header">
-            <div style="display:flex;align-items:center;gap:10px;">
+            <div style="display:flex;align-items:center;gap:8px;">
               <span class="panel-title">Price Mover</span>
-              <span id="ts-date-label" style="font-size:0.78rem;font-weight:600;color:#fff;">—</span>
+              <span id="ts-date-label" class="panel-title-date">—</span>
             </div>
             <span class="panel-action" onclick="toggleViewAll(this,'pm')">View all</span>
           </div>
@@ -318,14 +414,78 @@
             <button class="filter-btn active-green" onclick="switchFilter(this,'pm','gainers')">Top Gainers</button>
             <button class="filter-btn" onclick="switchFilter(this,'pm','losers')">Top Losers</button>
           </div>
-          <div class="filter-panel active" id="filter-pm-gainers"><div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Loading…</p></div></div>
-          <div class="filter-panel"        id="filter-pm-losers"> <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Loading…</p></div></div>
+          <div class="filter-panel active" id="filter-pm-gainers">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Loading…</p></div>
+          </div>
+          <div class="filter-panel" id="filter-pm-losers">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Loading…</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 52 WEEK ── -->
+      <div class="tab-panel" id="tab-52-week">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">52 Week High / Low</span>
+            <span class="panel-action" onclick="toggleViewAll(this,'wk')">View all</span>
+          </div>
+          <div class="filter-bar">
+            <button class="filter-btn active-green" onclick="switchFilter(this,'wk','high')">52W High</button>
+            <button class="filter-btn" onclick="switchFilter(this,'wk','low')">52W Low</button>
+          </div>
+          <div class="filter-panel active" id="filter-wk-high">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Coming soon</p></div>
+          </div>
+          <div class="filter-panel" id="filter-wk-low">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Coming soon</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 3 MONTHS ── -->
+      <div class="tab-panel" id="tab-3-months">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">3 Month High / Low</span>
+            <span class="panel-action" onclick="toggleViewAll(this,'3m')">View all</span>
+          </div>
+          <div class="filter-bar">
+            <button class="filter-btn active-green" onclick="switchFilter(this,'3m','high')">3M High</button>
+            <button class="filter-btn" onclick="switchFilter(this,'3m','low')">3M Low</button>
+          </div>
+          <div class="filter-panel active" id="filter-3m-high">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Coming soon</p></div>
+          </div>
+          <div class="filter-panel" id="filter-3m-low">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Coming soon</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 6 MONTHS ── -->
+      <div class="tab-panel" id="tab-6-months">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">6 Month High / Low</span>
+            <span class="panel-action" onclick="toggleViewAll(this,'6m')">View all</span>
+          </div>
+          <div class="filter-bar">
+            <button class="filter-btn active-green" onclick="switchFilter(this,'6m','high')">6M High</button>
+            <button class="filter-btn" onclick="switchFilter(this,'6m','low')">6M Low</button>
+          </div>
+          <div class="filter-panel active" id="filter-6m-high">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Coming soon</p></div>
+          </div>
+          <div class="filter-panel" id="filter-6m-low">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Coming soon</p></div>
+          </div>
         </div>
       </div>
 
       <!-- ── VOLUME SHOCKERS ── -->
       <div class="tab-panel" id="tab-volume-shockers">
-        <div class="panel" style="margin-bottom:16px;">
+        <div class="panel">
           <div class="panel-header">
             <span class="panel-title">Volume Shockers</span>
             <span class="panel-action" onclick="toggleViewAll(this,'vs')">View all</span>
@@ -333,12 +493,37 @@
           <div class="filter-bar">
             <button class="filter-btn active-green" onclick="switchFilter(this,'vs','gainers')">Volume Gainer</button>
           </div>
-          <div class="filter-panel active" id="filter-vs-gainers"><div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Loading…</p></div></div>
-          <div class="filter-panel"        id="filter-vs-losers"> <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Loading…</p></div></div>
+          <div class="filter-panel active" id="filter-vs-gainers">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Loading…</p></div>
+          </div>
+          <div class="filter-panel" id="filter-vs-losers">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Loading…</p></div>
+          </div>
         </div>
       </div>
 
     </div><!-- end content -->
+
+    <!-- OHLCV Modal -->
+    <div class="ohlcv-overlay" id="ohlcv-overlay" onclick="closeOHLCV(event)">
+      <div class="ohlcv-modal">
+        <div class="ohlcv-modal-head">
+          <div>
+            <div class="ohlcv-symbol" id="ohlcv-symbol">—</div>
+            <div class="ohlcv-sub" id="ohlcv-date">OHLCV Data</div>
+          </div>
+          <div class="ohlcv-close" onclick="closeOHLCVModal()">✕</div>
+        </div>
+        <div class="ohlcv-body" id="ohlcv-body">
+          <div class="ohlcv-state">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <p>Loading…</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
 
     <script>
       /* ── HELPERS ── */
@@ -365,7 +550,7 @@
         let rows = stocks.map((s, i) => `
           <tr${i >= 5 ? ' class="extra-row"' : ''}>
             <td class="td-rank">${i + 1}</td>
-            <td class="td-symbol">${s.symbol}</td>
+            <td class="td-symbol"><span class="td-symbol-link" onclick="fetchOHLCV('${s.symbol}')">${s.symbol}</span></td>
             <td class="td-price">${fmtPrice(s.close_price)}</td>
             <td class="td-change ${changeClass}">${arrow} ${Math.abs(s.perc_change).toFixed(2)}%</td>
             <td class="td-volume">${fmtVol(s.volume)}</td>
@@ -375,11 +560,7 @@
             <table class="stock-table">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Symbol</th>
-                  <th>Close Price</th>
-                  <th>Change</th>
-                  <th>Volume</th>
+                  <th>#</th><th>Symbol</th><th>Close Price</th><th>Change</th><th>Volume</th>
                 </tr>
               </thead>
               <tbody>${rows}</tbody>
@@ -416,7 +597,6 @@
         document.getElementById('ts-date-label').textContent = fmt;
         renderTable('filter-pm-gainers', data.top_gainers, 'gainers');
         renderTable('filter-pm-losers',  data.top_losers,  'losers');
-        // Reset Price Mover View all button
         var pmPanel = document.getElementById('tab-price-mover');
         pmPanel.querySelector('.panel-action').textContent = 'View all';
         pmPanel.querySelectorAll('.extra-row').forEach(r => r.style.display = 'none');
@@ -441,11 +621,7 @@
             <table class="stock-table">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Symbol</th>
-                  <th>Volume</th>
-                  <th>EMA Vol (20D)</th>
-                  <th>Shock Ratio</th>
+                  <th>#</th><th>Symbol</th><th>Volume</th><th>EMA Vol (20D)</th><th>Shock Ratio</th>
                 </tr>
               </thead>
               <tbody>${rows}</tbody>
@@ -455,7 +631,6 @@
 
       function renderVsData(data) {
         renderVsTable('filter-vs-gainers', data.volume_shockers);
-        // Reset Volume Shockers View all button
         var vsPanel = document.getElementById('tab-volume-shockers');
         vsPanel.querySelector('.panel-action').textContent = 'View all';
         vsPanel.querySelectorAll('.extra-row').forEach(r => r.style.display = 'none');
@@ -466,7 +641,6 @@
         const pmUrl = dateStr ? '/data/trending/' + dateStr : '/data/trending-latest';
         const vsUrl = dateStr ? '/data/volumeshocker/' + dateStr : '/data/volumeshocker-latest';
 
-        // Price Mover
         try {
           const res = await fetch(pmUrl);
           if (res.status === 404) {
@@ -483,11 +657,8 @@
           } else {
             renderData(await res.json());
           }
-        } catch (e) {
-          showError(e.message);
-        }
+        } catch (e) { showError(e.message); }
 
-        // Volume Shockers
         try {
           const vsRes = await fetch(vsUrl);
           if (vsRes.status === 404) {
@@ -497,16 +668,12 @@
           } else {
             renderVsData(await vsRes.json());
           }
-        } catch (e) {
-          showVsError(e.message);
-        }
+        } catch (e) { showVsError(e.message); }
       }
 
       function onDatePick(value) {
         if (!value) return;
-        // value is YYYY-MM-DD, convert to YYYYMMDD
-        const dateStr = value.replace(/-/g, '');
-        loadData(dateStr);
+        loadData(value.replace(/-/g, ''));
       }
 
       /* ── TAB / FILTER SWITCHING ── */
@@ -517,21 +684,24 @@
         document.getElementById('tab-' + tab).classList.add('active');
       }
 
+      var groupTabMap = { pm: 'tab-price-mover', vs: 'tab-volume-shockers', wk: 'tab-52-week', '3m': 'tab-3-months', '6m': 'tab-6-months' };
+      var groupFilters = { pm: ['gainers','losers'], vs: ['gainers','losers'], wk: ['high','low'], '3m': ['high','low'], '6m': ['high','low'] };
+
       function switchFilter(el, group, filter) {
         el.closest('.filter-bar').querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active-green','active-red'));
-        el.classList.add(filter === 'gainers' ? 'active-green' : 'active-red');
-        document.getElementById('filter-' + group + '-gainers').classList.remove('active');
-        document.getElementById('filter-' + group + '-losers').classList.remove('active');
+        el.classList.add(filter === 'losers' ? 'active-red' : 'active-green');
+        groupFilters[group].forEach(f => {
+          var fp = document.getElementById('filter-' + group + '-' + f);
+          if (fp) fp.classList.remove('active');
+        });
         document.getElementById('filter-' + group + '-' + filter).classList.add('active');
-        // Reset View all button and re-hide extra rows when switching filter
-        var tabId = group === 'pm' ? 'tab-price-mover' : 'tab-volume-shockers';
-        var panelEl = document.getElementById(tabId);
+        var panelEl = document.getElementById(groupTabMap[group]);
         panelEl.querySelector('.panel-action').textContent = 'View all';
         panelEl.querySelectorAll('.extra-row').forEach(r => r.style.display = 'none');
       }
 
       function toggleViewAll(el, group) {
-        var tabId = group === 'pm' ? 'tab-price-mover' : 'tab-volume-shockers';
+        var tabId = groupTabMap[group] || 'tab-price-mover';
         var activeFilter = document.getElementById(tabId).querySelector('.filter-panel.active');
         var extraRows = activeFilter.querySelectorAll('.extra-row');
         var expanded = el.textContent === 'Show less';
@@ -539,8 +709,104 @@
         el.textContent = expanded ? 'View all' : 'Show less';
       }
 
+      /* ── OHLCV MODAL ── */
+      async function fetchOHLCV(symbol) {
+        document.getElementById('ohlcv-symbol').textContent = symbol;
+        document.getElementById('ohlcv-date').textContent = 'OHLCV Data';
+        document.getElementById('ohlcv-body').innerHTML =
+          '<div class="ohlcv-state"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Loading…</p></div>';
+        document.getElementById('ohlcv-overlay').classList.add('open');
+
+        try {
+          const res = await fetch('/api/techengine/' + encodeURIComponent(symbol) + '/ohlcv');
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({ error: 'HTTP ' + res.status }));
+            document.getElementById('ohlcv-body').innerHTML =
+              '<div class="ohlcv-state"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+              + '<p>No OHLCV data found.</p><p class="err">' + (err.error || 'Not available') + '</p></div>';
+            return;
+          }
+          const d = await res.json();
+          renderOHLCV(d);
+        } catch (e) {
+          document.getElementById('ohlcv-body').innerHTML =
+            '<div class="ohlcv-state"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+            + '<p>Could not load data.</p><p class="err">' + e.message + '</p></div>';
+        }
+      }
+
+      function renderOHLCV(d) {
+        // Support both single record and array of records (use last/latest)
+        const rec = Array.isArray(d.data) && d.data.length ? d.data[d.data.length - 1] : d;
+        const dateStr = rec.date || rec.tsdate || '';
+        const fmtDate = dateStr.length === 8
+          ? dateStr.slice(6,8) + '/' + dateStr.slice(4,6) + '/' + dateStr.slice(0,4)
+          : dateStr || 'Latest';
+        document.getElementById('ohlcv-date').textContent = fmtDate;
+
+        const closeVal = parseFloat(rec.close || rec.close_price || 0);
+        const openVal  = parseFloat(rec.open  || 0);
+        const isUp = closeVal >= openVal;
+
+        document.getElementById('ohlcv-body').innerHTML = `
+          <div class="ohlcv-grid">
+            <div class="ohlcv-card">
+              <div class="ohlcv-card-label">Open</div>
+              <div class="ohlcv-card-val">${fmtPrice(rec.open || 0)}</div>
+            </div>
+            <div class="ohlcv-card">
+              <div class="ohlcv-card-label">High</div>
+              <div class="ohlcv-card-val green">${fmtPrice(rec.high || 0)}</div>
+            </div>
+            <div class="ohlcv-card">
+              <div class="ohlcv-card-label">Low</div>
+              <div class="ohlcv-card-val red">${fmtPrice(rec.low || 0)}</div>
+            </div>
+            <div class="ohlcv-card" style="grid-column:span 2;">
+              <div class="ohlcv-card-label">Close</div>
+              <div class="ohlcv-card-val ${isUp ? 'green' : 'red'}">${fmtPrice(rec.close || rec.close_price || 0)}</div>
+            </div>
+            <div class="ohlcv-card">
+              <div class="ohlcv-card-label">Change</div>
+              <div class="ohlcv-card-val ${isUp ? 'green' : 'red'}">${isUp ? '▲' : '▼'} ${Math.abs(parseFloat(rec.perc_change || ((closeVal-openVal)/openVal*100))).toFixed(2)}%</div>
+            </div>
+          </div>
+          <div class="ohlcv-vol-row">
+            <span class="ohlcv-vol-label">Volume</span>
+            <span class="ohlcv-vol-val">${fmtVol(rec.volume || 0)}</span>
+          </div>`;
+      }
+
+      function closeOHLCVModal() {
+        document.getElementById('ohlcv-overlay').classList.remove('open');
+      }
+
+      function closeOHLCV(e) {
+        if (e.target === document.getElementById('ohlcv-overlay')) closeOHLCVModal();
+      }
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeOHLCVModal();
+      });
+
       /* ── INIT ── */
       loadData();
+
+      (function() {
+        var hash = window.location.hash.slice(1);
+        if (!hash) return;
+        if (hash.startsWith('price-mover')) {
+          var tabPill = document.querySelector('.tab-pill[onclick*="price-mover"]');
+          if (tabPill) switchTab(tabPill, 'price-mover');
+          if (hash.endsWith('losers')) {
+            var btn = document.querySelector('#tab-price-mover .filter-btn:not(.active-green)');
+            if (btn) switchFilter(btn, 'pm', 'losers');
+          }
+        } else if (hash.startsWith('volume-shockers')) {
+          var tabPill = document.querySelector('.tab-pill[onclick*="volume-shockers"]');
+          if (tabPill) switchTab(tabPill, 'volume-shockers');
+        }
+      })();
     </script>
   </body>
 </html>

@@ -2,7 +2,7 @@ const http = require('http');
 const fs   = require('fs');
 const path = require('path');
 
-const PORT     = 3000;
+const PORT     = process.env.PORT || 3000;
 const SRC_DIR  = path.join(__dirname, 'src');
 const DATA_DIR = 'D:\\databank\\csvjson';
 
@@ -117,6 +117,54 @@ http.createServer(function(req, res) {
       res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
       res.end(data);
     });
+    return;
+  }
+
+  // Proxy stock search to techengine backend: /stocks/search?q=...&limit=...
+  if (urlPath === '/stocks/search') {
+    const query = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+    const opts = { hostname: 'localhost', port: 8000, path: '/stocks/search' + query, method: 'GET' };
+    const proxy = http.request(opts, function(backRes) {
+      const chunks = [];
+      backRes.on('data', d => chunks.push(d));
+      backRes.on('end', () => {
+        res.writeHead(backRes.statusCode, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        });
+        res.end(Buffer.concat(chunks));
+      });
+    });
+    proxy.on('error', function(e) {
+      res.writeHead(502, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'TechEngine backend unavailable', detail: e.message }));
+    });
+    proxy.end();
+    return;
+  }
+
+  // OHLCV data for a symbol: /api/techengine/:symbol/ohlcv  → proxy to port 8000
+  const ohlcvMatch = urlPath.match(/^\/api\/techengine\/([A-Za-z0-9&%._-]+)\/ohlcv$/);
+  if (ohlcvMatch) {
+    const symbol = ohlcvMatch[1].toUpperCase();
+    const backPath = '/techengine/' + symbol + '/ohlcv';
+    const opts = { hostname: 'localhost', port: 8000, path: backPath, method: 'GET' };
+    const proxy = http.request(opts, function(backRes) {
+      const chunks = [];
+      backRes.on('data', d => chunks.push(d));
+      backRes.on('end', () => {
+        res.writeHead(backRes.statusCode, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        });
+        res.end(Buffer.concat(chunks));
+      });
+    });
+    proxy.on('error', function(e) {
+      res.writeHead(502, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'TechEngine backend unavailable', detail: e.message }));
+    });
+    proxy.end();
     return;
   }
 

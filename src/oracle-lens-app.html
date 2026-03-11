@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oracle Lens Dashboard – StockAiVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-900: #0a1628;
+      --blue-700: #0f3460;
+      --blue-600: #1565C0;
+      --blue-500: #1976D2;
+      --blue-400: #2196F3;
+      --blue-300: #64B5F6;
+      --blue-100: #BBDEFB;
+      --blue-50:  #E3F2FD;
+      --accent:   #00B4D8;
+      --white:    #ffffff;
+      --gray-50:  #F8FAFC;
+      --gray-100: #EEF2F7;
+      --gray-300: #CBD5E1;
+      --gray-500: #64748B;
+      --gray-700: #334155;
+      --green:    #00C897;
+      --red:      #FF4B6E;
+      --gold:     #F59E0B;
+      --font:     'Plus Jakarta Sans', sans-serif;
+      --serif:    'Instrument Serif', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--white); color: var(--gray-700); display: flex; height: 100vh; overflow: hidden; }
+    button { font-family: var(--font); cursor: pointer; border: none; outline: none; }
+    em { font-style: italic; font-family: var(--serif); color: var(--accent); font-weight: 400; }
+
+    /* ══════════ SIDEBAR ══════════ */
+    .sidebar {
+      width: 232px; min-width: 232px; height: 100vh;
+      background: var(--white); border-right: 1.5px solid var(--gray-100);
+      display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 2px 0 20px rgba(21,101,192,0.05);
+    }
+    .sb-logo {
+      display: flex; align-items: center; gap: 10px;
+      padding: 18px 16px 16px; border-bottom: 1.5px solid var(--gray-100); flex-shrink: 0;
+    }
+    .sb-logo-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--blue-600), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(21,101,192,0.3);
+    }
+    .sb-logo-text { font-size: 1rem; font-weight: 800; color: var(--blue-900); letter-spacing: -0.3px; }
+    .sb-logo-text span { color: var(--blue-500); }
+
+    .sb-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 16px 10px 0; }
+    .sb-nav::-webkit-scrollbar { width: 0; }
+
+    .sb-section-label {
+      font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--blue-400); background: var(--blue-50);
+      padding: 4px 10px; border-radius: 8px; display: inline-block; margin: 0 0 10px 2px;
+    }
+
+    .sb-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 10px; margin-bottom: 3px;
+      cursor: pointer; color: var(--gray-500); font-size: 0.875rem; font-weight: 500;
+      transition: all 0.2s; user-select: none; position: relative;
+    }
+    .sb-item:hover { background: var(--blue-50); color: var(--blue-600); }
+    .sb-item.active { background: var(--blue-50); color: var(--blue-600); font-weight: 700; }
+    .sb-item.active::before {
+      content: ''; position: absolute; left: 0; top: 22%; height: 56%; width: 3px;
+      border-radius: 0 3px 3px 0; background: var(--blue-500);
+    }
+    .sb-item svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .sb-badge {
+      margin-left: auto; font-size: 0.64rem; font-weight: 700;
+      background: var(--blue-500); color: var(--white); border-radius: 20px; padding: 2px 8px;
+    }
+    .sb-badge.green { background: var(--green); }
+    .sb-divider { height: 1.5px; background: var(--gray-100); margin: 12px 6px; border-radius: 2px; }
+
+    .sb-footer { flex-shrink: 0; padding: 8px 10px 12px; border-top: 1.5px solid var(--gray-100); }
+    .sb-user {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 10px; cursor: pointer; transition: background 0.2s;
+    }
+    .sb-user:hover { background: var(--blue-50); }
+    .sb-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-600), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem; font-weight: 800; color: var(--white); flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(21,101,192,0.25);
+    }
+    .sb-user-info { flex: 1; min-width: 0; }
+    .sb-user-name { font-size: 0.84rem; font-weight: 700; color: var(--blue-900); line-height: 1.2; }
+    .sb-user-role { font-size: 0.67rem; color: var(--gray-500); font-weight: 500; }
+    .sb-back-btn { background: none; border: none; color: var(--gray-300); font-size: 13px; cursor: pointer; padding: 2px; transition: color 0.2s; flex-shrink: 0; }
+    .sb-back-btn:hover { color: var(--blue-500); }
+    .sb-version { font-size: 0.65rem; color: var(--gray-300); padding: 4px 12px 0; font-weight: 500; }
+
+    /* ══════════ MAIN ══════════ */
+    .main { flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; min-width: 0; background: var(--gray-50); }
+
+    /* Topbar */
+    .topbar {
+      height: 60px; flex-shrink: 0; display: flex; align-items: center;
+      padding: 0 26px; border-bottom: 1.5px solid var(--gray-100);
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(16px);
+      gap: 14px; box-shadow: 0 2px 20px rgba(21,101,192,0.05);
+    }
+    .topbar-title { font-size: 0.95rem; font-weight: 800; color: var(--blue-900); white-space: nowrap; letter-spacing: -0.3px; }
+    .topbar-title span { color: var(--blue-500); }
+    .topbar-sep { width: 1.5px; height: 20px; background: var(--gray-100); flex-shrink: 0; border-radius: 2px; }
+
+    /* Search with dropdown */
+    .search-container { position: relative; flex: 1; max-width: 380px; }
+    .search-wrap {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--gray-50); border: 1.5px solid var(--gray-100);
+      border-radius: 10px; padding: 0 14px; height: 38px; width: 100%;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-wrap:focus-within { border-color: var(--blue-400); box-shadow: 0 0 0 3px rgba(33,150,243,0.08); }
+    .search-wrap svg { width: 14px; height: 14px; stroke: var(--gray-300); fill: none; stroke-width: 2; flex-shrink: 0; }
+    .search-wrap input { flex: 1; background: none; border: none; outline: none; font-family: var(--font); font-size: 0.86rem; color: var(--gray-700); }
+    .search-wrap input::placeholder { color: var(--gray-300); }
+    .search-clear {
+      width: 18px; height: 18px; border-radius: 50%; background: var(--gray-300); color: var(--white);
+      font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0; transition: background 0.15s; user-select: none;
+    }
+    .search-clear:hover { background: var(--gray-500); }
+    .search-dropdown {
+      position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+      background: var(--white); border: 1.5px solid var(--gray-100);
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 12px 40px rgba(21,101,192,0.12); z-index: 999; display: none;
+    }
+    .search-dropdown.open { display: block; }
+    .sd-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 16px; cursor: pointer; border-bottom: 1px solid var(--gray-100); transition: background 0.12s;
+    }
+    .sd-item:last-child { border-bottom: none; }
+    .sd-item:hover { background: var(--blue-50); }
+    .sd-icon {
+      width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+      background: var(--blue-50); border: 1.5px solid var(--blue-100);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.68rem; font-weight: 800; color: var(--blue-600);
+    }
+    .sd-symbol { font-size: 0.86rem; font-weight: 800; color: var(--blue-900); letter-spacing: -0.2px; }
+    .sd-name { font-size: 0.72rem; color: var(--gray-500); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+    .sd-exchange { margin-left: auto; font-size: 0.65rem; font-weight: 700; color: var(--blue-400); background: var(--blue-50); padding: 2px 8px; border-radius: 6px; flex-shrink: 0; }
+    .sd-state { display: flex; align-items: center; gap: 10px; padding: 18px 16px; font-size: 0.82rem; color: var(--gray-300); font-weight: 500; }
+    .sd-state svg { width: 18px; height: 18px; stroke: var(--gray-200); fill: none; stroke-width: 1.8; flex-shrink: 0; }
+
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .tb-icon-btn {
+      width: 36px; height: 36px; border-radius: 9px; border: 1.5px solid var(--gray-100);
+      background: var(--white); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
+    }
+    .tb-icon-btn:hover { border-color: var(--blue-300); background: var(--blue-50); }
+    .tb-icon-btn svg { width: 15px; height: 15px; stroke: var(--gray-500); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .live-badge {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(0,200,151,0.08); border: 1.5px solid rgba(0,200,151,0.25);
+      border-radius: 20px; padding: 5px 12px;
+      font-size: 0.72rem; font-weight: 700; color: var(--green);
+      white-space: nowrap; flex-shrink: 0; letter-spacing: 0.3px; text-transform: uppercase;
+    }
+    .live-badge .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 1.8s infinite; }
+    .topbar-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-600), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800; color: var(--white); cursor: pointer; flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(21,101,192,0.3);
+    }
+
+    /* ══════════ CONTENT ══════════ */
+    .content { flex: 1; overflow-y: auto; padding: 28px 28px 32px; }
+    .content::-webkit-scrollbar { width: 5px; }
+    .content::-webkit-scrollbar-thumb { background: var(--gray-100); border-radius: 4px; }
+
+    /* Symbol header */
+    .symbol-header {
+      display: flex; align-items: center; gap: 16px; margin-bottom: 24px;
+      background: var(--white); border: 1.5px solid var(--gray-100);
+      border-radius: 16px; padding: 18px 22px;
+      box-shadow: 0 2px 12px rgba(21,101,192,0.05);
+      animation: fadeUp 0.3s ease both;
+    }
+    .sym-avatar {
+      width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--blue-600), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; font-weight: 800; color: var(--white);
+      box-shadow: 0 4px 14px rgba(21,101,192,0.25);
+    }
+    .sym-info { flex: 1; min-width: 0; }
+    .sym-name { font-size: 1.1rem; font-weight: 800; color: var(--blue-900); letter-spacing: -0.3px; }
+    .sym-company { font-size: 0.8rem; color: var(--gray-500); margin-top: 2px; }
+    .sym-badges { display: flex; gap: 8px; margin-top: 8px; }
+    .sym-badge {
+      font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 8px;
+    }
+    .sym-badge.blue  { background: var(--blue-50); color: var(--blue-600); }
+    .sym-badge.green { background: rgba(0,200,151,0.08); color: var(--green); }
+    .sym-badge.red   { background: rgba(255,75,110,0.08); color: var(--red); }
+    .sym-ltp { text-align: right; flex-shrink: 0; }
+    .sym-ltp-val { font-size: 1.4rem; font-weight: 800; color: var(--blue-900); letter-spacing: -0.5px; }
+    .sym-ltp-chg { font-size: 0.78rem; font-weight: 700; margin-top: 2px; }
+    .sym-ltp-chg.up   { color: var(--green); }
+    .sym-ltp-chg.down { color: var(--red); }
+
+    /* Section panels */
+    .section-panel { display: none; animation: fadeUp 0.3s ease both; }
+    .section-panel.active { display: block; }
+
+    /* Panel card */
+    .panel {
+      background: var(--white); border: 1.5px solid var(--gray-100);
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 2px 16px rgba(21,101,192,0.05); margin-bottom: 16px;
+    }
+    .panel-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 22px; border-bottom: 1.5px solid var(--gray-100); background: var(--gray-50);
+    }
+    .panel-title { font-size: 0.92rem; font-weight: 800; color: var(--blue-900); letter-spacing: -0.2px; }
+    .panel-sub   { font-size: 0.72rem; color: var(--gray-500); margin-top: 2px; }
+    .panel-body  { padding: 22px; }
+
+    /* Health score */
+    .health-score-ring {
+      display: flex; align-items: center; justify-content: center; gap: 48px;
+      padding: 8px 0 24px;
+    }
+    .score-circle {
+      position: relative; width: 140px; height: 140px; flex-shrink: 0;
+    }
+    .score-circle svg { transform: rotate(-90deg); }
+    .score-circle-bg  { fill: none; stroke: var(--gray-100); stroke-width: 10; }
+    .score-circle-fg  { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+    .score-circle-fg.excellent { stroke: var(--green); }
+    .score-circle-fg.good      { stroke: var(--blue-400); }
+    .score-circle-fg.fair      { stroke: var(--gold); }
+    .score-circle-fg.poor      { stroke: var(--red); }
+    .score-center {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .score-num   { font-size: 2rem; font-weight: 800; color: var(--blue-900); letter-spacing: -1px; line-height: 1; }
+    .score-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-500); margin-top: 2px; }
+    .score-details { flex: 1; }
+    .score-detail-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0; border-bottom: 1px solid var(--gray-100);
+    }
+    .score-detail-row:last-child { border-bottom: none; }
+    .score-detail-label { font-size: 0.82rem; font-weight: 600; color: var(--gray-700); }
+    .score-detail-bar { flex: 1; height: 5px; background: var(--gray-100); border-radius: 3px; margin: 0 12px; overflow: hidden; }
+    .score-detail-fill { height: 100%; border-radius: 3px; background: var(--blue-400); transition: width 0.8s ease; }
+    .score-detail-val  { font-size: 0.82rem; font-weight: 700; color: var(--blue-600); min-width: 32px; text-align: right; }
+
+    /* Table */
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table thead tr { border-bottom: 1.5px solid var(--gray-100); }
+    .data-table thead th {
+      padding: 10px 16px; font-size: 0.67rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray-500);
+      text-align: left; background: var(--gray-50); white-space: nowrap;
+    }
+    .data-table thead th:last-child { text-align: right; }
+    .data-table tbody tr { border-bottom: 1px solid var(--gray-100); transition: background 0.12s; }
+    .data-table tbody tr:last-child { border-bottom: none; }
+    .data-table tbody tr:hover { background: var(--blue-50); }
+    .data-table td { padding: 13px 16px; font-size: 0.84rem; color: var(--gray-500); white-space: nowrap; }
+    .data-table td:last-child { text-align: right; }
+    .td-label { font-weight: 700; color: var(--blue-900); }
+    .td-pos   { color: var(--green); font-weight: 700; }
+    .td-neg   { color: var(--red);   font-weight: 700; }
+
+    /* Red flags */
+    .flag-list { display: flex; flex-direction: column; gap: 12px; }
+    .flag-item {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: var(--gray-50); border: 1.5px solid var(--gray-100);
+      border-radius: 14px; padding: 16px 18px; transition: all 0.2s;
+    }
+    .flag-item:hover { border-color: var(--red); background: rgba(255,75,110,0.03); }
+    .flag-icon {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .flag-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+    .flag-icon.high   { background: rgba(255,75,110,0.1);   color: var(--red); }
+    .flag-icon.medium { background: rgba(245,158,11,0.1); color: var(--gold); }
+    .flag-icon.low    { background: rgba(0,200,151,0.1);  color: var(--green); }
+    .flag-title { font-size: 0.86rem; font-weight: 700; color: var(--blue-900); margin-bottom: 4px; }
+    .flag-desc  { font-size: 0.78rem; color: var(--gray-500); line-height: 1.55; }
+    .flag-severity {
+      margin-left: auto; flex-shrink: 0; font-size: 0.65rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .flag-severity.high   { background: rgba(255,75,110,0.1);   color: var(--red); }
+    .flag-severity.medium { background: rgba(245,158,11,0.1); color: var(--gold); }
+    .flag-severity.low    { background: rgba(0,200,151,0.1);  color: var(--green); }
+
+    /* State messages */
+    .state-msg {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 52px 20px; gap: 12px;
+    }
+    .state-msg svg { width: 36px; height: 36px; stroke: var(--gray-200); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+    .state-msg p   { font-size: 0.85rem; color: var(--gray-300); font-weight: 500; }
+    .state-msg p.err { color: var(--red); font-size: 0.78rem; }
+
+    /* Empty state (no symbol selected) */
+    .empty-state {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100%; min-height: 400px; gap: 16px; text-align: center;
+      animation: fadeUp 0.4s ease both;
+    }
+    .empty-icon {
+      width: 72px; height: 72px; border-radius: 20px;
+      background: linear-gradient(135deg, var(--blue-600), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 12px 36px rgba(21,101,192,0.25); margin-bottom: 8px;
+    }
+    .empty-icon svg { width: 32px; height: 32px; stroke: white; fill: none; stroke-width: 1.8; stroke-linecap: round; }
+    .empty-title { font-size: 1.3rem; font-weight: 800; color: var(--blue-900); letter-spacing: -0.4px; }
+    .empty-sub   { font-size: 0.88rem; color: var(--gray-500); max-width: 320px; line-height: 1.6; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--blue-900); color: white;
+      padding: 12px 24px; border-radius: 30px; font-size: 0.85rem; font-weight: 600;
+      opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 9999;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes pulse  { 0%,100%{opacity:1;} 50%{opacity:0.45;} }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════ SIDEBAR ══════════ -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-icon">🌐</div>
+      <div class="sb-logo-text">Stock<span>AiVerse</span></div>
+    </div>
+
+    <div class="sb-nav">
+      <div class="sb-section-label">Oracle Lens</div>
+
+      <div class="sb-item active" id="nav-health" onclick="switchSection(this,'health')">
+        <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        Health Score
+        <span class="sb-badge green" style="margin-left:auto">AI</span>
+      </div>
+
+      <div class="sb-item" id="nav-pnl" onclick="switchSection(this,'pnl')">
+        <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        P&amp;L Report
+      </div>
+
+      <div class="sb-item" id="nav-balance" onclick="switchSection(this,'balance')">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Balance Sheet
+      </div>
+
+      <div class="sb-item" id="nav-cashflow" onclick="switchSection(this,'cashflow')">
+        <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+        Cash Flow
+      </div>
+
+      <div class="sb-item" id="nav-redflags" onclick="switchSection(this,'redflags')">
+        <svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        Red Flags
+      </div>
+
+      <div class="sb-divider"></div>
+
+      <div class="sb-item" onclick="goTo('oracle-lens.html')">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Overview
+      </div>
+    </div>
+
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-avatar">H</div>
+        <div class="sb-user-info">
+          <div class="sb-user-name">Harman</div>
+          <div class="sb-user-role">Pro Member</div>
+        </div>
+        <button class="sb-back-btn" onclick="goTo('index.html')" title="Sign out">↗</button>
+      </div>
+      <div class="sb-version">Oracle Lens v0.1 · Pre-alpha</div>
+    </div>
+  </aside>
+
+  <!-- ══════════ MAIN ══════════ -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-title">Oracle<span>Lens</span></div>
+      <div class="topbar-sep" style="width:1.5px;height:20px;background:var(--gray-100);flex-shrink:0;border-radius:2px;"></div>
+
+      <div class="search-container">
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="stock-search-input" type="text" placeholder="Search symbol or company…" autocomplete="off" />
+          <div class="search-clear" id="search-clear" onclick="clearSearch()" style="display:none" title="Clear">✕</div>
+        </div>
+        <div class="search-dropdown" id="search-dropdown"></div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="live-badge"><span class="pulse"></span>Live</div>
+        <div class="tb-icon-btn" title="Notifications">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div class="topbar-avatar">H</div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content" id="main-content">
+
+      <!-- Empty state -->
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/></svg>
+        </div>
+        <div class="empty-title">Search a Stock to Begin</div>
+        <div class="empty-sub">Type any NSE symbol or company name in the search bar above to load financial analysis.</div>
+      </div>
+
+      <!-- Symbol Header (hidden until search) -->
+      <div class="symbol-header" id="symbol-header" style="display:none">
+        <div class="sym-avatar" id="sym-avatar">—</div>
+        <div class="sym-info">
+          <div class="sym-name" id="sym-name">—</div>
+          <div class="sym-company" id="sym-company">—</div>
+          <div class="sym-badges">
+            <span class="sym-badge blue" id="sym-exch">NSE</span>
+            <span class="sym-badge green" id="sym-sector" style="display:none">—</span>
+          </div>
+        </div>
+        <div class="sym-ltp">
+          <div class="sym-ltp-val" id="sym-ltp">—</div>
+          <div class="sym-ltp-chg" id="sym-chg">—</div>
+        </div>
+      </div>
+
+      <!-- ── HEALTH SCORE ── -->
+      <div class="section-panel active" id="panel-health">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">Financial Health Score</div>
+              <div class="panel-sub">AI-powered overall rating</div>
+            </div>
+          </div>
+          <div class="panel-body" id="body-health">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Select a stock to load health score</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── P&L ── -->
+      <div class="section-panel" id="panel-pnl">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">Profit &amp; Loss Statement</div>
+              <div class="panel-sub">Multi-year P&amp;L history</div>
+            </div>
+          </div>
+          <div class="panel-body" id="body-pnl" style="padding:0">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Select a stock to load P&amp;L data</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── BALANCE SHEET ── -->
+      <div class="section-panel" id="panel-balance">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">Balance Sheet</div>
+              <div class="panel-sub">Assets, liabilities &amp; equity</div>
+            </div>
+          </div>
+          <div class="panel-body" id="body-balance" style="padding:0">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Select a stock to load balance sheet</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CASH FLOW ── -->
+      <div class="section-panel" id="panel-cashflow">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">Cash Flow Statement</div>
+              <div class="panel-sub">Operating, investing &amp; financing</div>
+            </div>
+          </div>
+          <div class="panel-body" id="body-cashflow" style="padding:0">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Select a stock to load cash flow</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RED FLAGS ── -->
+      <div class="section-panel" id="panel-redflags">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">AI Red Flags</div>
+              <div class="panel-sub">Anomalies, risks &amp; governance concerns</div>
+            </div>
+          </div>
+          <div class="panel-body" id="body-redflags">
+            <div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Select a stock to load red flags</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    var API = 'http://localhost:8000';
+    var currentSymbol = null;
+    var currentSection = 'health';
+
+    /* ── NAVIGATION ── */
+    function goTo(page) {
+      const t = document.getElementById('toast');
+      t.textContent = 'Navigating to ' + page;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+      setTimeout(() => { window.location.href = page; }, 300);
+    }
+
+    function switchSection(el, section) {
+      document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + section).classList.add('active');
+      currentSection = section;
+      if (currentSymbol) loadSection(section, currentSymbol);
+    }
+
+    /* ── SEARCH ── */
+    var searchInput    = document.getElementById('stock-search-input');
+    var searchDropdown = document.getElementById('search-dropdown');
+    var searchClear    = document.getElementById('search-clear');
+    var searchTimer    = null;
+    var lastQuery      = '';
+
+    searchInput.addEventListener('input', function() {
+      var q = this.value.trim();
+      searchClear.style.display = q ? 'flex' : 'none';
+      clearTimeout(searchTimer);
+      if (q.length < 1) { closeDropdown(); return; }
+      if (q === lastQuery) return;
+      searchTimer = setTimeout(function() { doSearch(q); }, 300);
+    });
+
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { clearSearch(); }
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        var items = searchDropdown.querySelectorAll('.sd-item');
+        if (items.length) items[0].focus();
+      }
+    });
+
+    searchDropdown.addEventListener('keydown', function(e) {
+      var items = Array.from(searchDropdown.querySelectorAll('.sd-item'));
+      var idx = items.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown') { e.preventDefault(); if (items[idx+1]) items[idx+1].focus(); }
+      if (e.key === 'ArrowUp')   { e.preventDefault(); if (idx > 0) items[idx-1].focus(); else searchInput.focus(); }
+      if (e.key === 'Escape')    { clearSearch(); }
+      if (e.key === 'Enter' && idx >= 0) { e.preventDefault(); items[idx].click(); }
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-container')) closeDropdown();
+    });
+
+    function closeDropdown() { searchDropdown.classList.remove('open'); searchDropdown.innerHTML = ''; }
+    function clearSearch() {
+      searchInput.value = ''; searchClear.style.display = 'none'; lastQuery = '';
+      closeDropdown(); searchInput.focus();
+    }
+
+    async function doSearch(q) {
+      lastQuery = q;
+      searchDropdown.classList.add('open');
+      searchDropdown.innerHTML = '<div class="sd-state"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Searching…</div>';
+      try {
+        var res = await fetch(API + '/stocks/search?q=' + encodeURIComponent(q) + '&limit=10');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var data = await res.json();
+        var items = Array.isArray(data) ? data : (data.data || data.results || []);
+        if (!items.length) {
+          searchDropdown.innerHTML = '<div class="sd-state"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>No results found.</div>';
+          return;
+        }
+        searchDropdown.innerHTML = items.map(function(item) {
+          var sym  = item.symbol || '';
+          var name = item.company_name || item.name || '';
+          var exch = item.exchange || '';
+          var ltp  = item.ltp ? '₹' + Number(item.ltp).toLocaleString('en-IN', {minimumFractionDigits:2,maximumFractionDigits:2}) : '';
+          return '<div class="sd-item" tabindex="0" onclick="onSelectStock(' + JSON.stringify(item) + ')">'
+            + '<div class="sd-icon">' + sym.slice(0,3) + '</div>'
+            + '<div style="flex:1;min-width:0;"><div class="sd-symbol">' + sym + '</div>'
+            + (name ? '<div class="sd-name">' + name + '</div>' : '') + '</div>'
+            + (exch ? '<div class="sd-exchange">' + exch + '</div>' : '')
+            + '</div>';
+        }).join('');
+      } catch(e) {
+        searchDropdown.innerHTML = '<div class="sd-state"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' + (e.message || 'Search unavailable') + '</div>';
+      }
+    }
+
+    function onSelectStock(item) {
+      var sym = item.symbol || '';
+      searchInput.value = sym;
+      closeDropdown();
+      currentSymbol = sym;
+
+      // Update symbol header
+      document.getElementById('empty-state').style.display = 'none';
+      document.getElementById('symbol-header').style.display = 'flex';
+      document.getElementById('sym-avatar').textContent  = sym.slice(0,2);
+      document.getElementById('sym-name').textContent    = sym;
+      document.getElementById('sym-company').textContent = item.company_name || item.name || '';
+      document.getElementById('sym-exch').textContent    = item.exchange || 'NSE';
+
+      var ltp = item.ltp ? '₹' + Number(item.ltp).toLocaleString('en-IN', {minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
+      document.getElementById('sym-ltp').textContent = ltp;
+
+      var chgEl = document.getElementById('sym-chg');
+      var chg = parseFloat(item.change_pct || item.change || 0);
+      chgEl.textContent  = (chg >= 0 ? '▲ ' : '▼ ') + Math.abs(chg).toFixed(2) + '%';
+      chgEl.className = 'sym-ltp-chg ' + (chg >= 0 ? 'up' : 'down');
+
+      loadSection(currentSection, sym);
+    }
+
+    /* ── LOAD SECTION ── */
+    function setBodyLoading(id) {
+      document.getElementById(id).innerHTML =
+        '<div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><p>Loading…</p></div>';
+    }
+
+    async function loadSection(section, symbol) {
+      if (section === 'health')    loadHealth(symbol);
+      if (section === 'pnl')       loadPnL(symbol);
+      if (section === 'balance')   loadBalance(symbol);
+      if (section === 'cashflow')  loadCashFlow(symbol);
+      if (section === 'redflags')  loadRedFlags(symbol);
+    }
+
+    function fmtCr(v) {
+      if (v == null) return '—';
+      var n = parseFloat(v);
+      if (isNaN(n)) return '—';
+      return (n >= 0 ? '' : '–') + '₹' + Math.abs(n).toLocaleString('en-IN', {minimumFractionDigits:2,maximumFractionDigits:2}) + ' Cr';
+    }
+    function fmtNum(v) {
+      if (v == null) return '—';
+      var n = parseFloat(v);
+      return isNaN(n) ? '—' : n.toLocaleString('en-IN', {minimumFractionDigits:2,maximumFractionDigits:2});
+    }
+    function tdVal(v) {
+      if (v == null) return '<td>—</td>';
+      var n = parseFloat(v);
+      if (isNaN(n)) return '<td>' + v + '</td>';
+      return '<td class="' + (n >= 0 ? 'td-pos' : 'td-neg') + '">' + fmtCr(v) + '</td>';
+    }
+
+    /* Health Score */
+    async function loadHealth(symbol) {
+      setBodyLoading('body-health');
+      try {
+        var res = await fetch(API + '/oracle-lens/' + encodeURIComponent(symbol) + '/health-score');
+        var d = await res.json();
+
+        // API shape: { success, data, error, meta }
+        if (!res.ok) { showBodyError('body-health', d.error || 'HTTP ' + res.status); return; }
+        if (d.error)  { showBodyError('body-health', d.error); return; }
+
+        // data is null → score not yet computed
+        if (d.data === null || d.data === undefined) {
+          document.getElementById('body-health').innerHTML =
+            '<div class="state-msg">'
+            + '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+            + '<p>Health score not yet computed for <strong>' + symbol + '</strong>.</p>'
+            + '<p style="font-size:.75rem;margin-top:4px;color:var(--gray-300)">The FSLLM pipeline has not processed this stock yet.</p>'
+            + '</div>';
+          return;
+        }
+
+        var data = d.data;
+        var score = parseFloat(data.score || data.health_score || data.overall_score || 0);
+        var grade = score >= 80 ? 'excellent' : score >= 60 ? 'good' : score >= 40 ? 'fair' : 'poor';
+        var gradeLabel = score >= 80 ? 'Excellent' : score >= 60 ? 'Good' : score >= 40 ? 'Fair' : 'Poor';
+
+        var circ   = 2 * Math.PI * 54;
+        var offset = circ - (score / 100) * circ;
+
+        var components = data.components || data.breakdown || {};
+        var rows = Object.entries(components).map(function([k, v]) {
+          var pct = Math.min(Math.max(Math.round(parseFloat(v) * 100) / 100, 0), 100);
+          return '<div class="score-detail-row">'
+            + '<span class="score-detail-label">' + k.replace(/_/g,' ').replace(/\b\w/g, c => c.toUpperCase()) + '</span>'
+            + '<div class="score-detail-bar"><div class="score-detail-fill" style="width:' + pct + '%"></div></div>'
+            + '<span class="score-detail-val">' + pct + '</span>'
+            + '</div>';
+        }).join('');
+
+        document.getElementById('body-health').innerHTML =
+          '<div class="health-score-ring">'
+          + '<div class="score-circle">'
+          +   '<svg width="140" height="140" viewBox="0 0 140 140">'
+          +     '<circle class="score-circle-bg" cx="70" cy="70" r="54"/>'
+          +     '<circle class="score-circle-fg ' + grade + '" cx="70" cy="70" r="54" stroke-dasharray="' + circ + '" stroke-dashoffset="' + offset + '"/>'
+          +   '</svg>'
+          +   '<div class="score-center"><div class="score-num">' + Math.round(score) + '</div><div class="score-label">' + gradeLabel + '</div></div>'
+          + '</div>'
+          + '<div class="score-details">' + (rows || '<p style="color:var(--gray-500);font-size:.85rem;">No component breakdown available.</p>') + '</div>'
+          + '</div>'
+          + (data.summary ? '<div style="font-size:.85rem;color:var(--gray-500);line-height:1.7;border-top:1px solid var(--gray-100);padding-top:16px;margin-top:8px;">' + data.summary + '</div>' : '');
+      } catch(e) { showBodyError('body-health', e.message); }
+    }
+
+    /* P&L */
+    async function loadPnL(symbol) {
+      setBodyLoading('body-pnl');
+      try {
+        var res = await fetch(API + '/oracle-lens/' + encodeURIComponent(symbol) + '/pnl');
+        var d = await res.json();
+        if (!res.ok || d.error) { showBodyError('body-pnl', d.error || 'No P&L data'); return; }
+        var rows = (d.data || d || []);
+        if (!Array.isArray(rows) || !rows.length) { showBodyMsg('body-pnl', 'No P&L data available.'); return; }
+        var keys = Object.keys(rows[0]).filter(k => k !== 'symbol' && k !== 'id');
+        document.getElementById('body-pnl').innerHTML =
+          '<div style="overflow-x:auto"><table class="data-table">'
+          + '<thead><tr>' + keys.map(k => '<th>' + k.replace(/_/g,' ').replace(/\b\w/g, c=>c.toUpperCase()) + '</th>').join('') + '</tr></thead>'
+          + '<tbody>' + rows.map(r =>
+              '<tr>' + keys.map(k => {
+                var v = r[k];
+                if (v == null) return '<td>—</td>';
+                var n = parseFloat(v);
+                if (!isNaN(n) && k !== 'year' && k !== 'period') return '<td class="' + (n>=0?'td-pos':'td-neg') + '">' + fmtCr(v) + '</td>';
+                return '<td class="td-label">' + v + '</td>';
+              }).join('') + '</tr>'
+            ).join('')
+          + '</tbody></table></div>';
+      } catch(e) { showBodyError('body-pnl', e.message); }
+    }
+
+    /* Balance Sheet */
+    async function loadBalance(symbol) {
+      setBodyLoading('body-balance');
+      try {
+        var res = await fetch(API + '/oracle-lens/' + encodeURIComponent(symbol) + '/balance-sheet');
+        var d = await res.json();
+        if (!res.ok || d.error) { showBodyError('body-balance', d.error || 'No balance sheet data'); return; }
+        var rows = (d.data || d || []);
+        if (!Array.isArray(rows) || !rows.length) { showBodyMsg('body-balance', 'No balance sheet data available.'); return; }
+        var keys = Object.keys(rows[0]).filter(k => k !== 'symbol' && k !== 'id');
+        document.getElementById('body-balance').innerHTML =
+          '<div style="overflow-x:auto"><table class="data-table">'
+          + '<thead><tr>' + keys.map(k => '<th>' + k.replace(/_/g,' ').replace(/\b\w/g, c=>c.toUpperCase()) + '</th>').join('') + '</tr></thead>'
+          + '<tbody>' + rows.map(r =>
+              '<tr>' + keys.map(k => {
+                var v = r[k];
+                if (v == null) return '<td>—</td>';
+                var n = parseFloat(v);
+                if (!isNaN(n) && k !== 'year' && k !== 'period') return '<td>' + fmtCr(v) + '</td>';
+                return '<td class="td-label">' + v + '</td>';
+              }).join('') + '</tr>'
+            ).join('')
+          + '</tbody></table></div>';
+      } catch(e) { showBodyError('body-balance', e.message); }
+    }
+
+    /* Cash Flow */
+    async function loadCashFlow(symbol) {
+      setBodyLoading('body-cashflow');
+      try {
+        var res = await fetch(API + '/oracle-lens/' + encodeURIComponent(symbol) + '/cash-flow');
+        var d = await res.json();
+        if (!res.ok || d.error) { showBodyError('body-cashflow', d.error || 'No cash flow data'); return; }
+        var rows = (d.data || d || []);
+        if (!Array.isArray(rows) || !rows.length) { showBodyMsg('body-cashflow', 'No cash flow data available.'); return; }
+        var keys = Object.keys(rows[0]).filter(k => k !== 'symbol' && k !== 'id');
+        document.getElementById('body-cashflow').innerHTML =
+          '<div style="overflow-x:auto"><table class="data-table">'
+          + '<thead><tr>' + keys.map(k => '<th>' + k.replace(/_/g,' ').replace(/\b\w/g, c=>c.toUpperCase()) + '</th>').join('') + '</tr></thead>'
+          + '<tbody>' + rows.map(r =>
+              '<tr>' + keys.map(k => {
+                var v = r[k];
+                if (v == null) return '<td>—</td>';
+                var n = parseFloat(v);
+                if (!isNaN(n) && k !== 'year' && k !== 'period') return '<td class="' + (n>=0?'td-pos':'td-neg') + '">' + fmtCr(v) + '</td>';
+                return '<td class="td-label">' + v + '</td>';
+              }).join('') + '</tr>'
+            ).join('')
+          + '</tbody></table></div>';
+      } catch(e) { showBodyError('body-cashflow', e.message); }
+    }
+
+    /* Red Flags */
+    async function loadRedFlags(symbol) {
+      setBodyLoading('body-redflags');
+      try {
+        var res = await fetch(API + '/oracle-lens/' + encodeURIComponent(symbol) + '/red-flags');
+        var d = await res.json();
+        if (!res.ok || d.error) { showBodyError('body-redflags', d.error || 'No red flag data'); return; }
+        var flags = Array.isArray(d) ? d : (d.data || d.flags || []);
+        if (!flags.length) {
+          document.getElementById('body-redflags').innerHTML =
+            '<div class="state-msg"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><p>No red flags detected. Looking good!</p></div>';
+          return;
+        }
+        document.getElementById('body-redflags').innerHTML =
+          '<div class="flag-list">' + flags.map(function(f) {
+            var sev = (f.severity || f.level || 'medium').toLowerCase();
+            return '<div class="flag-item">'
+              + '<div class="flag-icon ' + sev + '"><svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div>'
+              + '<div style="flex:1;min-width:0;">'
+              + '<div class="flag-title">' + (f.title || f.flag || f.name || 'Risk Identified') + '</div>'
+              + '<div class="flag-desc">'  + (f.description || f.detail || f.message || '') + '</div>'
+              + '</div>'
+              + '<div class="flag-severity ' + sev + '">' + sev + '</div>'
+              + '</div>';
+          }).join('') + '</div>';
+      } catch(e) { showBodyError('body-redflags', e.message); }
+    }
+
+    function showBodyError(id, msg) {
+      document.getElementById(id).innerHTML =
+        '<div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Could not load data.</p><p class="err">' + (msg||'') + '</p></div>';
+    }
+    function showBodyMsg(id, msg) {
+      document.getElementById(id).innerHTML =
+        '<div class="state-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>' + msg + '</p></div>';
+    }
+  </script>
+</body>
+</html>

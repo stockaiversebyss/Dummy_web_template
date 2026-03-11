@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Breakout Stock – StockAiVerse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --blue-900: #0a1628;
+        --blue-600: #1565C0;
+        --blue-500: #1976D2;
+        --blue-400: #2196F3;
+        --blue-50:  #E3F2FD;
+        --accent:   #00B4D8;
+        --white:    #ffffff;
+        --gray-50:  #F8FAFC;
+        --gray-100: #EEF2F7;
+        --gray-300: #CBD5E1;
+        --gray-500: #64748B;
+        --gray-700: #334155;
+        --font:     'Plus Jakarta Sans', sans-serif;
+        --serif:    'Instrument Serif', serif;
+      }
+
+      body {
+        font-family: var(--font);
+        background: var(--gray-50);
+        color: var(--gray-700);
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      /* ── TOPBAR ── */
+      .topbar {
+        height: 56px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        border-bottom: 1.5px solid var(--gray-100);
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(16px);
+        gap: 12px;
+        box-shadow: 0 2px 12px rgba(21,101,192,0.04);
+      }
+      .pg-title {
+        font-family: var(--font); font-size: 0.95rem; font-weight: 800;
+        color: var(--blue-900); letter-spacing: -0.3px;
+      }
+      .pg-title span { color: var(--blue-500); }
+      .badge {
+        font-size: 0.68rem; font-weight: 700; padding: 3px 10px;
+        border-radius: 20px; background: var(--blue-50);
+        color: var(--blue-500); letter-spacing: 0.3px; text-transform: uppercase;
+      }
+
+      /* ── COMING SOON ── */
+      .content {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .coming-soon {
+        text-align: center;
+        max-width: 420px;
+        padding: 40px 24px;
+      }
+      .cs-icon {
+        width: 80px; height: 80px; border-radius: 24px;
+        background: linear-gradient(135deg, var(--blue-600), var(--accent));
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 24px;
+        box-shadow: 0 12px 40px rgba(21,101,192,0.25);
+      }
+      .cs-icon svg {
+        width: 38px; height: 38px;
+        stroke: white; fill: none;
+        stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+      }
+      .cs-label {
+        font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.12em; color: var(--blue-400);
+        background: var(--blue-50); padding: 4px 14px; border-radius: 20px;
+        display: inline-block; margin-bottom: 16px;
+      }
+      .cs-title {
+        font-family: var(--font); font-size: 2rem; font-weight: 800;
+        color: var(--blue-900); line-height: 1.2; letter-spacing: -0.5px;
+        margin-bottom: 12px;
+      }
+      .cs-title em {
+        font-style: italic; font-family: var(--serif);
+        color: var(--accent); font-weight: 400;
+      }
+      .cs-desc {
+        font-size: 0.9rem; color: var(--gray-500); line-height: 1.65;
+        font-weight: 400;
+      }
+      .cs-features {
+        display: flex; flex-wrap: wrap; justify-content: center;
+        gap: 8px; margin-top: 28px;
+      }
+      .cs-tag {
+        font-size: 0.75rem; font-weight: 600;
+        padding: 6px 14px; border-radius: 20px;
+        border: 1.5px solid var(--gray-100);
+        color: var(--gray-500); background: var(--white);
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="topbar">
+      <div class="pg-title">Breakout <span>Stock</span></div>
+      <div class="badge">Coming Soon</div>
+    </div>
+
+    <div class="content">
+      <div class="coming-soon">
+        <div class="cs-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <div class="cs-label">Coming Soon</div>
+        <div class="cs-title">Breakout <em>Stock</em></div>
+        <div class="cs-desc">
+          Identify stocks breaking out of key resistance levels with volume confirmation.
+          Powered by real-time NSE data and AI pattern recognition.
+        </div>
+        <div class="cs-features">
+          <span class="cs-tag">Resistance Breakout</span>
+          <span class="cs-tag">Volume Confirmation</span>
+          <span class="cs-tag">Support Levels</span>
+          <span class="cs-tag">AI Signals</span>
+          <span class="cs-tag">NSE Live</span>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

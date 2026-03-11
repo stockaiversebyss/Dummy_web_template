@@ -1,278 +1,1226 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>StockAiVerse – AI-Powered Stock Market Intelligence</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Shared stylesheet — same folder -->
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <!-- ── HEADER ── -->
-    <header>
-      <div class="logo">
-        <div class="logo-icon">🌐</div>
-        Stock<span>AiVerse</span>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StockAiVerse – AI-Powered Stock Market Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue-900: #0a1628; --blue-800: #0d2040; --blue-700: #0f3460;
+      --blue-600: #1565C0; --blue-500: #1976D2; --blue-400: #2196F3;
+      --blue-300: #64B5F6; --blue-100: #BBDEFB; --blue-50: #E3F2FD;
+      --accent: #00B4D8; --white: #ffffff;
+      --gray-50: #F8FAFC; --gray-100: #EEF2F7; --gray-300: #CBD5E1;
+      --gray-500: #64748B; --gray-700: #334155;
+      --green: #00C897; --red: #FF4B6E;
+      --font: 'Plus Jakarta Sans', sans-serif;
+      --serif: 'Instrument Serif', serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--white); color: var(--gray-700); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; cursor: pointer; }
+    button { font-family: var(--font); cursor: pointer; border: none; outline: none; }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 68px;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(33,150,243,0.12);
+      box-shadow: 0 2px 20px rgba(21,101,192,0.06);
+    }
+    .logo { display: flex; align-items: center; gap: 10px; font-size: 1.15rem; font-weight: 800; color: var(--blue-900); letter-spacing: -0.3px; }
+    .logo-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg,var(--blue-600),var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 4px 12px rgba(21,101,192,0.3); }
+    .logo span { color: var(--blue-500); }
+    nav { display: flex; align-items: center; gap: 4px; }
+    .nav-item { position: relative; }
+    .nav-btn { background: none; padding: 8px 16px; border-radius: 8px; font-size: 0.875rem; font-weight: 600; color: var(--gray-700); transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
+    .nav-btn:hover { background: var(--blue-50); color: var(--blue-600); }
+    .chevron { font-size: 10px; opacity: 0.5; }
+    .dropdown { position: absolute; top: calc(100% + 8px); left: 0; min-width: 220px; background: var(--white); border-radius: 14px; padding: 8px; box-shadow: 0 8px 40px rgba(21,101,192,0.15); border: 1px solid rgba(33,150,243,0.1); opacity: 0; pointer-events: none; transform: translateY(-8px); transition: all 0.2s; }
+    .nav-item:hover .dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .dropdown a { display: block; padding: 10px 14px; border-radius: 9px; font-size: 0.875rem; font-weight: 600; color: var(--gray-700); transition: all 0.15s; }
+    .dropdown a:hover { background: var(--blue-50); color: var(--blue-600); }
+    .drop-desc { font-size: 0.72rem; font-weight: 400; color: var(--gray-500); margin-top: 1px; }
+    .btn-signin { padding: 9px 22px; border-radius: 24px; background: var(--blue-600); color: var(--white); font-size: 0.875rem; font-weight: 700; box-shadow: 0 4px 16px rgba(21,101,192,0.3); transition: all 0.2s; }
+    .btn-signin:hover { background: var(--blue-700); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(145deg, var(--blue-900) 0%, var(--blue-700) 50%, var(--blue-500) 100%);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center;
+      padding: 68px 0 0; /* top = header height */
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background: radial-gradient(ellipse 65% 70% at 80% 50%, rgba(0,180,216,0.18) 0%, transparent 65%),
+                  radial-gradient(ellipse 40% 40% at 10% 90%, rgba(33,150,243,0.15) 0%, transparent 60%);
+    }
+    .hero::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: 0.05;
+      background-image: linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px);
+      background-size: 52px 52px;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 1280px; margin: 0 auto;
+      padding: 70px 64px;
+      display: flex; align-items: center; gap: 64px;
+    }
+    /* LEFT */
+    .hero-left { flex: 1; min-width: 0; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); padding: 7px 16px; border-radius: 20px; color: rgba(255,255,255,0.9); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.3px; margin-bottom: 26px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; flex-shrink: 0; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.45} }
+    .hero-left h1 { font-size: clamp(2rem,4vw,3.3rem); font-weight: 800; line-height: 1.1; color: var(--white); letter-spacing: -1px; margin-bottom: 20px; }
+    .hero-left h1 em { font-style: italic; font-family: var(--serif); color: var(--accent); font-weight: 400; }
+    .hero-left p { font-size: 1rem; color: rgba(255,255,255,0.72); line-height: 1.68; margin-bottom: 34px; max-width: 440px; }
+    .hero-actions { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; flex-wrap: wrap; }
+    .btn-primary { padding: 14px 32px; border-radius: 30px; background: var(--white); color: var(--blue-700); font-size: 0.925rem; font-weight: 800; box-shadow: 0 6px 24px rgba(0,0,0,0.2); transition: all 0.2s; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,0,0,0.25); }
+    .btn-secondary { padding: 14px 32px; border-radius: 30px; background: rgba(255,255,255,0.12); color: var(--white); border: 1.5px solid rgba(255,255,255,0.3); font-size: 0.925rem; font-weight: 700; transition: all 0.2s; }
+    .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+    .hero-note { font-size: 0.78rem; color: rgba(255,255,255,0.38); margin-bottom: 32px; }
+    .logos-strip { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .logos-strip > span { font-size: 0.7rem; color: rgba(255,255,255,0.4); font-weight: 500; }
+    .logo-badge { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.5); padding: 5px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); }
+    /* RIGHT */
+    .hero-right { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; position: relative; }
+
+    @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+
+    /* ── REAL PHONE SHELL ── */
+    .phone-shell {
+      position: relative;
+      width: 280px;
+      animation: floatY 5s ease-in-out infinite;
+      filter: drop-shadow(0 40px 60px rgba(0,0,0,0.55));
+    }
+
+    /* Outer frame — the physical body */
+    .phone-frame {
+      background: #0d1117;
+      border-radius: 50px;
+      padding: 3px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.12),
+        0 0 0 1px rgba(0,0,0,0.8),
+        4px 0 0 0 #1a1f2e,    /* right side thickness */
+        -2px 0 0 0 #1a1f2e;   /* left side thickness */
+      position: relative;
+    }
+
+    /* Physical side buttons */
+    .phone-btn-vol-up, .phone-btn-vol-dn, .phone-btn-power {
+      position: absolute;
+      background: #1a1f2e;
+      border-radius: 3px;
+    }
+    .phone-btn-vol-up  { left: -5px; top: 110px; width: 4px; height: 28px; box-shadow: inset 1px 0 0 rgba(255,255,255,0.08); }
+    .phone-btn-vol-dn  { left: -5px; top: 148px; width: 4px; height: 28px; box-shadow: inset 1px 0 0 rgba(255,255,255,0.08); }
+    .phone-btn-power   { right: -5px; top: 130px; width: 4px; height: 44px; box-shadow: inset -1px 0 0 rgba(255,255,255,0.08); }
+
+    /* Inner bezel */
+    .phone-bezel {
+      background: #111827;
+      border-radius: 48px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Screen */
+    .phone-screen {
+      background: var(--white);
+      border-radius: 44px;
+      overflow: hidden;
+      position: relative;
+      height: 580px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Dynamic Island / Notch */
+    .phone-notch {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 30px;
+      background: #0d1117;
+      border-radius: 20px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .notch-camera {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #1a2035;
+      border: 1.5px solid #2a3050;
+      box-shadow: inset 0 0 3px rgba(0,180,216,0.3);
+    }
+    .notch-speaker {
+      width: 36px; height: 5px; border-radius: 3px;
+      background: #1a2035;
+    }
+
+    /* Status bar */
+    .phone-statusbar {
+      padding: 52px 20px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .sb-time { font-size: 0.7rem; font-weight: 800; color: var(--blue-900); }
+    .sb-icons { display: flex; align-items: center; gap: 5px; }
+    .sb-icon { font-size: 0.6rem; color: var(--blue-900); opacity: 0.7; }
+    .sb-battery {
+      width: 20px; height: 10px; border-radius: 2px;
+      border: 1.5px solid var(--blue-900);
+      position: relative; opacity: 0.7;
+    }
+    .sb-battery::before {
+      content: ''; position: absolute;
+      left: 2px; top: 1.5px; width: 12px; height: 5px;
+      background: var(--green); border-radius: 1px;
+    }
+    .sb-battery::after {
+      content: ''; position: absolute;
+      right: -4px; top: 2.5px; width: 2.5px; height: 4px;
+      background: var(--blue-900); border-radius: 0 1px 1px 0; opacity: 0.7;
+    }
+
+    /* Scrollable app content */
+    .phone-content {
+      flex: 1;
+      overflow: hidden;
+      padding: 0 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* App header row */
+    .app-topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 2px 0 6px;
+    }
+    .app-brand { font-size: 0.78rem; font-weight: 800; color: var(--blue-900); }
+    .app-brand span { color: var(--blue-500); }
+    .app-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-400), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 9px; font-weight: 800;
+    }
+
+    /* Portfolio card */
+    .pf-card {
+      background: linear-gradient(135deg, var(--blue-800), var(--blue-500));
+      border-radius: 18px; padding: 16px;
+      color: white; position: relative; overflow: hidden; flex-shrink: 0;
+    }
+    .pf-card::before {
+      content: ''; position: absolute;
+      width: 120px; height: 120px; border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      right: -20px; top: -30px;
+    }
+    .pf-card::after {
+      content: ''; position: absolute;
+      width: 80px; height: 80px; border-radius: 50%;
+      background: rgba(0,180,216,0.12);
+      right: 30px; bottom: -20px;
+    }
+    .pf-label { font-size: 0.6rem; opacity: 0.7; letter-spacing: 0.5px; text-transform: uppercase; }
+    .pf-value { font-size: 1.55rem; font-weight: 800; letter-spacing: -1px; margin: 3px 0; }
+    .pf-row { display: flex; justify-content: space-between; align-items: center; }
+    .pf-change { font-size: 0.65rem; background: rgba(0,200,151,0.2); color: var(--green); padding: 3px 8px; border-radius: 10px; font-weight: 700; }
+    .pf-date { font-size: 0.6rem; opacity: 0.55; }
+
+    /* Quick action icons */
+    .qa-row { display: flex; justify-content: space-between; flex-shrink: 0; }
+    .qa-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      flex: 1;
+    }
+    .qa-circle {
+      width: 38px; height: 38px; border-radius: 12px;
+      background: var(--blue-50);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+    }
+    .qa-txt { font-size: 0.58rem; font-weight: 700; color: var(--gray-500); }
+
+    /* Index mini ticker row */
+    .index-row {
+      display: flex; gap: 8px; flex-shrink: 0;
+    }
+    .idx-chip {
+      flex: 1; background: var(--gray-50); border-radius: 12px;
+      padding: 8px 10px; border: 1px solid var(--gray-100);
+    }
+    .idx-name { font-size: 0.6rem; font-weight: 700; color: var(--gray-500); margin-bottom: 2px; }
+    .idx-val { font-size: 0.8rem; font-weight: 800; color: var(--blue-900); }
+    .idx-chg { font-size: 0.58rem; font-weight: 700; margin-top: 1px; }
+
+    /* Stock list */
+    .stock-section { flex: 1; min-height: 0; }
+    .stock-hdr { font-size: 0.62rem; font-weight: 800; color: var(--gray-500); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .stock-hdr span:last-child { color: var(--blue-400); }
+    .stock-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 0; border-bottom: 1px solid var(--gray-100);
+    }
+    .stock-row:last-child { border: none; }
+    .stock-logo {
+      width: 28px; height: 28px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800; color: white; margin-right: 8px; flex-shrink: 0;
+    }
+    .stock-info { flex: 1; min-width: 0; }
+    .stock-sym { font-size: 0.72rem; font-weight: 800; color: var(--blue-900); }
+    .stock-full { font-size: 0.58rem; color: var(--gray-500); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .stock-right { text-align: right; }
+    .stock-price { font-size: 0.72rem; font-weight: 800; color: var(--blue-900); }
+    .stock-chg { font-size: 0.6rem; font-weight: 700; }
+
+    /* Sparkline bars */
+    .sparkline { display: flex; align-items: flex-end; gap: 2px; height: 24px; margin: 0 10px; }
+    .sp-bar { width: 3px; border-radius: 2px; }
+
+    /* Bottom nav bar */
+    .phone-navbar {
+      display: flex; justify-content: space-around; align-items: center;
+      padding: 10px 0 16px;
+      border-top: 1px solid var(--gray-100);
+      background: white;
+      flex-shrink: 0;
+    }
+    .nav-tab { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .nav-tab-icon { font-size: 16px; }
+    .nav-tab-lbl { font-size: 0.55rem; font-weight: 600; color: var(--gray-500); }
+    .nav-tab.active .nav-tab-icon { filter: none; }
+    .nav-tab.active .nav-tab-lbl { color: var(--blue-500); }
+    .nav-tab-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--blue-500); margin: 0 auto; }
+
+    /* ── SHARED LAYOUT ── */
+    .page-sec { padding: 80px 0; }
+    .page-sec-alt { padding: 80px 0; background: var(--gray-50); }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 64px; }
+    .sec-label { display: inline-block; font-size: 0.7rem; font-weight: 700; color: var(--blue-500); letter-spacing: 1px; text-transform: uppercase; background: var(--blue-50); padding: 5px 14px; border-radius: 20px; margin-bottom: 12px; }
+    .sec-title { font-size: clamp(1.8rem,3.5vw,2.5rem); font-weight: 800; color: var(--blue-900); letter-spacing: -0.5px; line-height: 1.12; }
+    .sec-title em { font-style: italic; font-family: var(--serif); color: var(--blue-500); font-weight: 400; }
+    .sec-sub { font-size: 1rem; color: var(--gray-500); max-width: 500px; line-height: 1.6; margin-top: 10px; }
+    .sec-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px; gap: 24px; }
+    .view-all-btn { background: var(--blue-50); color: var(--blue-500); border: none; padding: 9px 20px; border-radius: 20px; font-size: 0.84rem; font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+    .view-all-btn:hover { background: var(--blue-100); }
+
+    /* ── SERVICES ── */
+    .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+    .svc-card { background: var(--white); border-radius: 20px; padding: 28px 24px; border: 1.5px solid var(--gray-100); box-shadow: 0 2px 12px rgba(21,101,192,0.04); transition: all 0.25s; cursor: pointer; }
+    .svc-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(21,101,192,0.11); border-color: var(--blue-300); }
+    .svc-icon { width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg,var(--blue-600),var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; box-shadow: 0 6px 20px rgba(21,101,192,0.22); }
+    .svc-title { font-size: 1rem; font-weight: 800; color: var(--blue-900); margin-bottom: 8px; }
+    .svc-desc { font-size: 0.83rem; color: var(--gray-500); line-height: 1.55; }
+    .svc-card.featured { background: linear-gradient(145deg,var(--blue-900),var(--blue-700)); border-color: transparent; }
+    .svc-card.featured .svc-title { color: white; }
+    .svc-card.featured .svc-desc { color: rgba(255,255,255,0.62); }
+    .svc-card.featured .svc-icon { background: rgba(255,255,255,0.14); box-shadow: none; }
+    .inline-widget { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; margin-top: 18px; }
+    .iw-label { font-size: 0.63rem; color: rgba(255,255,255,0.5); margin-bottom: 3px; }
+    .iw-value { font-size: 1.3rem; font-weight: 800; color: white; }
+    .iw-sub { font-size: 0.68rem; color: rgba(255,255,255,0.55); margin-top: 2px; }
+    .iw-bar { height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; margin-top: 10px; }
+    .iw-fill { height: 100%; width: 68%; background: var(--accent); border-radius: 2px; }
+    .svc-live { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--gray-100); }
+    .svc-live-label { font-size: 0.62rem; font-weight: 700; color: var(--gray-500); letter-spacing: 0.5px; margin-bottom: 8px; }
+    .svc-live-row { display: flex; justify-content: space-between; font-size: 0.76rem; margin-bottom: 5px; }
+    .svc-live-row span:first-child { font-weight: 700; color: var(--blue-900); }
+
+    /* ── ENGINES ── */
+    .engines-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .engine-card { background: var(--white); border-radius: 20px; padding: 26px 22px; border: 1.5px solid var(--gray-100); cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden; }
+    .engine-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(21,101,192,0.1); border-color: var(--blue-300); }
+    .engine-num { position: absolute; top: 18px; right: 18px; font-size: 2.2rem; font-weight: 900; color: var(--gray-100); font-family: var(--serif); line-height: 1; }
+    .engine-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--blue-50); color: var(--blue-500); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 14px; }
+    .engine-card.apex .engine-icon { background: linear-gradient(135deg,var(--blue-600),var(--accent)); color: white; box-shadow: 0 6px 18px rgba(21,101,192,0.3); }
+    .engine-title { font-size: 1rem; font-weight: 800; color: var(--blue-900); margin-bottom: 8px; }
+    .engine-desc { font-size: 0.82rem; color: var(--gray-500); line-height: 1.55; }
+    .cta-banner { background: linear-gradient(130deg,var(--blue-700),var(--blue-500)); border-radius: 22px; padding: 40px 48px; display: flex; align-items: center; justify-content: space-between; gap: 32px; margin-top: 24px; }
+    .cta-banner h3 { font-size: 1.4rem; font-weight: 800; color: white; margin-bottom: 6px; }
+    .cta-banner p { font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+    .btn-cta { background: white; color: var(--blue-700); padding: 13px 30px; border-radius: 28px; font-size: 0.9rem; font-weight: 800; box-shadow: 0 6px 20px rgba(0,0,0,0.14); transition: all 0.2s; white-space: nowrap; }
+    .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.2); }
+
+    /* ── ANALYTICS ── */
+    .analytics-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+    .an-card { background: var(--white); border-radius: 20px; padding: 26px 22px; border: 1.5px solid var(--gray-100); cursor: pointer; transition: all 0.25s; }
+    .an-card:hover { border-color: var(--blue-300); box-shadow: 0 12px 40px rgba(21,101,192,0.08); transform: translateY(-4px); }
+    .an-tag { font-size: 0.67rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--blue-400); background: var(--blue-50); padding: 4px 10px; border-radius: 10px; display: inline-block; margin-bottom: 12px; }
+    .an-title { font-size: 1rem; font-weight: 800; color: var(--blue-900); margin-bottom: 7px; }
+    .an-desc { font-size: 0.83rem; color: var(--gray-500); line-height: 1.55; }
+
+    /* ── MARKET MOVERS SECTION ── */
+    .market-movers-section {
+      padding: 90px 0;
+      background: linear-gradient(180deg, #f0f5ff 0%, #ffffff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .market-movers-section::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(21,101,192,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .movers-header { margin-bottom: 48px; }
+    .movers-tabs {
+      display: flex; gap: 8px; margin-top: 28px; flex-wrap: wrap;
+    }
+    .mover-tab {
+      padding: 8px 20px; border-radius: 20px; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; border: 1.5px solid var(--gray-100); background: white;
+      color: var(--gray-500); transition: all 0.2s;
+    }
+    .mover-tab.active, .mover-tab:hover {
+      background: var(--blue-600); color: white; border-color: var(--blue-600);
+      box-shadow: 0 4px 14px rgba(21,101,192,0.28);
+    }
+
+    /* 2x2 grid of panels */
+    .movers-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    /* Individual panel */
+    .mover-panel {
+      background: white;
+      border-radius: 24px;
+      border: 1.5px solid var(--gray-100);
+      box-shadow: 0 4px 24px rgba(21,101,192,0.06);
+      overflow: hidden;
+      transition: box-shadow 0.3s;
+    }
+    .mover-panel:hover {
+      box-shadow: 0 12px 48px rgba(21,101,192,0.13);
+    }
+
+    .panel-head {
+      padding: 20px 24px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .panel-title-row { display: flex; align-items: center; gap: 10px; }
+    .panel-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .panel-icon.green { background: rgba(0,200,151,0.12); }
+    .panel-icon.red   { background: rgba(255,75,110,0.10); }
+    .panel-icon.blue  { background: rgba(33,150,243,0.10); }
+    .panel-icon.amber { background: rgba(255,160,0,0.12); }
+
+    .panel-name { font-size: 1rem; font-weight: 800; color: var(--blue-900); }
+    .panel-sub  { font-size: 0.72rem; color: var(--gray-500); margin-top: 1px; }
+    .panel-badge {
+      font-size: 0.68rem; font-weight: 700; padding: 4px 10px; border-radius: 12px;
+    }
+    .badge-green { background: rgba(0,200,151,0.12); color: var(--green); }
+    .badge-red   { background: rgba(255,75,110,0.10); color: var(--red); }
+    .badge-blue  { background: rgba(33,150,243,0.1); color: var(--blue-500); }
+    .badge-amber { background: rgba(255,160,0,0.12); color: #f59e0b; }
+
+    /* Column headers inside panel */
+    .panel-col-hdr {
+      display: grid; grid-template-columns: 1fr auto auto;
+      padding: 10px 24px 8px;
+      font-size: 0.67rem; font-weight: 700; color: var(--gray-500);
+      letter-spacing: 0.5px; text-transform: uppercase;
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .panel-col-hdr span:last-child { min-width: 80px; text-align: right; }
+    .panel-col-hdr span:nth-child(2) { min-width: 72px; text-align: right; }
+
+    /* Stock rows */
+    .mover-row {
+      display: grid; grid-template-columns: 1fr auto auto;
+      align-items: center;
+      padding: 13px 24px;
+      border-bottom: 1px solid rgba(238,242,247,0.8);
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    .mover-row:last-child { border-bottom: none; }
+    .mover-row:hover { background: var(--blue-50); }
+
+    .mover-stock { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .mover-logo {
+      width: 34px; height: 34px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; color: white; flex-shrink: 0;
+    }
+    .mover-sym  { font-size: 0.82rem; font-weight: 800; color: var(--blue-900); }
+    .mover-full { font-size: 0.68rem; color: var(--gray-500); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
+
+    .mover-price {
+      font-size: 0.82rem; font-weight: 700; color: var(--blue-900);
+      min-width: 72px; text-align: right;
+    }
+    .mover-chg {
+      font-size: 0.78rem; font-weight: 700;
+      min-width: 80px; text-align: right;
+      padding: 4px 10px; border-radius: 10px;
+    }
+    .chg-up   { color: var(--green); background: rgba(0,200,151,0.1); }
+    .chg-down { color: var(--red);   background: rgba(255,75,110,0.08); }
+    .chg-vol  { color: var(--blue-500); background: rgba(33,150,243,0.08); }
+    .chg-neu  { color: #f59e0b; background: rgba(255,160,0,0.08); }
+
+    /* Volume bar mini */
+    .vol-bar-wrap { height: 4px; background: var(--gray-100); border-radius: 2px; margin-top: 4px; width: 100%; }
+    .vol-bar-fill { height: 100%; border-radius: 2px; background: var(--blue-400); }
+
+    /* Panel footer link */
+    .panel-footer {
+      padding: 12px 24px;
+      background: var(--gray-50);
+      border-top: 1px solid var(--gray-100);
+      text-align: center;
+    }
+    .panel-footer a {
+      font-size: 0.8rem; font-weight: 700; color: var(--blue-500); cursor: pointer;
+      transition: color 0.15s;
+    }
+    .panel-footer a:hover { color: var(--blue-700); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--blue-900); color: rgba(255,255,255,0.65); padding: 60px 0 32px; }
+    .footer-main { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 28px; }
+    .footer-brand .logo { color: white; margin-bottom: 12px; }
+    .footer-brand p { font-size: 0.85rem; line-height: 1.65; max-width: 260px; }
+    .footer-brand small { font-size: 0.72rem; color: rgba(255,255,255,0.28); margin-top: 8px; display: block; }
+    .footer-col h4 { font-size: 0.78rem; font-weight: 800; color: white; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 16px; }
+    .footer-col a { display: block; font-size: 0.83rem; margin-bottom: 9px; color: rgba(255,255,255,0.5); cursor: pointer; transition: color 0.2s; }
+    .footer-col a:hover { color: white; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; }
+    .footer-bottom p { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+    .footer-legal { display: flex; gap: 20px; }
+    .footer-legal a { font-size: 0.78rem; color: rgba(255,255,255,0.3); cursor: pointer; transition: color 0.2s; }
+    .footer-legal a:hover { color: rgba(255,255,255,0.65); }
+
+    /* ── TOAST ── */
+    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--blue-900); color: white; padding: 12px 24px; border-radius: 30px; font-size: 0.85rem; font-weight: 600; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 9999; box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    .hero-left > * { animation: fadeUp 0.55s ease both; }
+    .hero-left > *:nth-child(1){animation-delay:.1s} .hero-left > *:nth-child(2){animation-delay:.2s}
+    .hero-left > *:nth-child(3){animation-delay:.3s} .hero-left > *:nth-child(4){animation-delay:.4s}
+    .hero-left > *:nth-child(5){animation-delay:.5s} .hero-left > *:nth-child(6){animation-delay:.55s}
+    .hero-right { animation: fadeUp 0.7s ease 0.3s both; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">🌐</div>
+    Stock<span>AiVerse</span>
+  </div>
+  <nav>
+    <div class="nav-item">
+      <button class="nav-btn">Market <span class="chevron">▾</span></button>
+      <div class="dropdown">
+        <a onclick="goTo('market-home.html')">Market Home<div class="drop-desc">Nifty · Sensex · Bank Nifty</div></a>
+        <a onclick="goTo('indices.html')">Indices<div class="drop-desc">Gainers · Losers · Timeframes</div></a>
+        <a onclick="goTo('trending-stocks.html')">Trending Stocks<div class="drop-desc">Price movers · Volume shockers</div></a>
+        <a onclick="goTo('news-updates.html')">News &amp; Updates<div class="drop-desc">Latest news · FII-DII</div></a>
       </div>
-
-      <nav>
-        <div class="nav-item">
-          <button class="nav-btn">Market <span class="chevron">▾</span></button>
-          <div class="dropdown">
-            <a onclick="goTo('market-home.html')"
-              >Market Home
-              <div class="drop-desc">Nifty · Sensex · Bank Nifty</div></a
-            >
-            <a onclick="goTo('indices.html')"
-              >Indices
-              <div class="drop-desc">Gainers · Losers · Timeframes</div></a
-            >
-            <a onclick="goTo('trending-stocks.html')"
-              >Trending Stocks
-              <div class="drop-desc">Price movers · Volume shockers</div></a
-            >
-            <a onclick="goTo('news-updates.html')"
-              >News &amp; Updates
-              <div class="drop-desc">Latest news · FII-DII</div></a
-            >
-          </div>
-        </div>
-
-        <div class="nav-item">
-          <button class="nav-btn">
-            Analytics <span class="chevron">▾</span>
-          </button>
-          <div class="dropdown">
-            <a onclick="goTo('analytics-home.html')"
-              >Analytics Home
-              <div class="drop-desc">AI-powered analytics overview</div></a
-            >
-            <a onclick="goTo('chart-patterns.html')"
-              >Chart Patterns
-              <div class="drop-desc">Pattern recognition across NSE</div></a
-            >
-            <a onclick="goTo('trading-strategies.html')"
-              >Trading Strategies
-              <div class="drop-desc">SMC · EMA · Renko</div></a
-            >
-          </div>
-        </div>
-
-        <div class="nav-item">
-          <button class="nav-btn">
-            My AIVerse <span class="chevron">▾</span>
-          </button>
-          <div class="dropdown">
-            <a onclick="goTo('watchlist.html')"
-              >Watchlist
-              <div class="drop-desc">Track your stocks</div></a
-            >
-            <a onclick="goTo('settings.html')"
-              >Settings
-              <div class="drop-desc">Account preferences</div></a
-            >
-          </div>
-        </div>
-      </nav>
-
-      <div class="header-right">
-        <div class="user-chip" onclick="goTo('signup.html')">
-          Sign In &nbsp;↗
-        </div>
+    </div>
+    <div class="nav-item">
+      <button class="nav-btn">Analytics <span class="chevron">▾</span></button>
+      <div class="dropdown">
+        <a onclick="goTo('analytics-home.html')">Analytics Home<div class="drop-desc">AI-powered analytics overview</div></a>
+        <a onclick="goTo('chart-patterns.html')">Chart Patterns<div class="drop-desc">Pattern recognition across NSE</div></a>
+        <a onclick="goTo('trading-strategies.html')">Trading Strategies<div class="drop-desc">SMC · EMA · Renko</div></a>
       </div>
-    </header>
+    </div>
+    <div class="nav-item">
+      <button class="nav-btn">My AIVerse <span class="chevron">▾</span></button>
+      <div class="dropdown">
+        <a onclick="goTo('watchlist.html')">Watchlist<div class="drop-desc">Track your stocks</div></a>
+        <a onclick="goTo('settings.html')">Settings<div class="drop-desc">Account preferences</div></a>
+      </div>
+    </div>
+  </nav>
+  <div>
+    <button class="btn-signin" onclick="goTo('signup.html')">Get In Touch ↗</button>
+  </div>
+</header>
 
-    <!-- ── HERO ── -->
-    <section class="hero">
+<!-- ═══ HERO — two column flex ═══ -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <!-- LEFT: text content -->
+    <div class="hero-left">
       <div class="hero-badge">
-        <span class="dot"></span> Pre-alpha · Institutional-grade AI for every
-        investor
+        <span class="dot"></span> Pre-alpha · Institutional-grade AI for every investor
       </div>
-      <h1>
-        AI-Powered Stock Market<br /><span class="highlight"
-          >Intelligence for India</span
-        >
-      </h1>
-      <p>
-        Five specialized AI engines — financial analysis, sentiment
-        intelligence, technical structure, options analytics — unified into a
-        single conviction-scored recommendation.
-      </p>
+      <h1>AI-Powered Stock Market<br /><em>Intelligence for India</em></h1>
+      <p>Five specialized AI engines — financial analysis, sentiment intelligence, technical structure, options analytics — unified into a single conviction-scored recommendation.</p>
       <div class="hero-actions">
-        <button class="btn-primary" onclick="goTo('stock-tech.html')">
-          Get Started
-        </button>
-        <button class="btn-secondary" onclick="goTo('signup.html')">
-          Sign In
-        </button>
+        <button class="btn-primary" onclick="goTo('stock-tech.html')">Get Started Today</button>
+        <button class="btn-secondary" onclick="goTo('signup.html')">Sign In</button>
       </div>
-      <p class="hero-note">
-        Sign in first for full functionality visualization
-      </p>
-    </section>
+      <p class="hero-note">Sign in first for full functionality visualization</p>
+      <div class="logos-strip">
+        <span>Live data on</span>
+        <div class="logo-badge">NSE</div>
+        <div class="logo-badge">BSE</div>
+        <div class="logo-badge">F&amp;O</div>
+        <div class="logo-badge">SEBI</div>
+      </div>
+    </div>
 
-    <!-- ── MARKET OVERVIEW ── -->
-    <section class="section">
-      <div class="section-header">
-        <h2 class="section-title">Market Overview</h2>
-        <span class="view-all" onclick="goTo('market-home.html')"
-          >View all →</span
-        >
-      </div>
-      <div class="card-grid grid-2">
-        <div class="card" onclick="goTo('market-home.html')">
-          <div class="card-title">Market Home</div>
-          <div class="card-desc">
-            Nifty · Sensex · Bank Nifty · Advances/Declines
-          </div>
-        </div>
-        <div class="card" onclick="goTo('indices.html')">
-          <div class="card-title">Indices</div>
-          <div class="card-desc">
-            Major · Gainers · Losers (1D / 1W / 1M / 3M)
-          </div>
-        </div>
-        <div class="card" onclick="goTo('trending-stocks.html')">
-          <div class="card-title">Trending Stocks</div>
-          <div class="card-desc">
-            Price movers · Volume shockers · 52W High/Low
-          </div>
-        </div>
-        <div class="card" onclick="goTo('news-updates.html')">
-          <div class="card-title">News &amp; Updates</div>
-          <div class="card-desc">
-            Latest news · Announcements · Results · FII-DII
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- RIGHT: realistic phone -->
+    <div class="hero-right">
+      <div class="phone-shell">
+        <div class="phone-frame">
+          <!-- Physical buttons -->
+          <div class="phone-btn-vol-up"></div>
+          <div class="phone-btn-vol-dn"></div>
+          <div class="phone-btn-power"></div>
 
-    <!-- ── FIVE AI ENGINES ── -->
-    <section class="engines-section">
-      <div class="engines-header">
-        <h2>Dashboard</h2>
-        <p>Each engine is a specialist. ApexAI synthesizes them all.</p>
-      </div>
-      <div class="engines-grid">
-        <div class="card" onclick="goTo('oracle-lens.html')">
-          <div class="card-icon">👁</div>
-          <div class="card-title">Oracle Lens</div>
-          <div class="card-desc">
-            Financial health scoring, balance sheet deep-dive, red flag
-            detection
-          </div>
-        </div>
-        <div class="card" onclick="goTo('deepsight-ai.html')">
-          <div class="card-icon">🧠</div>
-          <div class="card-title">DeepSightAI</div>
-          <div class="card-desc">
-            Real-time sentiment, earnings surprise prediction, insider tracking
-          </div>
-        </div>
-        <div class="card" onclick="goTo('tech-engine.html')">
-          <div class="card-icon">📈</div>
-          <div class="card-title">TechEngine</div>
-          <div class="card-desc">
-            SMC structure, order blocks, EMA confluence, Renko analysis
-          </div>
-        </div>
-        <div class="card" onclick="goTo('nifty-oi-tech.html')">
-          <div class="card-icon">📊</div>
-          <div class="card-title">NiftyOITech</div>
-          <div class="card-desc">
-            Live OI centroid, centroid flip detection, DMT trap zone alerts
-          </div>
-        </div>
-        <div class="card" onclick="goTo('apex-ai.html')">
-          <div class="card-icon">⚡</div>
-          <div class="card-title">ApexAI</div>
-          <div class="card-desc">
-            Master orchestrator — single conviction-scored recommendation
-          </div>
-        </div>
-        <div class="cta-card">
-          <h3>Ready to start?</h3>
-          <p>
-            Sign up free and get institutional-grade insights on any NSE stock.
-          </p>
-          <button class="btn-link" onclick="goTo('signup.html')">
-            Create account →
-          </button>
-        </div>
-      </div>
-    </section>
+          <div class="phone-bezel">
+            <div class="phone-screen">
 
-    <!-- ── ANALYTICS ── -->
-    <section class="section">
-      <div class="section-header">
-        <h2 class="section-title">Analytics</h2>
-        <span class="view-all" onclick="goTo('analytics-home.html')"
-          >View all →</span
-        >
-      </div>
-      <div class="card-grid grid-3">
-        <div class="card" onclick="goTo('analytics-home.html')">
-          <div class="card-title">Analytics Home</div>
-          <div class="card-desc">Overview of AI-powered analytics</div>
-        </div>
-        <div class="card" onclick="goTo('chart-patterns.html')">
-          <div class="card-title">Chart Patterns</div>
-          <div class="card-desc">Pattern recognition across NSE universe</div>
-        </div>
-        <div class="card" onclick="goTo('trading-strategies.html')">
-          <div class="card-title">Trading Strategies</div>
-          <div class="card-desc">SMC, EMA confluence, Renko strategies</div>
-        </div>
-      </div>
-    </section>
+              <!-- Dynamic Island -->
+              <div class="phone-notch">
+                <div class="notch-camera"></div>
+                <div class="notch-speaker"></div>
+              </div>
 
-    <!-- ── FOOTER ── -->
-    <footer>
-      <div class="footer-main">
-        <div class="footer-brand">
-          <div class="logo" style="margin-bottom: 12px; font-size: 1rem">
-            <div
-              class="logo-icon"
-              style="width: 28px; height: 28px; font-size: 13px"
-            >
-              🌐
+              <!-- Status bar -->
+              <div class="phone-statusbar">
+                <span class="sb-time">9:41</span>
+                <div class="sb-icons">
+                  <span class="sb-icon">▲▲▲</span>
+                  <span class="sb-icon">WiFi</span>
+                  <div class="sb-battery"></div>
+                </div>
+              </div>
+
+              <!-- App content -->
+              <div class="phone-content">
+
+                <!-- App header -->
+                <div class="app-topbar">
+                  <div class="app-brand">Stock<span>AiVerse</span></div>
+                  <div class="app-avatar">AI</div>
+                </div>
+
+                <!-- Portfolio card -->
+                <div class="pf-card">
+                  <div class="pf-label">Total Portfolio Value</div>
+                  <div class="pf-value">₹2,84,650</div>
+                  <div class="pf-row">
+                    <div class="pf-change">▲ +₹12,430 today</div>
+                    <div class="pf-date">Mar 5, 2026</div>
+                  </div>
+                </div>
+
+                <!-- Quick actions -->
+                <div class="qa-row">
+                  <div class="qa-btn"><div class="qa-circle">📈</div><div class="qa-txt">Analyse</div></div>
+                  <div class="qa-btn"><div class="qa-circle">🔍</div><div class="qa-txt">Screen</div></div>
+                  <div class="qa-btn"><div class="qa-circle">📋</div><div class="qa-txt">Watch</div></div>
+                  <div class="qa-btn"><div class="qa-circle">⚡</div><div class="qa-txt">ApexAI</div></div>
+                </div>
+
+                <!-- Index tickers -->
+                <div class="index-row">
+                  <div class="idx-chip">
+                    <div class="idx-name">NIFTY 50</div>
+                    <div class="idx-val">24,832</div>
+                    <div class="idx-chg" style="color:var(--green)">▲ +1.24%</div>
+                  </div>
+                  <div class="idx-chip">
+                    <div class="idx-name">SENSEX</div>
+                    <div class="idx-val">81,450</div>
+                    <div class="idx-chg" style="color:var(--green)">▲ +0.89%</div>
+                  </div>
+                  <div class="idx-chip">
+                    <div class="idx-name">BANK NIFTY</div>
+                    <div class="idx-val">51,204</div>
+                    <div class="idx-chg" style="color:var(--red)">▼ −0.43%</div>
+                  </div>
+                </div>
+
+                <!-- Stock list -->
+                <div class="stock-section">
+                  <div class="stock-hdr"><span>Top Movers</span><span>See All →</span></div>
+
+                  <div class="stock-row">
+                    <div class="stock-logo" style="background:linear-gradient(135deg,#1565C0,#00B4D8)">R</div>
+                    <div class="stock-info">
+                      <div class="stock-sym">RELIANCE</div>
+                      <div class="stock-full">Reliance Industries</div>
+                    </div>
+                    <div class="sparkline">
+                      <div class="sp-bar" style="height:8px;background:var(--green);opacity:.4"></div>
+                      <div class="sp-bar" style="height:12px;background:var(--green);opacity:.5"></div>
+                      <div class="sp-bar" style="height:10px;background:var(--green);opacity:.6"></div>
+                      <div class="sp-bar" style="height:16px;background:var(--green);opacity:.7"></div>
+                      <div class="sp-bar" style="height:18px;background:var(--green)"></div>
+                    </div>
+                    <div class="stock-right">
+                      <div class="stock-price">₹2,941</div>
+                      <div class="stock-chg" style="color:var(--green)">▲ +2.14%</div>
+                    </div>
+                  </div>
+
+                  <div class="stock-row">
+                    <div class="stock-logo" style="background:linear-gradient(135deg,#0d47a1,#1565C0)">I</div>
+                    <div class="stock-info">
+                      <div class="stock-sym">INFY</div>
+                      <div class="stock-full">Infosys Ltd</div>
+                    </div>
+                    <div class="sparkline">
+                      <div class="sp-bar" style="height:16px;background:var(--red);opacity:.4"></div>
+                      <div class="sp-bar" style="height:14px;background:var(--red);opacity:.5"></div>
+                      <div class="sp-bar" style="height:18px;background:var(--red);opacity:.5"></div>
+                      <div class="sp-bar" style="height:10px;background:var(--red);opacity:.7"></div>
+                      <div class="sp-bar" style="height:8px;background:var(--red)"></div>
+                    </div>
+                    <div class="stock-right">
+                      <div class="stock-price">₹1,678</div>
+                      <div class="stock-chg" style="color:var(--red)">▼ −0.83%</div>
+                    </div>
+                  </div>
+
+                  <div class="stock-row">
+                    <div class="stock-logo" style="background:linear-gradient(135deg,#00695c,#00897b)">H</div>
+                    <div class="stock-info">
+                      <div class="stock-sym">HDFCBANK</div>
+                      <div class="stock-full">HDFC Bank Ltd</div>
+                    </div>
+                    <div class="sparkline">
+                      <div class="sp-bar" style="height:10px;background:var(--green);opacity:.4"></div>
+                      <div class="sp-bar" style="height:8px;background:var(--green);opacity:.5"></div>
+                      <div class="sp-bar" style="height:14px;background:var(--green);opacity:.6"></div>
+                      <div class="sp-bar" style="height:16px;background:var(--green);opacity:.7"></div>
+                      <div class="sp-bar" style="height:20px;background:var(--green)"></div>
+                    </div>
+                    <div class="stock-right">
+                      <div class="stock-price">₹1,823</div>
+                      <div class="stock-chg" style="color:var(--green)">▲ +1.56%</div>
+                    </div>
+                  </div>
+
+                  <div class="stock-row">
+                    <div class="stock-logo" style="background:linear-gradient(135deg,#e65100,#f57c00)">T</div>
+                    <div class="stock-info">
+                      <div class="stock-sym">TCS</div>
+                      <div class="stock-full">Tata Consultancy</div>
+                    </div>
+                    <div class="sparkline">
+                      <div class="sp-bar" style="height:12px;background:var(--green);opacity:.4"></div>
+                      <div class="sp-bar" style="height:16px;background:var(--green);opacity:.55"></div>
+                      <div class="sp-bar" style="height:14px;background:var(--green);opacity:.6"></div>
+                      <div class="sp-bar" style="height:18px;background:var(--green);opacity:.7"></div>
+                      <div class="sp-bar" style="height:22px;background:var(--green)"></div>
+                    </div>
+                    <div class="stock-right">
+                      <div class="stock-price">₹4,102</div>
+                      <div class="stock-chg" style="color:var(--green)">▲ +0.97%</div>
+                    </div>
+                  </div>
+                </div>
+
+              </div><!-- /phone-content -->
+
+              <!-- Bottom nav bar -->
+              <div class="phone-navbar">
+                <div class="nav-tab active">
+                  <div class="nav-tab-icon">🏠</div>
+                  <div class="nav-tab-lbl" style="color:var(--blue-500)">Home</div>
+                  <div class="nav-tab-dot"></div>
+                </div>
+                <div class="nav-tab">
+                  <div class="nav-tab-icon">📊</div>
+                  <div class="nav-tab-lbl">Markets</div>
+                </div>
+                <div class="nav-tab">
+                  <div class="nav-tab-icon">⚡</div>
+                  <div class="nav-tab-lbl">ApexAI</div>
+                </div>
+                <div class="nav-tab">
+                  <div class="nav-tab-icon">⭐</div>
+                  <div class="nav-tab-lbl">Watch</div>
+                </div>
+                <div class="nav-tab">
+                  <div class="nav-tab-icon">👤</div>
+                  <div class="nav-tab-lbl">Profile</div>
+                </div>
+              </div>
+
+            </div><!-- /phone-screen -->
+          </div><!-- /phone-bezel -->
+        </div><!-- /phone-frame -->
+      </div><!-- /phone-shell -->
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ SERVICES / MARKET MOVERS ═══ -->
+<div class="market-movers-section">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="movers-header">
+      <div class="sec-row" style="margin-bottom:0">
+        <div>
+          <div class="sec-label">Services</div>
+          <div class="sec-title">Transforming <em>Market Experiences</em></div>
+          <div class="sec-sub">Live price movers, volume shockers, top gainers &amp; losers — all in one intelligent dashboard.</div>
+        </div>
+        <button class="view-all-btn" onclick="goTo('trending-stocks.html')">View all →</button>
+      </div>
+      <div class="movers-tabs">
+        <div class="mover-tab active">Today</div>
+        <div class="mover-tab">This Week</div>
+        <div class="mover-tab">1 Month</div>
+        <div class="mover-tab">NSE</div>
+        <div class="mover-tab">BSE</div>
+      </div>
+    </div>
+
+    <!-- 2×2 Panel Grid -->
+    <div class="movers-grid">
+
+      <!-- ① TOP GAINERS -->
+      <div class="mover-panel" onclick="goTo('trending-stocks.html')">
+        <div class="panel-head">
+          <div class="panel-title-row">
+            <div class="panel-icon green">📈</div>
+            <div>
+              <div class="panel-name">Top Gainers</div>
+              <div class="panel-sub">Best performing stocks today</div>
             </div>
-            Stock<span>AiVerse</span>
           </div>
-          <p>
-            AI-powered stock market intelligence for Indian retail investors.
-          </p>
-          <small>v0.1.0 · Pre-alpha</small>
+          <div class="panel-badge badge-green">▲ NSE</div>
         </div>
-        <div class="footer-col">
-          <h4>Platform</h4>
-          <a onclick="goTo('market-home.html')">Market</a>
-          <a onclick="goTo('analytics-home.html')">Analytics</a>
-          <a onclick="goTo('stock-tech.html')">My AIVerse</a>
+        <div class="panel-col-hdr">
+          <span>Stock</span>
+          <span>Price</span>
+          <span>Change</span>
         </div>
-        <div class="footer-col">
-          <h4>Support</h4>
-          <a onclick="goTo('help.html')">Help &amp; Support</a>
-          <a onclick="goTo('settings.html')">Settings</a>
-          <a onclick="goTo('policies.html')">Policies</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© 2026 StockAiVerse. All rights reserved.</p>
-        <div class="footer-legal">
-          <a onclick="goTo('privacy.html')">Privacy Policy</a>
-          <a onclick="goTo('terms.html')">Terms of Use</a>
-          <a onclick="goTo('disclaimer.html')">Disclaimer</a>
-        </div>
-      </div>
-    </footer>
 
-    <div class="toast" id="toast"></div>
-    <script src="navigation.js"></script>
-  </body>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#e65100,#f57c00)">A</div>
+            <div><div class="mover-sym">ADANIENT</div><div class="mover-full">Adani Enterprises</div></div>
+          </div>
+          <div class="mover-price">₹2,873</div>
+          <div class="mover-chg chg-up">▲ +5.42%</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#1b5e20,#388e3c)">T</div>
+            <div><div class="mover-sym">TATASTEEL</div><div class="mover-full">Tata Steel Ltd</div></div>
+          </div>
+          <div class="mover-price">₹138.45</div>
+          <div class="mover-chg chg-up">▲ +4.18%</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#4a148c,#7b1fa2)">H</div>
+            <div><div class="mover-sym">HINDALCO</div><div class="mover-full">Hindalco Industries</div></div>
+          </div>
+          <div class="mover-price">₹624.70</div>
+          <div class="mover-chg chg-up">▲ +3.85%</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#bf360c,#e64a19)">J</div>
+            <div><div class="mover-sym">JSWSTEEL</div><div class="mover-full">JSW Steel Ltd</div></div>
+          </div>
+          <div class="mover-price">₹891.20</div>
+          <div class="mover-chg chg-up">▲ +3.21%</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#006064,#00838f)">O</div>
+            <div><div class="mover-sym">ONGC</div><div class="mover-full">Oil &amp; Nat Gas Corp</div></div>
+          </div>
+          <div class="mover-price">₹267.50</div>
+          <div class="mover-chg chg-up">▲ +2.94%</div>
+        </div>
+        <div class="panel-footer"><a onclick="event.stopPropagation();goTo('stock-tech-app.html#price-mover-gainers')">View all gainers →</a></div>
+      </div>
+
+      <!-- ② TOP LOSERS -->
+      <div class="mover-panel" onclick="goTo('trending-stocks.html')">
+        <div class="panel-head">
+          <div class="panel-title-row">
+            <div class="panel-icon red">📉</div>
+            <div>
+              <div class="panel-name">Top Losers</div>
+              <div class="panel-sub">Stocks under maximum pressure</div>
+            </div>
+          </div>
+          <div class="panel-badge badge-red">▼ NSE</div>
+        </div>
+        <div class="panel-col-hdr">
+          <span>Stock</span>
+          <span>Price</span>
+          <span>Change</span>
+        </div>
+
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#1565C0,#1976D2)">I</div>
+            <div><div class="mover-sym">INFY</div><div class="mover-full">Infosys Ltd</div></div>
+          </div>
+          <div class="mover-price">₹1,678</div>
+          <div class="mover-chg chg-down">▼ −4.62%</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#311b92,#4527a0)">W</div>
+            <div><div class="mover-sym">WIPRO</div><div class="mover-full">Wipro Ltd</div></div>
+          </div>
+          <div class="mover-price">₹462.30</div>
+          <div class="mover-chg chg-down">▼ −3.87%</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#37474f,#546e7a)">H</div>
+            <div><div class="mover-sym">HCLTECH</div><div class="mover-full">HCL Technologies</div></div>
+          </div>
+          <div class="mover-price">₹1,342</div>
+          <div class="mover-chg chg-down">▼ −2.95%</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#880e4f,#ad1457)">D</div>
+            <div><div class="mover-sym">DIVISLAB</div><div class="mover-full">Divi's Laboratories</div></div>
+          </div>
+          <div class="mover-price">₹3,814</div>
+          <div class="mover-chg chg-down">▼ −2.41%</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#004d40,#00695c)">C</div>
+            <div><div class="mover-sym">CIPLA</div><div class="mover-full">Cipla Ltd</div></div>
+          </div>
+          <div class="mover-price">₹1,487</div>
+          <div class="mover-chg chg-down">▼ −1.98%</div>
+        </div>
+        <div class="panel-footer"><a onclick="event.stopPropagation();goTo('stock-tech-app.html#price-mover-losers')">View all losers →</a></div>
+      </div>
+
+      <!-- ③ PRICE MOVERS -->
+      <div class="mover-panel" onclick="goTo('trending-stocks.html')">
+        <div class="panel-head">
+          <div class="panel-title-row">
+            <div class="panel-icon blue">⚡</div>
+            <div>
+              <div class="panel-name">Price Movers</div>
+              <div class="panel-sub">Highest absolute ₹ moves today</div>
+            </div>
+          </div>
+          <div class="panel-badge badge-blue">Live</div>
+        </div>
+        <div class="panel-col-hdr">
+          <span>Stock</span>
+          <span>Price</span>
+          <span>Move (₹)</span>
+        </div>
+
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#1565C0,#00B4D8)">R</div>
+            <div><div class="mover-sym">RELIANCE</div><div class="mover-full">Reliance Industries</div></div>
+          </div>
+          <div class="mover-price">₹2,941</div>
+          <div class="mover-chg chg-vol">+₹62.40</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#e65100,#f57c00)">T</div>
+            <div><div class="mover-sym">TCS</div><div class="mover-full">Tata Consultancy</div></div>
+          </div>
+          <div class="mover-price">₹4,102</div>
+          <div class="mover-chg chg-vol">+₹39.80</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#b71c1c,#c62828)">M</div>
+            <div><div class="mover-sym">MRF</div><div class="mover-full">MRF Ltd</div></div>
+          </div>
+          <div class="mover-price">₹1,24,500</div>
+          <div class="mover-chg chg-vol">+₹1,820</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#00695c,#00897b)">H</div>
+            <div><div class="mover-sym">HDFCBANK</div><div class="mover-full">HDFC Bank Ltd</div></div>
+          </div>
+          <div class="mover-price">₹1,823</div>
+          <div class="mover-chg chg-down">−₹18.50</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#4a148c,#6a1b9a)">B</div>
+            <div><div class="mover-sym">BAJFINANCE</div><div class="mover-full">Bajaj Finance Ltd</div></div>
+          </div>
+          <div class="mover-price">₹7,234</div>
+          <div class="mover-chg chg-vol">+₹212.00</div>
+        </div>
+        <div class="panel-footer"><a onclick="goTo('trending-stocks.html')">View all price movers →</a></div>
+      </div>
+
+      <!-- ④ VOLUME SHOCKERS -->
+      <div class="mover-panel" onclick="goTo('trending-stocks.html')">
+        <div class="panel-head">
+          <div class="panel-title-row">
+            <div class="panel-icon amber">🔊</div>
+            <div>
+              <div class="panel-name">Volume Shockers</div>
+              <div class="panel-sub">Unusual volume spikes vs avg</div>
+            </div>
+          </div>
+          <div class="panel-badge badge-amber">🔥 Hot</div>
+        </div>
+        <div class="panel-col-hdr">
+          <span>Stock</span>
+          <span>Price</span>
+          <span>Vol Surge</span>
+        </div>
+
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#e65100,#ff6d00)">A</div>
+            <div>
+              <div class="mover-sym">ADANIPORTS</div>
+              <div class="mover-full">Adani Ports &amp; SEZ</div>
+              <div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:92%;background:#f59e0b"></div></div>
+            </div>
+          </div>
+          <div class="mover-price">₹1,162</div>
+          <div class="mover-chg chg-neu">9.2× avg</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#1b5e20,#2e7d32)">S</div>
+            <div>
+              <div class="mover-sym">SAIL</div>
+              <div class="mover-full">Steel Authority India</div>
+              <div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:78%;background:#f59e0b"></div></div>
+            </div>
+          </div>
+          <div class="mover-price">₹118.65</div>
+          <div class="mover-chg chg-neu">7.8× avg</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#0d47a1,#1565C0)">I</div>
+            <div>
+              <div class="mover-sym">IRCTC</div>
+              <div class="mover-full">Indian Railway Cater</div>
+              <div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:63%;background:#f59e0b"></div></div>
+            </div>
+          </div>
+          <div class="mover-price">₹762.40</div>
+          <div class="mover-chg chg-neu">6.3× avg</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#4e342e,#6d4c41)">V</div>
+            <div>
+              <div class="mover-sym">VEDL</div>
+              <div class="mover-full">Vedanta Ltd</div>
+              <div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:54%;background:#f59e0b"></div></div>
+            </div>
+          </div>
+          <div class="mover-price">₹438.90</div>
+          <div class="mover-chg chg-neu">5.4× avg</div>
+        </div>
+        <div class="mover-row">
+          <div class="mover-stock">
+            <div class="mover-logo" style="background:linear-gradient(135deg,#006064,#00838f)">G</div>
+            <div>
+              <div class="mover-sym">GMRINFRA</div>
+              <div class="mover-full">GMR Infrastructure</div>
+              <div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:41%;background:#f59e0b"></div></div>
+            </div>
+          </div>
+          <div class="mover-price">₹84.25</div>
+          <div class="mover-chg chg-neu">4.1× avg</div>
+        </div>
+        <div class="panel-footer"><a onclick="event.stopPropagation();goTo('stock-tech-app.html#volume-shockers')">View all volume shockers →</a></div>
+      </div>
+
+    </div><!-- /movers-grid -->
+  </div>
+</div>
+
+<!-- ═══ ENGINES ═══ -->
+<div class="page-sec-alt">
+  <div class="container">
+    <div class="sec-row">
+      <div>
+        <div class="sec-label">Dashboard</div>
+        <div class="sec-title">Five Engines. <em>One Conviction.</em></div>
+        <div class="sec-sub">Each engine is a specialist. ApexAI synthesizes them all into a single trade signal.</div>
+      </div>
+    </div>
+    <div class="engines-grid">
+      <div class="engine-card" onclick="goTo('oracle-lens.html')">
+        <div class="engine-num">01</div>
+        <div class="engine-icon">👁</div>
+        <div class="engine-title">Oracle Lens</div>
+        <div class="engine-desc">Financial health scoring, balance sheet deep-dive, and automated red flag detection.</div>
+      </div>
+      <div class="engine-card" onclick="goTo('deepsight-ai.html')">
+        <div class="engine-num">02</div>
+        <div class="engine-icon">🧠</div>
+        <div class="engine-title">DeepSightAI</div>
+        <div class="engine-desc">Real-time sentiment analysis, earnings surprise prediction, and institutional tracking.</div>
+      </div>
+      <div class="engine-card" onclick="goTo('tech-engine.html')">
+        <div class="engine-num">03</div>
+        <div class="engine-icon">📈</div>
+        <div class="engine-title">TechEngine</div>
+        <div class="engine-desc">SMC structure, order blocks, EMA confluence, and Renko analysis for precise entries.</div>
+      </div>
+      <div class="engine-card" onclick="goTo('nifty-oi-tech.html')">
+        <div class="engine-num">04</div>
+        <div class="engine-icon">📊</div>
+        <div class="engine-title">NiftyOITech</div>
+        <div class="engine-desc">Live OI centroid tracking, centroid flip detection, and DMT trap zone alerts.</div>
+      </div>
+      <div class="engine-card apex" onclick="goTo('apex-ai.html')">
+        <div class="engine-num">05</div>
+        <div class="engine-icon">⚡</div>
+        <div class="engine-title">ApexAI</div>
+        <div class="engine-desc">Master orchestrator — synthesizes all four engines into a single conviction-scored recommendation.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px">
+        <div style="font-size:2.6rem;margin-bottom:10px">🚀</div>
+        <div style="font-size:0.95rem;font-weight:800;color:var(--blue-900);margin-bottom:6px">Explore the engines</div>
+        <div style="font-size:0.82rem;color:var(--gray-500);margin-bottom:16px">Dive into any specialist AI now.</div>
+        <button class="view-all-btn" onclick="goTo('apex-ai.html')">Open ApexAI →</button>
+      </div>
+    </div>
+    <div class="cta-banner">
+      <div>
+        <h3>Ready to invest smarter?</h3>
+        <p>Sign up free and get institutional-grade insights on any NSE stock — no fees, no fluff.</p>
+      </div>
+      <button class="btn-cta" onclick="goTo('signup.html')">Create account →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ANALYTICS ═══ -->
+<div class="page-sec">
+  <div class="container">
+    <div class="sec-row">
+      <div>
+        <div class="sec-label">Analytics</div>
+        <div class="sec-title"><em>Intelligent</em> Tools for Every Trader</div>
+        <div class="sec-sub">AI-powered analytics that go far beyond charts.</div>
+      </div>
+      <button class="view-all-btn" onclick="goTo('analytics-home.html')">View all →</button>
+    </div>
+    <div class="analytics-grid">
+      <div class="an-card" onclick="goTo('analytics-home.html')">
+        <div class="an-tag">Overview</div>
+        <div class="an-title">Analytics Home</div>
+        <div class="an-desc">A bird's-eye view of all AI-powered analytics modules, conviction scores, and active signals.</div>
+      </div>
+      <div class="an-card" onclick="goTo('chart-patterns.html')">
+        <div class="an-tag">Patterns</div>
+        <div class="an-title">Chart Patterns</div>
+        <div class="an-desc">Automated recognition across NSE — Head &amp; Shoulders, Flags, Wedges and more.</div>
+      </div>
+      <div class="an-card" onclick="goTo('trading-strategies.html')">
+        <div class="an-tag">Strategies</div>
+        <div class="an-title">Trading Strategies</div>
+        <div class="an-desc">Pre-built strategies — SMC, EMA confluence, Renko — with live performance tracking.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <div class="logo" style="font-size:1rem">
+          <div class="logo-icon" style="width:28px;height:28px;font-size:13px">🌐</div>
+          Stock<span>AiVerse</span>
+        </div>
+        <p>AI-powered stock market intelligence for Indian retail investors.</p>
+        <small>v0.1.0 · Pre-alpha</small>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a onclick="goTo('market-home.html')">Market</a>
+        <a onclick="goTo('analytics-home.html')">Analytics</a>
+        <a onclick="goTo('stock-tech.html')">My AIVerse</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a onclick="goTo('help.html')">Help &amp; Support</a>
+        <a onclick="goTo('settings.html')">Settings</a>
+        <a onclick="goTo('policies.html')">Policies</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 StockAiVerse. All rights reserved.</p>
+      <div class="footer-legal">
+        <a onclick="goTo('privacy.html')">Privacy Policy</a>
+        <a onclick="goTo('terms.html')">Terms of Use</a>
+        <a onclick="goTo('disclaimer.html')">Disclaimer</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script>
+  function goTo(page) {
+    const t = document.getElementById('toast');
+    t.textContent = 'Navigating to ' + page;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+    setTimeout(() => { window.location.href = page; }, 300);
+  }
+</script>
+</body>
 </html>

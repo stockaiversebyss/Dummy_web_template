@@ -1,798 +1,838 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stock Tech – StockAiVerse</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <style>
-      /* ── RESET FOR DASHBOARD ── */
-      body {
-        margin: 0;
-        display: flex;
-        height: 100vh;
-        overflow: hidden;
-        background: #0b0f1a;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stock Tech – StockAiVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-      /* ════════════════════════════
+    :root {
+      --blue-900: #0a1628;
+      --blue-800: #0d2040;
+      --blue-700: #0f3460;
+      --blue-600: #1565C0;
+      --blue-500: #1976D2;
+      --blue-400: #2196F3;
+      --blue-300: #64B5F6;
+      --blue-100: #BBDEFB;
+      --blue-50:  #E3F2FD;
+      --accent:   #00B4D8;
+      --white:    #ffffff;
+      --gray-50:  #F8FAFC;
+      --gray-100: #EEF2F7;
+      --gray-300: #CBD5E1;
+      --gray-500: #64748B;
+      --gray-700: #334155;
+      --green:    #00C897;
+      --red:      #FF4B6E;
+      --font:     'Plus Jakarta Sans', sans-serif;
+      --serif:    'Instrument Serif', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--gray-700);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+    }
+    a    { text-decoration: none; color: inherit; cursor: pointer; }
+    button { font-family: var(--font); cursor: pointer; border: none; outline: none; }
+    em { font-style: italic; font-family: var(--serif); color: var(--accent); font-weight: 400; }
+
+    /* ════════════════════════════
        SIDEBAR
     ════════════════════════════ */
-      .sidebar {
-        width: 210px;
-        min-width: 210px;
-        height: 100vh;
-        background: #0d1220;
-        border-right: 1px solid #1a2540;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-      }
+    .sidebar {
+      width: 216px;
+      min-width: 216px;
+      height: 100vh;
+      background: var(--white);
+      border-right: 1.5px solid var(--gray-100);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 2px 0 16px rgba(21,101,192,0.05);
+    }
 
-      /* Logo row */
-      .sb-logo {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        padding: 15px 14px 13px;
-        border-bottom: 1px solid #1a2540;
-        flex-shrink: 0;
-      }
-      .sb-logo-icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: #3b7ef8;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 15px;
-        flex-shrink: 0;
-      }
-      .sb-logo-text {
-        font-family: "Sora", sans-serif;
-        font-size: 1rem;
-        font-weight: 700;
-        color: #e8edf5;
-      }
-      .sb-logo-text span {
-        color: #3b7ef8;
-      }
+    .sb-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 14px 14px;
+      border-bottom: 1.5px solid var(--gray-100);
+      flex-shrink: 0;
+    }
+    .sb-logo-icon {
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--blue-600), var(--accent));
+      box-shadow: 0 4px 12px rgba(21,101,192,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .sb-logo-text {
+      font-family: var(--font);
+      font-size: 0.95rem; font-weight: 800;
+      color: var(--blue-900); letter-spacing: -0.3px;
+    }
+    .sb-logo-text span { color: var(--blue-500); }
 
-      /* Scrollable nav body */
-      .sb-nav {
-        flex: 1;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding: 12px 8px 0;
-      }
-      .sb-nav::-webkit-scrollbar {
-        width: 0;
-      }
+    .sb-nav {
+      flex: 1; overflow-y: auto; overflow-x: hidden;
+      padding: 12px 8px 0;
+    }
+    .sb-nav::-webkit-scrollbar { width: 0; }
 
-      /* Section label */
-      .sb-label {
-        font-size: 0.65rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        color: #4f617a;
-        padding: 2px 10px 7px;
-        margin-top: 4px;
-      }
+    .sb-label {
+      font-size: 0.65rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--blue-400);
+      background: var(--blue-50);
+      padding: 3px 10px; border-radius: 8px;
+      display: inline-block;
+      margin: 0 2px 8px;
+    }
 
-      /* Nav row */
-      .sb-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 8px 10px;
-        border-radius: 8px;
-        margin-bottom: 1px;
-        cursor: pointer;
-        color: #8899b4;
-        font-family: "DM Sans", sans-serif;
-        font-size: 0.875rem;
-        font-weight: 400;
-        transition:
-          background 0.15s,
-          color 0.15s;
-        user-select: none;
-      }
-      .sb-item:hover {
-        background: #141c2e;
-        color: #e8edf5;
-      }
-      .sb-item.active {
-        background: #3b7ef8;
-        color: #ffffff;
-        font-weight: 500;
-      }
+    .sb-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 10px; border-radius: 9px; margin-bottom: 2px;
+      cursor: pointer; color: var(--gray-500);
+      font-size: 0.875rem; font-weight: 500;
+      transition: all 0.15s; user-select: none;
+    }
+    .sb-item:hover { background: var(--blue-50); color: var(--blue-600); }
+    .sb-item.active {
+      background: var(--blue-600);
+      color: var(--white); font-weight: 700;
+    }
+    .sb-item-left { display: flex; align-items: center; gap: 10px; }
+    .sb-icon { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sb-icon svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    .sb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-300); flex-shrink: 0; }
+    .sb-item.active .sb-dot { background: rgba(255,255,255,0.5); }
 
-      .sb-item-left {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
+    .sb-item.sb-disabled {
+      opacity: 0.45; cursor: not-allowed; position: relative;
+    }
+    .sb-item.sb-disabled:hover { background: transparent !important; color: var(--gray-500) !important; }
+    .sb-item.sb-disabled .sb-dot,
+    .sb-item.sb-disabled .sb-chevron { display: none; }
+    .sb-item.sb-disabled::after {
+      content: 'Coming Soon';
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      background: var(--blue-50); color: var(--blue-400);
+      font-size: 0.57rem; font-weight: 700; letter-spacing: 0.05em;
+      padding: 2px 7px; border-radius: 5px; white-space: nowrap;
+      opacity: 0; transition: opacity 0.18s; pointer-events: none;
+    }
+    .sb-item.sb-disabled:hover::after { opacity: 1; }
 
-      /* Icon wrapper */
-      .sb-icon {
-        width: 18px;
-        height: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-      .sb-icon svg {
-        width: 16px;
-        height: 16px;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 1.7;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
+    .sb-chevron { font-size: 10px; color: var(--gray-300); flex-shrink: 0; transition: transform 0.2s; }
+    .sb-item.open .sb-chevron { transform: rotate(180deg); }
 
-      /* Blue dot indicator */
-      .sb-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: #3b7ef8;
-        flex-shrink: 0;
-      }
-      .sb-item.active .sb-dot {
-        background: rgba(255, 255, 255, 0.55);
-      }
+    .sb-sub { overflow: hidden; max-height: 0; transition: max-height 0.22s ease; }
+    .sb-sub.open { max-height: 250px; }
+    .sb-sub-item {
+      display: flex; align-items: center;
+      padding: 6px 10px 6px 38px;
+      font-size: 0.82rem; color: var(--gray-500);
+      border-radius: 7px; cursor: pointer;
+      margin-bottom: 1px; transition: all 0.12s;
+    }
+    .sb-sub-item:hover { background: var(--blue-50); color: var(--blue-600); }
 
-      /* ── DISABLED / COMING SOON ── */
-      .sb-item.sb-disabled {
-        opacity: 0.42;
-        cursor: not-allowed;
-        position: relative;
-      }
-      .sb-item.sb-disabled:hover {
-        background: transparent !important;
-        color: #8899b4 !important;
-      }
-      .sb-item.sb-disabled .sb-dot,
-      .sb-item.sb-disabled .sb-chevron { display: none; }
-      .sb-item.sb-disabled::after {
-        content: 'Coming Soon';
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(59, 126, 248, 0.1);
-        color: #3b7ef8;
-        font-size: 0.6rem;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        padding: 2px 7px;
-        border-radius: 4px;
-        white-space: nowrap;
-        opacity: 0;
-        transition: opacity 0.18s;
-        pointer-events: none;
-      }
-      .sb-item.sb-disabled:hover::after { opacity: 1; }
+    .sb-explore-gap { margin-top: 14px; }
 
-      /* Chevron for explore items */
-      .sb-chevron {
-        font-size: 11px;
-        color: #4f617a;
-        flex-shrink: 0;
-        transition: transform 0.2s;
-      }
-      .sb-item.open .sb-chevron {
-        transform: rotate(180deg);
-      }
+    .sb-footer {
+      flex-shrink: 0; padding: 8px 8px 6px;
+      border-top: 1.5px solid var(--gray-100);
+    }
+    .sb-user {
+      display: flex; align-items: center; gap: 9px;
+      padding: 8px 10px; border-radius: 9px;
+      cursor: pointer; transition: background 0.15s; margin-bottom: 2px;
+    }
+    .sb-user:hover { background: var(--blue-50); }
+    .sb-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-600), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.82rem; font-weight: 800; color: var(--white); flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(21,101,192,0.25);
+    }
+    .sb-user-info { flex: 1; min-width: 0; }
+    .sb-user-name { font-size: 0.85rem; font-weight: 700; color: var(--blue-900); line-height: 1.2; }
+    .sb-user-email { font-size: 0.68rem; color: var(--gray-500); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; }
+    .sb-logout {
+      background: none; border: none; color: var(--gray-300);
+      font-size: 14px; cursor: pointer; padding: 2px;
+      transition: color 0.2s; flex-shrink: 0;
+    }
+    .sb-logout:hover { color: var(--blue-500); }
+    .sb-version { font-size: 0.67rem; color: var(--gray-300); padding: 2px 10px 4px; font-weight: 500; }
 
-      /* Sub-menu */
-      .sb-sub {
-        overflow: hidden;
-        max-height: 0;
-        transition: max-height 0.22s ease;
-      }
-      .sb-sub.open {
-        max-height: 250px;
-      }
-      .sb-sub-item {
-        display: flex;
-        align-items: center;
-        padding: 6px 10px 6px 38px;
-        font-size: 0.82rem;
-        color: #4f617a;
-        border-radius: 7px;
-        cursor: pointer;
-        margin-bottom: 1px;
-        transition:
-          background 0.12s,
-          color 0.12s;
-      }
-      .sb-sub-item:hover {
-        background: #141c2e;
-        color: #8899b4;
-      }
-
-      /* Explore section spacing */
-      .sb-explore-gap {
-        margin-top: 14px;
-      }
-
-      /* ── SIDEBAR FOOTER ── */
-      .sb-footer {
-        flex-shrink: 0;
-        padding: 8px 8px 6px;
-        border-top: 1px solid #1a2540;
-      }
-
-      .sb-user {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        padding: 8px 10px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background 0.15s;
-        margin-bottom: 2px;
-      }
-      .sb-user:hover {
-        background: #141c2e;
-      }
-      .sb-avatar {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: #2563c4;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "Sora", sans-serif;
-        font-size: 0.82rem;
-        font-weight: 700;
-        color: #fff;
-        flex-shrink: 0;
-      }
-      .sb-user-info {
-        flex: 1;
-        min-width: 0;
-      }
-      .sb-user-name {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #e8edf5;
-        line-height: 1.2;
-      }
-      .sb-user-email {
-        font-size: 0.7rem;
-        color: #4f617a;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 110px;
-      }
-      .sb-logout {
-        background: none;
-        border: none;
-        color: #4f617a;
-        font-size: 14px;
-        cursor: pointer;
-        padding: 2px;
-        transition: color 0.2s;
-        flex-shrink: 0;
-      }
-      .sb-logout:hover {
-        color: #8899b4;
-      }
-
-      .sb-version {
-        font-size: 0.68rem;
-        color: #4f617a;
-        padding: 2px 10px 4px;
-      }
-
-      /* ════════════════════════════
-       MAIN AREA
+    /* ════════════════════════════
+       MAIN
     ════════════════════════════ */
-      .main {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        overflow: hidden;
-        min-width: 0;
-        background: #0b0f1a;
-      }
+    .main {
+      flex: 1; display: flex; flex-direction: column;
+      height: 100vh; overflow: hidden; min-width: 0;
+      background: var(--gray-50);
+    }
 
-      /* Top bar */
-      .topbar {
-        height: 56px;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        padding: 0 20px;
-        border-bottom: 1px solid #1a2540;
-        gap: 12px;
-      }
-      .search-wrap {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: #111827;
-        border: 1px solid #1e2d47;
-        border-radius: 10px;
-        padding: 0 14px;
-        height: 36px;
-        flex: 1;
-        max-width: 420px;
-        transition: border-color 0.2s;
-      }
-      .search-wrap:focus-within {
-        border-color: #3b7ef8;
-      }
-      .search-wrap svg {
-        width: 14px;
-        height: 14px;
-        stroke: #4f617a;
-        fill: none;
-        stroke-width: 2;
-        flex-shrink: 0;
-      }
-      .search-wrap input {
-        flex: 1;
-        background: none;
-        border: none;
-        outline: none;
-        font-family: "DM Sans", sans-serif;
-        font-size: 0.87rem;
-        color: #e8edf5;
-      }
-      .search-wrap input::placeholder {
-        color: #4f617a;
-      }
+    .topbar {
+      height: 56px; flex-shrink: 0;
+      display: flex; align-items: center;
+      padding: 0 24px;
+      border-bottom: 1.5px solid var(--gray-100);
+      gap: 12px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 2px 16px rgba(21,101,192,0.05);
+    }
+    .topbar-tagline {
+      font-size: 0.82rem; font-weight: 600; color: var(--gray-500);
+      letter-spacing: 0.01em; white-space: nowrap;
+    }
+    .search-wrap {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--gray-50); border: 1.5px solid var(--gray-100);
+      border-radius: 10px; padding: 0 14px;
+      height: 36px; flex: 1; max-width: 420px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-wrap:focus-within {
+      border-color: var(--blue-400);
+      box-shadow: 0 0 0 3px rgba(33,150,243,0.08);
+    }
+    .search-wrap svg { width: 14px; height: 14px; stroke: var(--gray-300); fill: none; stroke-width: 2; flex-shrink: 0; }
+    .search-wrap input { flex: 1; background: none; border: none; outline: none; font-family: var(--font); font-size: 0.87rem; color: var(--gray-700); }
+    .search-wrap input::placeholder { color: var(--gray-300); }
 
-      .topbar-avatar {
-        margin-left: auto;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: #2563c4;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "Sora", sans-serif;
-        font-size: 0.82rem;
-        font-weight: 700;
-        color: #fff;
-        cursor: pointer;
-        flex-shrink: 0;
-      }
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .topbar-badge {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 0.72rem; font-weight: 700;
+      color: var(--green);
+      background: rgba(0,200,151,0.08);
+      border: 1.5px solid rgba(0,200,151,0.2);
+      padding: 4px 12px; border-radius: 20px; letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+    .topbar-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-600), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.82rem; font-weight: 800; color: var(--white);
+      cursor: pointer; flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(21,101,192,0.25);
+    }
 
-      /* ── CONTENT ── */
-      .content {
-        flex: 1;
-        overflow-y: auto;
-        padding: 36px 40px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
+    /* ── CONTENT ── */
+    .content {
+      flex: 1; overflow-y: auto;
+      padding: 44px 48px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .content::-webkit-scrollbar { width: 4px; }
+    .content::-webkit-scrollbar-thumb { background: var(--gray-100); border-radius: 4px; }
 
-      /* Page heading */
-      .st-title {
-        font-family: "Sora", sans-serif;
-        font-size: 2.2rem;
-        font-weight: 800;
-        color: #e8edf5;
-        margin: 0 0 14px;
-        text-align: center;
-        letter-spacing: -0.01em;
-      }
-      .st-title span {
-        color: #3b7ef8;
-      }
+    /* Label chip */
+    .st-label {
+      font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--blue-400);
+      background: var(--blue-50);
+      padding: 5px 14px; border-radius: 8px;
+      display: inline-block; margin-bottom: 18px;
+      animation: fadeUp 0.45s ease both;
+    }
 
-      /* Description */
-      .st-desc {
-        font-family: "DM Sans", sans-serif;
-        font-size: 0.97rem;
-        color: #8899b4;
-        line-height: 1.7;
-        text-align: center;
-        max-width: 640px;
-        margin: 0 0 32px;
-      }
+    /* Heading */
+    .st-title {
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800; color: var(--blue-900);
+      margin-bottom: 16px; text-align: center;
+      letter-spacing: -1px; line-height: 1.15;
+      animation: fadeUp 0.5s ease both; animation-delay: 0.05s;
+    }
 
-      /* Video player area */
-      .video-wrap {
-        width: 100%;
-        max-width: 760px;
-        aspect-ratio: 16 / 9;
-        background: #0d1220;
-        border: 1.5px solid #1e2d47;
-        border-radius: 16px;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        margin-bottom: 32px;
-      }
-      .video-wrap video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
-      .video-placeholder {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-        color: #4f617a;
-      }
-      .video-placeholder .play-icon {
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        border: 2px solid #1e2d47;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .video-placeholder .play-icon svg {
-        width: 22px;
-        height: 22px;
-        fill: #4f617a;
-        stroke: none;
-        margin-left: 3px;
-      }
-      .video-placeholder span {
-        font-size: 0.82rem;
-        font-family: "DM Sans", sans-serif;
-      }
+    /* Description */
+    .st-desc {
+      font-size: 0.97rem; color: var(--gray-500);
+      line-height: 1.72; text-align: center;
+      max-width: 580px; margin: 0 0 36px;
+      animation: fadeUp 0.55s ease both; animation-delay: 0.1s;
+    }
 
-      /* Enter button */
-      .enter-btn {
-        font-family: "Sora", sans-serif;
-        font-size: 0.95rem;
-        font-weight: 700;
-        color: #fff;
-        background: #3b7ef8;
-        border: none;
-        border-radius: 12px;
-        padding: 14px 36px;
-        cursor: pointer;
-        letter-spacing: 0.01em;
-        transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-        box-shadow: 0 4px 20px rgba(59, 126, 248, 0.30);
-      }
-      .enter-btn:hover {
-        background: #2563c4;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 28px rgba(59, 126, 248, 0.40);
-      }
-      .enter-btn:active {
-        transform: translateY(0);
-      }
-    </style>
-  </head>
-  <body>
-    <!-- ══════════ SIDEBAR ══════════ -->
-    <aside class="sidebar">
-      <!-- Logo -->
-      <div class="sb-logo">
-        <div class="sb-logo-icon">🌐</div>
-        <div class="sb-logo-text">Stock<span>AiVerse</span></div>
+    /* Feature pills */
+    .feature-row {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      justify-content: center; margin-bottom: 36px;
+      animation: fadeUp 0.55s ease both; animation-delay: 0.15s;
+    }
+    .feature-pill {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.78rem; font-weight: 600; color: var(--gray-500);
+      background: var(--white); border: 1.5px solid var(--gray-100);
+      padding: 6px 14px; border-radius: 20px; transition: all 0.2s;
+      box-shadow: 0 1px 4px rgba(21,101,192,0.04);
+    }
+    .feature-pill:hover {
+      border-color: var(--blue-300); color: var(--blue-600);
+      background: var(--blue-50);
+    }
+    .feature-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-400); }
+    .feature-pill .dot.green { background: var(--green); }
+    .feature-pill .dot.cyan  { background: var(--accent); }
+
+    /* ── VIDEO SECTION ── */
+    .video-section {
+      width: 100%; max-width: 820px; margin-bottom: 36px;
+      animation: fadeUp 0.6s ease both; animation-delay: 0.2s;
+    }
+    .video-section-label {
+      font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--gray-500); margin-bottom: 12px; padding-left: 2px;
+    }
+
+    .video-player-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-100);
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 4px 24px rgba(21,101,192,0.07);
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .video-player-card:hover {
+      border-color: var(--blue-300);
+      box-shadow: 0 16px 48px rgba(21,101,192,0.12);
+    }
+
+    .video-viewport {
+      position: relative; width: 100%; aspect-ratio: 16 / 9;
+      background: var(--blue-900); overflow: hidden;
+    }
+    .video-viewport video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .vid-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,22,40,0.85) 0%, rgba(10,22,40,0.2) 30%, transparent 55%);
+      pointer-events: none;
+    }
+
+    .vid-progress {
+      position: absolute; bottom: 52px; left: 16px; right: 16px;
+      display: flex; align-items: center; gap: 10px; z-index: 4;
+    }
+    .vid-scrubber {
+      flex: 1; -webkit-appearance: none;
+      height: 3px; border-radius: 3px;
+      background: rgba(255,255,255,0.25);
+      outline: none; cursor: pointer; transition: height 0.15s;
+    }
+    .vid-scrubber:hover { height: 5px; }
+    .vid-scrubber::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 13px; height: 13px;
+      border-radius: 50%; background: var(--blue-400);
+      cursor: pointer; box-shadow: 0 0 8px rgba(33,150,243,0.7);
+    }
+    .vid-time { font-size: 0.7rem; font-weight: 600; color: rgba(255,255,255,0.7); white-space: nowrap; min-width: 36px; }
+
+    .vid-controls {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 50px; display: flex; align-items: center;
+      padding: 0 16px; gap: 6px; z-index: 5;
+    }
+    .vid-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
+      color: white; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.18s; flex-shrink: 0; backdrop-filter: blur(6px);
+    }
+    .vid-btn:hover {
+      background: var(--blue-600); border-color: var(--blue-600);
+      transform: scale(1.06); box-shadow: 0 4px 14px rgba(21,101,192,0.5);
+    }
+    .vid-btn svg { width: 16px; height: 16px; stroke: none; fill: white; }
+    .vid-btn.pause-btn svg { width: 14px; height: 14px; }
+
+    .vid-mute-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+      color: white; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.18s; flex-shrink: 0; backdrop-filter: blur(6px);
+    }
+    .vid-mute-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3); }
+    .vid-mute-btn svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; stroke-linecap: round; }
+    .vid-mute-btn.muted svg { stroke: var(--red); }
+
+    .vid-controls-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .vid-fullscreen-btn {
+      background: none; border: none; color: rgba(255,255,255,0.6);
+      cursor: pointer; padding: 4px; display: flex; align-items: center; transition: color 0.15s;
+    }
+    .vid-fullscreen-btn:hover { color: white; }
+    .vid-fullscreen-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    .vid-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 14px; background: var(--blue-900); z-index: 6;
+    }
+    .vid-ph-icon {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: rgba(33,150,243,0.1); border: 1.5px solid rgba(33,150,243,0.25);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .vid-ph-icon svg { width: 26px; height: 26px; fill: var(--blue-300); stroke: none; margin-left: 4px; }
+    .vid-ph-title { font-size: 0.9rem; font-weight: 700; color: rgba(255,255,255,0.6); }
+    .vid-ph-sub { font-size: 0.76rem; color: rgba(255,255,255,0.35); text-align: center; max-width: 260px; line-height: 1.5; }
+    .vid-ph-btn {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.8rem; font-weight: 700; color: white;
+      background: var(--blue-600); border: none; border-radius: 20px;
+      padding: 8px 20px; cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(21,101,192,0.3);
+    }
+    .vid-ph-btn:hover { background: var(--blue-700); transform: translateY(-1px); }
+    .vid-ph-btn svg { width: 13px; height: 13px; stroke: white; fill: none; stroke-width: 2.2; stroke-linecap: round; }
+
+    /* Info bar */
+    .vid-info-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 18px; border-top: 1.5px solid var(--gray-100);
+      background: var(--gray-50);
+    }
+    .vid-info-left { flex: 1; min-width: 0; }
+    .vid-info-name {
+      font-size: 0.85rem; font-weight: 700; color: var(--blue-900);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 400px;
+    }
+    .vid-info-meta { font-size: 0.7rem; color: var(--gray-500); margin-top: 2px; }
+    .vid-info-right { display: flex; gap: 8px; }
+    .vid-tag-btn {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 0.74rem; font-weight: 600; color: var(--gray-500);
+      background: var(--white); border: 1.5px solid var(--gray-100);
+      border-radius: 20px; padding: 5px 12px; cursor: pointer; transition: all 0.18s;
+    }
+    .vid-tag-btn:hover { border-color: var(--blue-400); color: var(--blue-500); background: var(--blue-50); }
+    .vid-tag-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+
+    /* Stats row */
+    .stats-row {
+      display: flex; gap: 16px; width: 100%; max-width: 780px;
+      margin-bottom: 36px;
+      animation: fadeUp 0.65s ease both; animation-delay: 0.25s;
+    }
+    .stat-card {
+      flex: 1; background: var(--white);
+      border: 1.5px solid var(--gray-100);
+      border-radius: 16px; padding: 18px 20px;
+      transition: all 0.25s; cursor: default;
+      box-shadow: 0 2px 10px rgba(21,101,192,0.04);
+    }
+    .stat-card:hover {
+      border-color: var(--blue-300);
+      box-shadow: 0 12px 40px rgba(21,101,192,0.1);
+      transform: translateY(-3px);
+    }
+    .stat-label {
+      font-size: 0.68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.7px;
+      color: var(--gray-500); margin-bottom: 6px;
+    }
+    .stat-val {
+      font-size: 1.4rem; font-weight: 800;
+      color: var(--blue-900); letter-spacing: -0.5px; line-height: 1;
+    }
+    .stat-val .stat-up   { color: var(--green); font-size: 0.78rem; font-weight: 600; margin-left: 5px; }
+    .stat-val .stat-down { color: var(--red);   font-size: 0.78rem; font-weight: 600; margin-left: 5px; }
+    .stat-sub { font-size: 0.73rem; color: var(--gray-500); margin-top: 5px; }
+
+    /* CTA Button */
+    .enter-btn {
+      font-size: 0.925rem; font-weight: 800; color: var(--white);
+      background: var(--blue-600); border-radius: 30px;
+      padding: 15px 40px; cursor: pointer; letter-spacing: 0.01em;
+      transition: all 0.2s; box-shadow: 0 6px 24px rgba(21,101,192,0.35);
+      animation: fadeUp 0.7s ease both; animation-delay: 0.3s;
+    }
+    .enter-btn:hover {
+      background: var(--blue-700); transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(21,101,192,0.45);
+    }
+    .enter-btn:active { transform: translateY(0); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.45; }
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--blue-900); color: white;
+      padding: 12px 24px; border-radius: 30px;
+      font-size: 0.85rem; font-weight: 600;
+      opacity: 0; transition: all 0.3s;
+      pointer-events: none; z-index: 9999;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green); display: inline-block;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════ SIDEBAR ══════════ -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-icon">🌐</div>
+      <div class="sb-logo-text">Stock<span>AiVerse</span></div>
+    </div>
+
+    <div class="sb-nav">
+      <div class="sb-label">Dashboard</div>
+
+      <div class="sb-item active" onclick="goTo('stock-tech.html')">
+        <div class="sb-item-left">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span>
+          Stock Tech
+        </div>
+        <span class="sb-dot"></span>
       </div>
 
-      <!-- Nav -->
-      <div class="sb-nav">
-        <!-- DASHBOARD -->
-        <div class="sb-label">Dashboard</div>
-
-        <!-- Stock Tech -->
-        <div class="sb-item active" onclick="goTo('stock-tech.html')">
-          <div class="sb-item-left">
-            <span class="sb-icon">
-              <svg viewBox="0 0 24 24">
-                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
-                <polyline points="16 7 22 7 22 13" />
-              </svg>
-            </span>
-            Stock Tech
-          </div>
-          <span class="sb-dot"></span>
+      <div class="sb-item" onclick="goTo('oi-tech.html')">
+        <div class="sb-item-left">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+          OI Tech
         </div>
-
-        <!-- OI Tech -->
-        <div class="sb-item" onclick="goTo('oi-tech.html')">
-          <div class="sb-item-left">
-            <span class="sb-icon">
-              <svg viewBox="0 0 24 24">
-                <line x1="18" y1="20" x2="18" y2="10" />
-                <line x1="12" y1="20" x2="12" y2="4" />
-                <line x1="6" y1="20" x2="6" y2="14" />
-              </svg>
-            </span>
-            OI Tech
-          </div>
-          <span class="sb-dot"></span>
-        </div>
-
-        <!-- Oracle Lens -->
-        <div class="sb-item sb-disabled">
-          <div class="sb-item-left">
-            <span class="sb-icon">
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="3" />
-                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" />
-              </svg>
-            </span>
-            Oracle Lens
-          </div>
-          <span class="sb-dot"></span>
-        </div>
-
-        <!-- DeepSightAI -->
-        <div class="sb-item sb-disabled">
-          <div class="sb-item-left">
-            <span class="sb-icon">
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 8c-2 0-4 1.5-4 4s2 4 4 4" />
-                <circle
-                  cx="12"
-                  cy="17"
-                  r="0.6"
-                  fill="currentColor"
-                  stroke="none"
-                />
-              </svg>
-            </span>
-            DeepSightAI
-          </div>
-          <span class="sb-dot"></span>
-        </div>
-
-        <!-- TechEngine -->
-        <div class="sb-item sb-disabled">
-          <div class="sb-item-left">
-            <span class="sb-icon">
-              <svg viewBox="0 0 24 24">
-                <polyline points="2 17 7 12 11 16 16 10 22 15" />
-              </svg>
-            </span>
-            TechEngine
-          </div>
-          <span class="sb-dot"></span>
-        </div>
-
-        <!-- ApexAI -->
-        <div class="sb-item sb-disabled">
-          <div class="sb-item-left">
-            <span class="sb-icon">
-              <svg viewBox="0 0 24 24">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-              </svg>
-            </span>
-            ApexAI
-          </div>
-          <span class="sb-dot"></span>
-        </div>
-
-        <!-- NiftyOITech -->
-        <div class="sb-item sb-disabled">
-          <div class="sb-item-left">
-            <span class="sb-icon">
-              <svg viewBox="0 0 24 24">
-                <line x1="18" y1="20" x2="18" y2="10" />
-                <line x1="12" y1="20" x2="12" y2="4" />
-                <line x1="6" y1="20" x2="6" y2="14" />
-              </svg>
-            </span>
-            NiftyOITech
-          </div>
-          <span class="sb-dot"></span>
-        </div>
-
-        <!-- EXPLORE -->
-        <div class="sb-label sb-explore-gap">Explore</div>
-
-        <!-- Market -->
-        <div class="sb-item sb-disabled" id="nav-market">
-          <div class="sb-item-left">
-            <span class="sb-icon">
-              <svg viewBox="0 0 24 24">
-                <line x1="18" y1="20" x2="18" y2="10" />
-                <line x1="12" y1="20" x2="12" y2="4" />
-                <line x1="6" y1="20" x2="6" y2="14" />
-              </svg>
-            </span>
-            Market
-          </div>
-          <span class="sb-chevron" id="chev-market">▾</span>
-        </div>
-        <div class="sb-sub" id="sub-market">
-          <div class="sb-sub-item" onclick="goTo('market-home.html')">
-            Market Home
-          </div>
-          <div class="sb-sub-item" onclick="goTo('indices.html')">Indices</div>
-          <div class="sb-sub-item" onclick="goTo('trending-stocks.html')">
-            Trending Stocks
-          </div>
-          <div class="sb-sub-item" onclick="goTo('news-updates.html')">
-            News &amp; Updates
-          </div>
-        </div>
-
-        <!-- Analytics -->
-        <div
-          class="sb-item sb-disabled"
-          id="nav-analytics"
-        >
-          <div class="sb-item-left">
-            <span class="sb-icon">
-              <svg viewBox="0 0 24 24">
-                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
-              </svg>
-            </span>
-            Analytics
-          </div>
-          <span class="sb-chevron" id="chev-analytics">▾</span>
-        </div>
-        <div class="sb-sub" id="sub-analytics">
-          <div class="sb-sub-item" onclick="goTo('analytics-home.html')">
-            Analytics Home
-          </div>
-          <div class="sb-sub-item" onclick="goTo('chart-patterns.html')">
-            Chart Patterns
-          </div>
-          <div class="sb-sub-item" onclick="goTo('trading-strategies.html')">
-            Trading Strategies
-          </div>
-        </div>
-
-        <!-- My AIVerse -->
-        <div
-          class="sb-item sb-disabled"
-          id="nav-myaiverse"
-        >
-          <div class="sb-item-left">
-            <span class="sb-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-            </span>
-            My AIVerse
-          </div>
-          <span class="sb-chevron" id="chev-myaiverse">▾</span>
-        </div>
-        <div class="sb-sub" id="sub-myaiverse">
-          <div class="sb-sub-item" onclick="goTo('watchlist.html')">
-            Watchlist
-          </div>
-          <div class="sb-sub-item" onclick="goTo('settings.html')">
-            Settings
-          </div>
-        </div>
-      </div>
-      <!-- end sb-nav -->
-
-      <!-- Footer -->
-      <div class="sb-footer">
-        <!-- Settings -->
-        <div
-          class="sb-item"
-          onclick="goTo('settings.html')"
-          style="margin-bottom: 4px"
-        >
-          <div class="sb-item-left">
-            <span class="sb-icon">
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="3" />
-                <path
-                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
-                />
-              </svg>
-            </span>
-            Settings
-          </div>
-        </div>
-
-        <!-- User row -->
-        <div class="sb-user">
-          <div class="sb-avatar">H</div>
-          <div class="sb-user-info">
-            <div class="sb-user-name">Harman</div>
-            <div class="sb-user-email">harmanpreet21@g...</div>
-          </div>
-          <button
-            class="sb-logout"
-            onclick="goTo('index.html')"
-            title="Sign out"
-          >
-            ↗
-          </button>
-        </div>
-
-        <div class="sb-version">v0.1.0 · Pre-alpha</div>
-      </div>
-    </aside>
-
-    <!-- ══════════ MAIN ══════════ -->
-    <div class="main">
-      <!-- Topbar -->
-      <div class="topbar">
-        <div class="search-wrap">
-          <svg viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-          <input type="text" placeholder="Search symbol..." />
-        </div>
-        <div class="topbar-avatar">H</div>
+        <span class="sb-dot"></span>
       </div>
 
-      <!-- Stock Tech Content -->
-      <div class="content">
-
-        <!-- Title -->
-        <div class="st-title">Stock<span>Tech</span></div>
-
-        <!-- Description -->
-        <p class="st-desc">
-          Advanced technical intelligence powered by smart indicators, real-time analytics, and data-driven signals to help you decode market movements with confidence.
-        </p>
-
-        <!-- Video area -->
-        <div class="video-wrap">
-          <!-- Replace the src below with your video file path or URL -->
-          <!-- <video controls src="your-video.mp4"></video> -->
-          <div class="video-placeholder">
-            <div class="play-icon">
-              <svg viewBox="0 0 24 24">
-                <polygon points="5 3 19 12 5 21 5 3" />
-              </svg>
-            </div>
-            <span>Your video goes here</span>
-          </div>
+      <div class="sb-item" onclick="goTo('oracle-lens.html')">
+        <div class="sb-item-left">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/></svg></span>
+          Oracle Lens
         </div>
+        <span class="sb-dot"></span>
+      </div>
 
-        <!-- CTA Button -->
-        <button class="enter-btn" onclick="goTo('stock-tech-app.html')">
-          Enter to Stock Tech Universe
-        </button>
+      <div class="sb-item sb-disabled">
+        <div class="sb-item-left">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8c-2 0-4 1.5-4 4s2 4 4 4"/><circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none"/></svg></span>
+          DeepSightAI
+        </div>
+        <span class="sb-dot"></span>
+      </div>
 
+      <div class="sb-item sb-disabled">
+        <div class="sb-item-left">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><polyline points="2 17 7 12 11 16 16 10 22 15"/></svg></span>
+          TechEngine
+        </div>
+        <span class="sb-dot"></span>
+      </div>
+
+      <div class="sb-item sb-disabled">
+        <div class="sb-item-left">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+          ApexAI
+        </div>
+        <span class="sb-dot"></span>
+      </div>
+
+      <div class="sb-item sb-disabled">
+        <div class="sb-item-left">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+          NiftyOITech
+        </div>
+        <span class="sb-dot"></span>
+      </div>
+
+      <div class="sb-label sb-explore-gap">Explore</div>
+
+      <div class="sb-item sb-disabled" id="nav-market">
+        <div class="sb-item-left">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+          Market
+        </div>
+        <span class="sb-chevron" id="chev-market">▾</span>
+      </div>
+      <div class="sb-sub" id="sub-market">
+        <div class="sb-sub-item" onclick="goTo('market-home.html')">Market Home</div>
+        <div class="sb-sub-item" onclick="goTo('indices.html')">Indices</div>
+        <div class="sb-sub-item" onclick="goTo('trending-stocks.html')">Trending Stocks</div>
+        <div class="sb-sub-item" onclick="goTo('news-updates.html')">News &amp; Updates</div>
+      </div>
+
+      <div class="sb-item sb-disabled" id="nav-analytics">
+        <div class="sb-item-left">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg></span>
+          Analytics
+        </div>
+        <span class="sb-chevron" id="chev-analytics">▾</span>
+      </div>
+      <div class="sb-sub" id="sub-analytics">
+        <div class="sb-sub-item" onclick="goTo('analytics-home.html')">Analytics Home</div>
+        <div class="sb-sub-item" onclick="goTo('chart-patterns.html')">Chart Patterns</div>
+        <div class="sb-sub-item" onclick="goTo('trading-strategies.html')">Trading Strategies</div>
+      </div>
+
+      <div class="sb-item sb-disabled" id="nav-myaiverse">
+        <div class="sb-item-left">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+          My AIVerse
+        </div>
+        <span class="sb-chevron" id="chev-myaiverse">▾</span>
+      </div>
+      <div class="sb-sub" id="sub-myaiverse">
+        <div class="sb-sub-item" onclick="goTo('watchlist.html')">Watchlist</div>
+        <div class="sb-sub-item" onclick="goTo('settings.html')">Settings</div>
       </div>
     </div>
 
-    <div class="toast" id="toast"></div>
-    <script src="navigation.js"></script>
-    <script>
-      function toggleSub(key) {
-        const sub = document.getElementById("sub-" + key);
-        const nav = document.getElementById("nav-" + key);
-        const isOpen = sub.classList.contains("open");
-        document
-          .querySelectorAll(".sb-sub")
-          .forEach((s) => s.classList.remove("open"));
-        document
-          .querySelectorAll(".sb-item")
-          .forEach((n) => n.classList.remove("open"));
-        if (!isOpen) {
-          sub.classList.add("open");
-          nav.classList.add("open");
-        }
-      }
-    </script>
-  </body>
+    <div class="sb-footer">
+      <div class="sb-item" onclick="goTo('settings.html')" style="margin-bottom:4px">
+        <div class="sb-item-left">
+          <span class="sb-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+          Settings
+        </div>
+      </div>
+      <div class="sb-user">
+        <div class="sb-avatar">H</div>
+        <div class="sb-user-info">
+          <div class="sb-user-name">Harman</div>
+          <div class="sb-user-email">harmanpreet21@g...</div>
+        </div>
+        <button class="sb-logout" onclick="goTo('index.html')" title="Sign out">↗</button>
+      </div>
+      <div class="sb-version">v0.1.0 · Pre-alpha</div>
+    </div>
+  </aside>
+
+  <!-- ══════════ MAIN ══════════ -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-tagline">Real-Time Pattern Intelligence for Smarter Trading</div>
+      <div class="topbar-right">
+        <div class="topbar-badge"><span class="live-dot"></span>Live</div>
+        <div class="topbar-avatar">H</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="st-label">Technical Intelligence</div>
+
+      <h1 class="st-title">Stock<em>Tech</em></h1>
+
+      <p class="st-desc">
+        Advanced technical intelligence powered by smart indicators, real-time analytics, and data-driven signals to help you decode market movements with confidence.
+      </p>
+
+      <div class="feature-row">
+        <div class="feature-pill"><span class="dot green"></span>Real-Time Signals</div>
+        <div class="feature-pill"><span class="dot"></span>Smart Indicators</div>
+        <div class="feature-pill"><span class="dot cyan"></span>AI-Driven Insights</div>
+        <div class="feature-pill"><span class="dot"></span>Pattern Recognition</div>
+      </div>
+
+      <!-- VIDEO SECTION -->
+      <div class="video-section">
+        <div class="video-section-label">Tutorial &amp; Walkthrough</div>
+
+        <div class="video-player-card">
+          <div class="video-viewport" id="video-viewport">
+            <video id="main-video" autoplay muted loop playsinline
+                   onloadedmetadata="onVideoMeta()"
+                   ontimeupdate="onTimeUpdate()">
+            </video>
+            <div class="vid-gradient"></div>
+            <div class="vid-progress">
+              <span class="vid-time" id="vid-current">0:00</span>
+              <input type="range" class="vid-scrubber" id="vid-scrubber" min="0" max="100" value="0" oninput="onSeek(this.value)" />
+              <span class="vid-time" id="vid-total">0:00</span>
+            </div>
+            <div class="vid-controls">
+              <button class="vid-btn pause-btn" id="pp-btn" onclick="togglePlay()" title="Play / Pause">
+                <svg id="pp-icon" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              </button>
+              <button class="vid-mute-btn" id="mute-btn" onclick="toggleMute()" title="Mute / Unmute">
+                <svg id="mute-icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              </button>
+              <div class="vid-controls-right">
+                <button class="vid-fullscreen-btn" onclick="toggleFullscreen()" title="Fullscreen">
+                  <svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="vid-placeholder" id="vid-placeholder">
+              <div class="vid-ph-icon">
+                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <div class="vid-ph-title">No video loaded</div>
+              <div class="vid-ph-sub">Drop a video file here, or click to upload</div>
+              <button class="vid-ph-btn" onclick="document.getElementById('vid-file-input').click()">
+                <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+                Upload Video
+              </button>
+            </div>
+          </div>
+
+          <div class="vid-info-bar">
+            <div class="vid-info-left">
+              <div class="vid-info-name" id="vid-info-name">Stock Tech — Tutorial</div>
+              <div class="vid-info-meta" id="vid-info-meta">Upload a video file to play · autoplay &amp; loop enabled</div>
+            </div>
+            <div class="vid-info-right">
+              <button class="vid-tag-btn" onclick="document.getElementById('vid-file-input').click()">
+                <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+                Upload
+              </button>
+            </div>
+          </div>
+        </div>
+        <input type="file" id="vid-file-input" accept="video/*" style="display:none" onchange="handleUpload(event)" />
+      </div>
+
+      <!-- Stats row -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Signals Today</div>
+          <div class="stat-val">142<span class="stat-up">↑ 18%</span></div>
+          <div class="stat-sub">Across all instruments</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Accuracy Rate</div>
+          <div class="stat-val">87.4%<span class="stat-up">↑ 2.1%</span></div>
+          <div class="stat-sub">Last 30-day average</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Indicators Active</div>
+          <div class="stat-val">24</div>
+          <div class="stat-sub">RSI, MACD, BB + more</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Alerts Fired</div>
+          <div class="stat-val">9<span class="stat-down">↓ 3</span></div>
+          <div class="stat-sub">Since market open</div>
+        </div>
+      </div>
+
+      <button class="enter-btn" onclick="goTo('stock-tech-app.html')">
+        Enter Stock Tech Universe
+      </button>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    function goTo(page) {
+      const t = document.getElementById('toast');
+      t.textContent = 'Navigating to ' + page;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+      setTimeout(() => { window.location.href = page; }, 300);
+    }
+    function toggleSub(key) {
+      const sub = document.getElementById('sub-' + key);
+      const nav = document.getElementById('nav-' + key);
+      const isOpen = sub.classList.contains('open');
+      document.querySelectorAll('.sb-sub').forEach(s => s.classList.remove('open'));
+      document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('open'));
+      if (!isOpen) { sub.classList.add('open'); nav.classList.add('open'); }
+    }
+
+    const vid         = document.getElementById('main-video');
+    const placeholder = document.getElementById('vid-placeholder');
+    const scrubber    = document.getElementById('vid-scrubber');
+    const timeCur     = document.getElementById('vid-current');
+    const timeTot     = document.getElementById('vid-total');
+    const ppIcon      = document.getElementById('pp-icon');
+    const muteBtn     = document.getElementById('mute-btn');
+    const muteIcon    = document.getElementById('mute-icon');
+    const infoName    = document.getElementById('vid-info-name');
+    const infoMeta    = document.getElementById('vid-info-meta');
+    const viewport    = document.getElementById('video-viewport');
+
+    const PAUSE_SVG = `<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>`;
+    const PLAY_SVG  = `<polygon points="5 3 19 12 5 21 5 3"/>`;
+    const VOL_ON    = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>`;
+    const VOL_OFF   = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15" stroke="currentColor"/><line x1="17" y1="9" x2="23" y2="15" stroke="currentColor"/>`;
+
+    function fmt(s) { const m = Math.floor(s/60); return m+':'+Math.floor(s%60).toString().padStart(2,'0'); }
+
+    function handleUpload(e) {
+      const file = e.target.files[0]; if (!file) return;
+      vid.src = URL.createObjectURL(file); vid.load();
+      placeholder.style.display = 'none';
+      infoName.textContent = file.name;
+      infoMeta.textContent = (file.size/1024/1024).toFixed(1)+' MB · autoplay & loop enabled';
+      e.target.value = '';
+    }
+    function onVideoMeta() { scrubber.max = vid.duration||100; timeTot.textContent = fmt(vid.duration||0); }
+    function onTimeUpdate() {
+      if (!vid.duration) return;
+      timeCur.textContent = fmt(vid.currentTime);
+      scrubber.value = vid.currentTime;
+      const pct = (vid.currentTime/vid.duration)*100;
+      scrubber.style.background = `linear-gradient(to right, var(--blue-400) ${pct}%, rgba(255,255,255,0.22) ${pct}%)`;
+    }
+    function onSeek(val) { vid.currentTime = val; }
+    function togglePlay() {
+      if (vid.paused) { vid.play(); ppIcon.innerHTML = PAUSE_SVG; }
+      else            { vid.pause(); ppIcon.innerHTML = PLAY_SVG; }
+    }
+    function toggleMute() {
+      vid.muted = !vid.muted;
+      muteIcon.innerHTML = vid.muted ? VOL_OFF : VOL_ON;
+      muteBtn.classList.toggle('muted', vid.muted);
+    }
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) viewport.requestFullscreen && viewport.requestFullscreen();
+      else document.exitFullscreen && document.exitFullscreen();
+    }
+    viewport.addEventListener('dragover', e => e.preventDefault());
+    viewport.addEventListener('drop', e => {
+      e.preventDefault();
+      const file = Array.from(e.dataTransfer.files).find(f => f.type.startsWith('video/'));
+      if (!file) return;
+      vid.src = URL.createObjectURL(file); vid.load();
+      placeholder.style.display = 'none';
+      infoName.textContent = file.name;
+      infoMeta.textContent = (file.size/1024/1024).toFixed(1)+' MB · autoplay & loop enabled';
+    });
+    document.addEventListener('keydown', e => {
+      if (e.target.tagName === 'INPUT') return;
+      if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+      if (e.code === 'KeyM') toggleMute();
+    });
+    vid.addEventListener('play',  () => ppIcon.innerHTML = PAUSE_SVG);
+    vid.addEventListener('pause', () => ppIcon.innerHTML = PLAY_SVG);
+  </script>
+</body>
+
 </html>
